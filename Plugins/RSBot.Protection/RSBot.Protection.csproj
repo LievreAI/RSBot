@@ -12,6 +12,7 @@
 	<PackageProjectUrl>https://github.com/SDClowen/RSBot</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/SDClowen/RSBot</RepositoryUrl>
 	<OutputType>Library</OutputType>
+	<Configurations>Debug;Release;RSBot.Loader.Library</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

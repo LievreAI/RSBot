@@ -188,7 +188,7 @@ public class NavMeshDungeon : NavMesh
             ID = index,
             Region = this.Region,
             Parent = parent,
-            NavMeshObj = NavMeshManager.LoadNavMeshObj(path),
+          //  NavMeshObj = NavMeshManager.LoadNavMeshObj(path),
             LocalPosition = position,
             LocalToWorld = localToWorld,
             WorldToLocal = worldToLocal,

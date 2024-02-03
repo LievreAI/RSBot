@@ -29,10 +29,10 @@ public class NavMeshEdgeGlobal : NavMeshEdge
 
         if ((this.Flag & NavMeshEdgeFlag.Blocked) == 0 && this.DstMeshIndex > 0)
         {
-            if (!NavMeshManager.TryGetNavMeshTerrain(this.DstMeshIndex, out NavMeshTerrain dstNavMesh))
+           // if (!NavMeshManager.TryGetNavMeshTerrain(this.DstMeshIndex, out NavMeshTerrain dstNavMesh))
                 return;
 
-            this.DstCell = dstNavMesh.Cells[this.DstCellIndex];
+            //this.DstCell = dstNavMesh.Cells[this.DstCellIndex];
             //this.DstCell.AddEdge(this, this.DstDirection);
         }
     }

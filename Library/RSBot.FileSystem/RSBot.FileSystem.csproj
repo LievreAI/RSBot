@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>RSBot.FileSystem</RootNamespace>
+        <Configurations>Debug;Release;RSBot.Loader.Library</Configurations>
     </PropertyGroup>
 
 </Project>

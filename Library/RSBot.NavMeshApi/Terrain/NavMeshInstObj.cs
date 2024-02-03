@@ -20,9 +20,9 @@ public class NavMeshInstObj : NavMeshInst
     internal void Read(NavMeshReader reader)
     {
         var index = reader.ReadInt32();
-        if (!NavMeshManager.TryGetNavMeshObj(index, out NavMeshObj obj))
+       // if (!NavMeshManager.TryGetNavMeshObj(index, out NavMeshObj obj))
             Debug.WriteLine($"Couldn't find {nameof(Object.NavMeshObj)}#{index} for {nameof(NavMeshApi.NavMeshInst)}");
-        this.NavMeshObj = obj;
+        //this.NavMeshObj = obj;
 
         var localPosition = reader.ReadVector3();
         //while (localPosition.X >= RID.Width)

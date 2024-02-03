@@ -56,9 +56,9 @@ internal static class MovementBundle
 
         var minDistance = LureConfig.Area.Radius / 1.5f;
         var destination = LureConfig.Area.GetRandomPosition();
-        while (destination.DistanceToPlayer() < minDistance ||
-               Game.Player.Position.HasCollisionBetween(destination))
-            destination = LureConfig.Area.GetRandomPosition();
+      //  while (destination.DistanceToPlayer() < minDistance ||
+              // Game.Player.Position.HasCollisionBetween(destination))
+         //   destination = LureConfig.Area.GetRandomPosition();
 
         Log.Status("Walking to random position...");
         Log.Debug(

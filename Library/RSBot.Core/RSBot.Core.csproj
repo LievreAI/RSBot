@@ -12,6 +12,7 @@
 	  <PackageReadmeFile></PackageReadmeFile>
 	  <RepositoryUrl>https://github.com/SDClowen/RSBot</RepositoryUrl>
 	  <PlatformTarget>x86</PlatformTarget>
+	  <Configurations>Debug;Release;RSBot.Loader.Library</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

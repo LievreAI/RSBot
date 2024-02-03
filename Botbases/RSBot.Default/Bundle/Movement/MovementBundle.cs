@@ -54,10 +54,10 @@ internal class MovementBundle : IBundle
         }
 
         var distance = Game.Player.Position.DistanceTo(Container.Bot.Area.Position);
-        var hasCollision = Game.Player.Position.HasCollisionBetween(Container.Bot.Area.Position);
+   //     var hasCollision = Game.Player.Position.HasCollisionBetween(Container.Bot.Area.Position);
 
         //Go back if the player is out of the radius
-        if ((distance > Container.Bot.Area.Radius || (Config.WalkToCenter && distance > 3)) && !hasCollision)
+       // if ((distance > Container.Bot.Area.Radius || (Config.WalkToCenter && distance > 3)) && !hasCollision)
         {
             Log.Status("Walking to center");
             Game.Player.MoveTo(Container.Bot.Area.Position);
@@ -75,15 +75,15 @@ internal class MovementBundle : IBundle
         var destination = Container.Bot.Area.GetRandomPosition();
 
         var attempt = 0;
-        while (Game.Player.Position.HasCollisionBetween(destination) &&
-               distance < Container.Bot.Area.Radius)
-        {
-            destination = Container.Bot.Area.GetRandomPosition();
-            if (attempt++ > 3)
-                break;
+        //while (Game.Player.Position.HasCollisionBetween(destination) &&
+        //       distance < Container.Bot.Area.Radius)
+        //{
+        //    destination = Container.Bot.Area.GetRandomPosition();
+        //    if (attempt++ > 3)
+        //        break;
 
-            Thread.Sleep(100);
-        }
+        //    Thread.Sleep(100);
+        //}
 
         Game.Player.MoveTo(destination, false);
     }

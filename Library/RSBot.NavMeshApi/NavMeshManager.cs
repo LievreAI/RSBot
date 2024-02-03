@@ -25,7 +25,7 @@ public static class NavMeshManager
     public static Vector2[] NormalCache = new Vector2[NORMAL_CACHE_SIZE];
 
     private static readonly Dictionary<RID, NavMesh> _regionCache = new Dictionary<RID, NavMesh>();
-    private static readonly Dictionary<RID, NavMeshTerrain> _terrainCache = new Dictionary<RID, NavMeshTerrain>();
+   // private static readonly Dictionary<RID, NavMeshTerrain> _terrainCache = new Dictionary<RID, NavMeshTerrain>();
     private static readonly Dictionary<int, NavMeshObj> _objectCache = new Dictionary<int, NavMeshObj>();
     private static readonly Dictionary<RID, NavMeshDungeon> _dungeonCache = new Dictionary<RID, NavMeshDungeon>();
 
@@ -33,9 +33,9 @@ public static class NavMeshManager
     {
         _dataFileSystem = dataFileSystem;
 
-        LoadMapInfo("NavMesh\\MapInfo.mfo");
-        LoadObjectIndex("NavMesh\\Object.ifo");
-        LoadDungeonInfo("Dungeon\\DungeonInfo.txt");
+        //LoadMapInfo("NavMesh\\MapInfo.mfo");
+        //LoadObjectIndex("NavMesh\\Object.ifo");
+        //LoadDungeonInfo("Dungeon\\DungeonInfo.txt");
         //LoadObjectString("NavMesh/ObjectString.ifo"); // EventZone data
 
         //_terrainCache.EnsureCapacity(RegionManager.ActiveRegions);
@@ -65,8 +65,8 @@ public static class NavMeshManager
         while (true)
         {
             raycastCount++;
-            //if (raycastCount > 100)
-                //throw new Exception("raycastCount above 100");
+            if (raycastCount > 100)
+                throw new Exception("raycastCount above 100");
 
             // Move destination into the same region space as source.
             if (dst.Region != src.Region)
@@ -94,62 +94,62 @@ public static class NavMeshManager
 
     public static bool Raycast(NavMeshTransform src, NavMeshTransform dst, NavMeshRaycastType type) => Raycast(src, dst, type, out _);
 
-    public static bool ResolveCellAndHeight(NavMeshTransform transform)
-    {
-        transform.Normalize();
-        if (!TryGetNavMesh(transform.Region, out NavMesh mesh))
-            return false;
+    //public static bool ResolveCellAndHeight(NavMeshTransform transform)
+    //{
+    //    transform.Normalize();
+    //    if (!TryGetNavMesh(transform.Region, out NavMesh mesh))
+    //        return false;
 
-        if (mesh.ResolveCellAndHeight(transform))
-            return true;
+    //    if (mesh.ResolveCellAndHeight(transform))
+    //        return true;
 
-        if (!transform.Region.IsDungeon)
-            return false;
+    //    if (!transform.Region.IsDungeon)
+    //        return false;
 
         // TOP_RIGHT
-#pragma warning disable RCS1089 // Use --/++ operator instead of assignment.
-        transform.Offset.X += 1.0f;
-        transform.Offset.Z += 1.0f;
-        if (mesh.ResolveCellAndHeight(transform))
-            return true;
+//#pragma warning disable RCS1089 // Use --/++ operator instead of assignment.
+//        transform.Offset.X += 1.0f;
+//        transform.Offset.Z += 1.0f;
+//        if (mesh.ResolveCellAndHeight(transform))
+//            return true;
 
-        // TOP_LEFT
-        transform.Offset.X -= 2.0f;
-        if (mesh.ResolveCellAndHeight(transform))
-            return true;
+//        // TOP_LEFT
+//        transform.Offset.X -= 2.0f;
+//        if (mesh.ResolveCellAndHeight(transform))
+//            return true;
 
-        // BOTTOM_LEFT
-        transform.Offset.Z -= 2.0f;
-        if (mesh.ResolveCellAndHeight(transform))
-            return true;
+//        // BOTTOM_LEFT
+//        transform.Offset.Z -= 2.0f;
+//        if (mesh.ResolveCellAndHeight(transform))
+//            return true;
 
-        // BOTTOM_RIGHT
-        transform.Offset.X += 2.0f;
-        if (mesh.ResolveCellAndHeight(transform))
-            return true;
-#pragma warning restore RCS1089 // Use --/++ operator instead of assignment.
+//        // BOTTOM_RIGHT
+//        transform.Offset.X += 2.0f;
+//        if (mesh.ResolveCellAndHeight(transform))
+//            return true;
+//#pragma warning restore RCS1089 // Use --/++ operator instead of assignment.
 
-        return transform.Cell != null;
-    }
+//        return transform.Cell != null;
+//    }
 
-    #region Loading
+//    #region Loading
 
-    private static void LoadMapInfo(string fileName)
-    {
-        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
-        RegionManager.Load(stream);
-    }
+//    private static void LoadMapInfo(string fileName)
+//    {
+//        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
+//        RegionManager.Load(stream);
+//    }
 
-    private static void LoadDungeonInfo(string fileName)
-    {
-        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
-        DungeonInfo.Load(stream);
-    }
+//    private static void LoadDungeonInfo(string fileName)
+//    {
+//        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
+//        DungeonInfo.Load(stream);
+//    }
 
-    private static void LoadObjectIndex(string fileName)
-    {
-        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
-        ObjectIndex.Load(stream);
+//    private static void LoadObjectIndex(string fileName)
+//    {
+//        using var stream = _dataFileSystem.OpenRead(fileName).GetStream();
+//        ObjectIndex.Load(stream);
 
         //foreach (var obj in ObjectIndex)
         //{
@@ -166,59 +166,59 @@ public static class NavMeshManager
         //}
     }
 
-    public static void InvalidateCaches()
-    {
-        _objectCache.Clear();
-        _regionCache.Clear();
-        _dungeonCache.Clear();
-        _terrainCache.Clear();
-    }
+    //public static void InvalidateCaches()
+    //{
+    //    _objectCache.Clear();
+    //    _regionCache.Clear();
+    //    _dungeonCache.Clear();
+    //    //_terrainCache.Clear();
+    //}
 
-    public static NavMeshObj LoadNavMeshObj(string fileName)
-    {
-        switch (fileName[fileName.Length - 1])
-        {
-            case /*cp*/'d': return LoadNavMeshObjFromCompound(fileName);
-            case /*bs*/'r': return LoadNavMeshObjFromResource(fileName);
-            case /*bm*/'s': return LoadNavMeshObjFromPrimMesh(fileName);
-            default: return null;
-        }
-    }
+    //public static NavMeshObj LoadNavMeshObj(string fileName)
+    //{
+    //    switch (fileName[fileName.Length - 1])
+    //    {
+    //        case /*cp*/'d': return LoadNavMeshObjFromCompound(fileName);
+    //        case /*bs*/'r': return LoadNavMeshObjFromResource(fileName);
+    //        case /*bm*/'s': return LoadNavMeshObjFromPrimMesh(fileName);
+    //        default: return null;
+    //    }
+    //}
 
-    public static NavMeshTerrain LoadNavMeshTerrain(string fileName, RID region)
-    {
-        var terrain = new NavMeshTerrain(region);
-        if (!_dataFileSystem.TryGetFile(fileName, out var file))
-            return null;
+    //public static NavMeshTerrain LoadNavMeshTerrain(string fileName, RID region)
+    //{
+    //    var terrain = new NavMeshTerrain(region);
+    //    if (!_dataFileSystem.TryGetFile(fileName, out var file))
+    //        return null;
 
-        using var stream = file.OpenRead().GetStream();
-        terrain.Load(stream);
+    //    using var stream = file.OpenRead().GetStream();
+    //    terrain.Load(stream);
 
-        return terrain;
-    }
+    //    return terrain;
+    //}
 
-    public static NavMeshDungeon LoadNavMeshDungeon(string fileName, RID region)
-    {
-        var dungeon = new NavMeshDungeon(region);
+    //public static NavMeshDungeon LoadNavMeshDungeon(string fileName, RID region)
+    //{
+    //    var dungeon = new NavMeshDungeon(region);
 
-        if (!_dataFileSystem.TryGetFile(fileName, out var file))
-            return null;
+    //    if (!_dataFileSystem.TryGetFile(fileName, out var file))
+    //        return null;
 
-        using var stream = file.OpenRead().GetStream();
-        dungeon.Load(stream);
+    //    using var stream = file.OpenRead().GetStream();
+    //    dungeon.Load(stream);
 
-        return dungeon;
-    }
+    //    return dungeon;
+    //}
 
-    public static NavMeshObj LoadNavMeshObjFromPrimMesh(string fileName)
-    {
-        var obj = new NavMeshObj();
-        if (!_dataFileSystem.TryGetFile(fileName, out var file))
-            return null;
+    //public static NavMeshObj LoadNavMeshObjFromPrimMesh(string fileName)
+    //{
+    //    var obj = new NavMeshObj();
+    //    if (!_dataFileSystem.TryGetFile(fileName, out var file))
+    //        return null;
 
-        using var stream = file.OpenRead().GetStream();
+    //    using var stream = file.OpenRead().GetStream();
 
-        obj.Load(stream);
+    //    obj.Load(stream);
 
         //foreach (var edge in obj.GlobalEdges)
         //    edge.Link();
@@ -226,169 +226,169 @@ public static class NavMeshManager
         //foreach (var edge in obj.InternalEdges)
         //    edge.Link();
 
-        return obj;
-    }
+        //return obj;
+    //}
 
-    public static NavMeshObj LoadNavMeshObjFromResource(string fileName)
-    {
-        if (!_dataFileSystem.TryGetFile(fileName, out var file))
-            return null;
+    //public static NavMeshObj LoadNavMeshObjFromResource(string fileName)
+    //{
+    //    if (!_dataFileSystem.TryGetFile(fileName, out var file))
+    //        return null;
 
-        using var stream = file.OpenRead().GetStream();
+    //    using var stream = file.OpenRead().GetStream();
 
-        using (var reader = new NavMeshReader(stream))
-        {
-            var signature = reader.ReadString(12);
-            if (signature != "JMXVRES 0109")
-                throw new Exception("Invalid signature");
+    //    using (var reader = new NavMeshReader(stream))
+    //    {
+    //        var signature = reader.ReadString(12);
+    //        if (signature != "JMXVRES 0109")
+    //            throw new Exception("Invalid signature");
 
-            var header = new
-            {
-                PrimMtrlSetOffset = reader.ReadInt32(),
-                PrimMeshOffset = reader.ReadInt32(),
-                PrimBranchOffset = reader.ReadInt32(),
-                PrimAnimationOffset = reader.ReadInt32(),
-                PrimMeshGroupOffset = reader.ReadInt32(),
-                PrimAniGroupOffset = reader.ReadInt32(),
-                ModPaletteOffset = reader.ReadInt32(),
-                NavMeshObjOffset = reader.ReadInt32(),
-                Int0 = reader.ReadInt32(),
-                Int1 = reader.ReadInt32(),
-                Int2 = reader.ReadInt32(),
-                Int3 = reader.ReadInt32(),
-                Int4 = reader.ReadInt32(),
-            };
+    //        var header = new
+    //        {
+    //            PrimMtrlSetOffset = reader.ReadInt32(),
+    //            PrimMeshOffset = reader.ReadInt32(),
+    //            PrimBranchOffset = reader.ReadInt32(),
+    //            PrimAnimationOffset = reader.ReadInt32(),
+    //            PrimMeshGroupOffset = reader.ReadInt32(),
+    //            PrimAniGroupOffset = reader.ReadInt32(),
+    //            ModPaletteOffset = reader.ReadInt32(),
+    //            NavMeshObjOffset = reader.ReadInt32(),
+    //            Int0 = reader.ReadInt32(),
+    //            Int1 = reader.ReadInt32(),
+    //            Int2 = reader.ReadInt32(),
+    //            Int3 = reader.ReadInt32(),
+    //            Int4 = reader.ReadInt32(),
+    //        };
 
-            if (header.NavMeshObjOffset == 0)
-                return null;
+    //        if (header.NavMeshObjOffset == 0)
+    //            return null;
 
-            stream.Seek(header.NavMeshObjOffset, SeekOrigin.Begin);
+    //        stream.Seek(header.NavMeshObjOffset, SeekOrigin.Begin);
 
-            var navMeshObjPath = reader.ReadString();
-            if (string.IsNullOrEmpty(navMeshObjPath))
-                return null;
+    //        var navMeshObjPath = reader.ReadString();
+    //        if (string.IsNullOrEmpty(navMeshObjPath))
+    //            return null;
 
-            return LoadNavMeshObj(navMeshObjPath);
-        }
-    }
+    //        return LoadNavMeshObj(navMeshObjPath);
+    //    }
+    //}
 
-    public static NavMeshObj LoadNavMeshObjFromCompound(string fileName)
-    {
-        if (!_dataFileSystem.TryGetFile(fileName, out var file))
-            return null;
+    //public static NavMeshObj LoadNavMeshObjFromCompound(string fileName)
+    //{
+    //    if (!_dataFileSystem.TryGetFile(fileName, out var file))
+    //        return null;
 
-        using var stream = file.OpenRead().GetStream();
-        using (var reader = new NavMeshReader(stream))
-        {
-            var signature = reader.ReadString(12);
-            if (signature != "JMXVCPD 0101")
-                throw new Exception("Invalid signature");
+    //    using var stream = file.OpenRead().GetStream();
+    //    using (var reader = new NavMeshReader(stream))
+    //    {
+    //        var signature = reader.ReadString(12);
+    //        if (signature != "JMXVCPD 0101")
+    //            throw new Exception("Invalid signature");
 
-            var header = new
-            {
-                NavMeshObjOffset = reader.ReadInt32(),
-                ResObjListOffset = reader.ReadInt32(),
-                Int0 = reader.ReadInt32(),
-                Int1 = reader.ReadInt32(),
-                Int2 = reader.ReadInt32(),
-                Int3 = reader.ReadInt32(),
-                Int4 = reader.ReadInt32(),
-            };
-            if (header.NavMeshObjOffset == 0)
-                return null;
+    //        var header = new
+    //        {
+    //            NavMeshObjOffset = reader.ReadInt32(),
+    //            ResObjListOffset = reader.ReadInt32(),
+    //            Int0 = reader.ReadInt32(),
+    //            Int1 = reader.ReadInt32(),
+    //            Int2 = reader.ReadInt32(),
+    //            Int3 = reader.ReadInt32(),
+    //            Int4 = reader.ReadInt32(),
+    //        };
+    //        if (header.NavMeshObjOffset == 0)
+    //            return null;
 
-            stream.Seek(header.NavMeshObjOffset, SeekOrigin.Begin);
+    //        stream.Seek(header.NavMeshObjOffset, SeekOrigin.Begin);
 
-            var navMeshObjPath = reader.ReadString();
-            if (string.IsNullOrEmpty(navMeshObjPath))
-                return null;
+    //        var navMeshObjPath = reader.ReadString();
+    //        if (string.IsNullOrEmpty(navMeshObjPath))
+    //            return null;
 
-            return LoadNavMeshObjFromResource(navMeshObjPath);
-        }
-    }
+    //        return LoadNavMeshObjFromResource(navMeshObjPath);
+    //    }
+    //}
 
-    #endregion Loading
+    //#endregion Loading
 
-    public static bool TryGetNavMesh(RID region, out NavMesh mesh)
-    {
-        if (_regionCache.TryGetValue(region, out mesh))
-            return true;
+    //public static bool TryGetNavMesh(RID region, out NavMesh mesh)
+    //{
+    //    if (_regionCache.TryGetValue(region, out mesh))
+    //        return true;
 
-        if (region.IsDungeon)
-        {
-            if (!TryGetNavMeshDungeon(region, out NavMeshDungeon dungeon))
-            {
-                mesh = null;
-                return false;
-            }
+    //    if (region.IsDungeon)
+    //    {
+    //        if (!TryGetNavMeshDungeon(region, out NavMeshDungeon dungeon))
+    //        {
+    //            mesh = null;
+    //            return false;
+    //        }
 
-            mesh = dungeon;
-            return true;
-        }
-        else
-        {
-            if (!TryGetNavMeshTerrain(region, out NavMeshTerrain terrain))
-            {
-                mesh = null;
-                return false;
-            }
+    //        mesh = dungeon;
+    //        return true;
+    //    }
+    //    else
+    //    {
+    //        if (!TryGetNavMeshTerrain(region, out NavMeshTerrain terrain))
+    //        {
+    //            mesh = null;
+    //            return false;
+    //        }
 
-            mesh = terrain;
-            return true;
-        }
-    }
+    //        mesh = terrain;
+    //        return true;
+    //    }
+    //}
 
-    public static bool TryGetNavMeshTerrain(RID region, out NavMeshTerrain terrain)
-    {
-        if (!RegionManager.IsEnabled(region))
-        {
-            terrain = null;
-            return false;
-        }
+    //public static bool TryGetNavMeshTerrain(RID region, out NavMeshTerrain terrain)
+    //{
+    //    if (!RegionManager.IsEnabled(region))
+    //    {
+    //        terrain = null;
+    //        return false;
+    //    }
 
-        if (!_terrainCache.TryGetValue(region, out terrain))
-        {
-            terrain = LoadNavMeshTerrain($"navmesh\\nv_{(ushort)region:X4}.nvm", region);
-            _regionCache[region] = terrain;
-            _terrainCache[region] = terrain;
-        }
-        return terrain != null;
-    }
+    //    if (!_terrainCache.TryGetValue(region, out terrain))
+    //    {
+    //        terrain = LoadNavMeshTerrain($"navmesh\\nv_{(ushort)region:X4}.nvm", region);
+    //        _regionCache[region] = terrain;
+    //        _terrainCache[region] = terrain;
+    //    }
+    //    return terrain != null;
+    //}
 
-    public static bool TryGetNavMeshObj(int index, out NavMeshObj obj)
-    {
-        if (!_objectCache.TryGetValue(index, out obj))
-        {
-            var objectIndex = ObjectIndex[index];
-            if (objectIndex == null)
-                return false;
+//    public static bool TryGetNavMeshObj(int index, out NavMeshObj obj)
+//    {
+//        if (!_objectCache.TryGetValue(index, out obj))
+//        {
+//            var objectIndex = ObjectIndex[index];
+//            if (objectIndex == null)
+//                return false;
 
-            _objectCache[index] = obj = LoadNavMeshObj(objectIndex.Path);
-            obj.IndexFlag = objectIndex.Flag;
-        }
+//            _objectCache[index] = obj = LoadNavMeshObj(objectIndex.Path);
+//            obj.IndexFlag = objectIndex.Flag;
+//        }
 
-        return obj != null;
-    }
+//        return obj != null;
+//    }
 
-    public static bool TryGetNavMeshDungeon(RID region, out NavMeshDungeon dungeon)
-    {
-        if (!region.IsDungeon)
-        {
-            dungeon = null;
-            return false;
-        }
+//    public static bool TryGetNavMeshDungeon(RID region, out NavMeshDungeon dungeon)
+//    {
+//        if (!region.IsDungeon)
+//        {
+//            dungeon = null;
+//            return false;
+//        }
 
-        if (!_dungeonCache.TryGetValue(region, out dungeon))
-        {
-            var dungeonInfo = DungeonInfo[region];
-            if (dungeonInfo == null)
-                return false;
+//        if (!_dungeonCache.TryGetValue(region, out dungeon))
+//        {
+//            var dungeonInfo = DungeonInfo[region];
+//            if (dungeonInfo == null)
+//                return false;
 
-            dungeon = LoadNavMeshDungeon(dungeonInfo, region);
-            _regionCache[region] = dungeon;
-            _dungeonCache[region] = dungeon;
-        }
+//            dungeon = LoadNavMeshDungeon(dungeonInfo, region);
+//            _regionCache[region] = dungeon;
+//            _dungeonCache[region] = dungeon;
+//        }
 
-        return dungeon != null;
-    }
-}
+//        return dungeon != null;
+//    }
+//}

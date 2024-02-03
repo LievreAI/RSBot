@@ -408,9 +408,9 @@ public class NavMeshTerrain : NavMesh
         while (true)
         {
             if (raycastCount++ > 100)
-                throw new Exception("raycastCount (terrain) above 100");
+                    throw new Exception("raycastCount (terrain) above 100");
 
-            var result = NavMeshHitResult.None;
+                var result = NavMeshHitResult.None;
 
             // Are we intersecting with objects in this cell?
             result |= this.GetInstanceIntersection(line, curCell, out NavMeshRaycastHit objectHit);

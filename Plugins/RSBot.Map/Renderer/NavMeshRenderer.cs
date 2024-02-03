@@ -94,10 +94,10 @@ public partial class NavMeshRenderer : DoubleBufferedControl
 
         if (_transform.Region.IsDungeon)
         {
-            if (!NavMeshManager.TryGetNavMeshDungeon(_transform.Region, out var dungeon))
+           // if (!NavMeshManager.TryGetNavMeshDungeon(_transform.Region, out var dungeon))
                 return;
 
-            this.DrawNavMeshDungeon(set, g, dungeon);
+          //  this.DrawNavMeshDungeon(set, g, dungeon);
         }
         else
         {
@@ -106,13 +106,13 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                 for (int rx = _transform.Region.X - 1; rx < _transform.Region.X + 2; rx++)
                 {
                     var rid = new RID((byte)rx, (byte)rz);
-                    if (!NavMeshManager.TryGetNavMeshTerrain(rid, out var terrain))
+               //     if (!NavMeshManager.TryGetNavMeshTerrain(rid, out var terrain))
                         continue;
 
-                    foreach (var edge in terrain.GlobalEdges)
-                        edge.Link();
+                //    foreach (var edge in terrain.GlobalEdges)
+                    //    edge.Link();
 
-                    this.DrawTerrain(set, g, terrain);
+               //     this.DrawTerrain(set, g, terrain);
                 }
             }
         }
@@ -330,8 +330,8 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         _mouseTransform.Offset = new Vector3(_transform.Offset.X - 960.0f + (e.X * (RID.Width / this.Width)), 0.0f, _transform.Offset.Z - 960.0f + (e.Y * (RID.Length / this.Height)));
         _mouseTransform.Normalize();
 
-        NavMeshManager.ResolveCellAndHeight(_transform);
-        NavMeshManager.ResolveCellAndHeight(_mouseTransform);
+       // NavMeshManager.ResolveCellAndHeight(_transform);
+      //  NavMeshManager.ResolveCellAndHeight(_mouseTransform);
 
         this.Invalidate();
     }

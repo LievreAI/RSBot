@@ -424,20 +424,20 @@ public partial class Main : DoubleBufferedControl
             var dungeonName = string.Empty;
             if (p.Region.IsDungeon)
             {
-                if (!p.TryGetNavMeshTransform(out var pTransform))
+          //      if (!p.TryGetNavMeshTransform(out var pTransform))
                     return;
 
-                if (pTransform.Instance is not NavMeshInstBlock dungeonBlock)
+             //   if (pTransform.Instance is not NavMeshInstBlock dungeonBlock)
                     return;
 
-                if (dungeonBlock.Parent is not NavMeshDungeon dungeon)
+              //  if (dungeonBlock.Parent is not NavMeshDungeon dungeon)
                     return;
 
-                floorName = dungeon.FloorStringIDs[dungeonBlock.FloorIndex]; //e.g "DH_A01_FLOOR01"
-                var roomName = dungeon.RoomStringIDs[dungeonBlock.RoomIndex];
-                var roomNameTranslated = Game.ReferenceManager.GetTranslation(roomName);
+              //  floorName = dungeon.FloorStringIDs[dungeonBlock.FloorIndex]; //e.g "DH_A01_FLOOR01"
+              //  var roomName = dungeon.RoomStringIDs[dungeonBlock.RoomIndex];
+              //  var roomNameTranslated = Game.ReferenceManager.GetTranslation(roomName);
 
-                _regionName = roomNameTranslated;
+               // _regionName = roomNameTranslated;
                 dungeonName = RegionInfoManager.GetDungeonName(p.Region);
             }
             else
@@ -619,8 +619,8 @@ public partial class Main : DoubleBufferedControl
 
     private void btnNvmResetToPlayer_Click(object sender, EventArgs e)
     {
-        if (Game.Player.Position.TryGetNavMeshTransform(out var playerTransform))
-            _navMeshRenderer?.Update(playerTransform);
+      //  if (Game.Player.Position.TryGetNavMeshTransform(out var playerTransform))
+          //  _navMeshRenderer?.Update(playerTransform);
     }
 
     private void tabMinimap_Paint(object sender, PaintEventArgs e)

@@ -103,7 +103,7 @@ public class SpawnedEntity
             if (Kernel.TickCount - _lastCollisionTick >= 1000)
             {
                 _lastCollisionTick = Kernel.TickCount;
-                _lastCollisionResult = Game.Player.Position.HasCollisionBetween(Position);
+   //             _lastCollisionResult = Game.Player.Position.HasCollisionBetween(Position);
             }
 
             return _lastCollisionResult;

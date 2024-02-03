@@ -240,22 +240,22 @@ public struct Position
         return $"X:{X:0.0} Y:{Y:0.0}";
     }
 
-    public bool TryGetNavMeshTransform(out NavMeshTransform transform)
-    {
-        transform = new NavMeshTransform(Region.Id, new Vector3(XOffset, ZOffset, YOffset));
+   // public bool TryGetNavMeshTransform(out NavMeshTransform transform)
+   // {
+   //     transform = new NavMeshTransform(Region.Id, new Vector3(XOffset, ZOffset, YOffset));
 
-        return NavMeshManager.ResolveCellAndHeight(transform);
-    }
+        //return NavMeshManager.ResolveCellAndHeight(transform);
+  //  }
 
-    public bool HasCollisionBetween(Position destination, NavMeshRaycastType type = NavMeshRaycastType.Attack)
-    {
-        if (!Kernel.EnableCollisionDetection)
-            return false;
+    //public bool HasCollisionBetween(Position destination, NavMeshRaycastType type = NavMeshRaycastType.Attack)
+    //{
+    //    if (!Kernel.EnableCollisionDetection)
+    //        return false;
 
-        if (!TryGetNavMeshTransform(out var srcTransform)
-            || !destination.TryGetNavMeshTransform(out var destTransform))
-            return false;
+    //    if (!TryGetNavMeshTransform(out var srcTransform)
+    //        || !destination.TryGetNavMeshTransform(out var destTransform))
+    //        return false;
 
-        return !NavMeshManager.Raycast(srcTransform, destTransform, type);
-    }
+    //    return !NavMeshManager.Raycast(srcTransform, destTransform, type);
+    //}
 }

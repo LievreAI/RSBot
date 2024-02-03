@@ -443,7 +443,7 @@ public class NavMeshObj : NavMesh
                 src.Offset = Vector3.Transform(outsidePoint, instance.LocalToWorld);
                 src.Normalize();
 
-                if (!NavMeshManager.TryGetNavMeshTerrain(src.Region, out NavMeshTerrain terrain))
+                //if (!NavMeshManager.TryGetNavMeshTerrain(src.Region, out NavMeshTerrain terrain))
                 {
                     curCell.MoveTowardsCenter(ref intersectionPoint);
                     hit = new NavMeshRaycastHit
@@ -457,7 +457,7 @@ public class NavMeshObj : NavMesh
                     return NavMeshRaycastResult.Collision;
                 }
                 //src.Cell = terrain.ResolveCellAndHeight(ref src.Offset);
-                terrain.ResolveCellAndHeight(src);
+                //terrain.ResolveCellAndHeight(src);
 
                 hit = null;
                 return NavMeshRaycastResult.Transition;
