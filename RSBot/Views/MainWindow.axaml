@@ -1,0 +1,91 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:RSBot.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:RSBot.Views"
+		Width="980" Height="650"
+        mc:Ignorable="d" d:DesignWidth="980" d:DesignHeight="650"
+        x:Class="RSBot.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="RSBot" Foreground="White"
+		TransparencyLevelHint="AcrylicBlur"
+        ExtendClientAreaToDecorationsHint="True">
+
+	<Panel>
+		<ExperimentalAcrylicBorder IsHitTestVisible="False">
+			<ExperimentalAcrylicBorder.Material>
+				<ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+			</ExperimentalAcrylicBorder.Material>
+		</ExperimentalAcrylicBorder>
+
+		<Panel Margin="0">
+
+			<DockPanel LastChildFill="True">
+				<Border Height="25" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" DockPanel.Dock="Bottom">
+					<DockPanel>
+						<TextBlock DockPanel.Dock="Left" Padding="10 0 0 0" VerticalAlignment="Center">Waiting for user login</TextBlock>
+						<ComboBox  DockPanel.Dock="Right" SelectedIndex="0" VerticalAlignment="Center" Background="Transparent" Foreground="White" BorderBrush="Transparent" HorizontalAlignment="Right">
+							<ComboBoxItem>Inline Items</ComboBoxItem>
+							<ComboBoxItem>Inline Item 2</ComboBoxItem>
+							<ComboBoxItem>Inline Item 3</ComboBoxItem>
+							<ComboBoxItem>Inline Item 4</ComboBoxItem>
+						</ComboBox>
+					</DockPanel>
+				</Border>
+				<Border Width="250" Margin="0 30 0 0" Background="Transparent" BorderBrush="Transparent" BorderThickness="0" DockPanel.Dock="Right" Padding="5">
+					<TextBlock>Dock = "Right"</TextBlock>
+				</Border>
+				<Border Background="#333" BorderBrush="Transparent" BorderThickness="0">
+					<StackPanel Orientation="Vertical">
+						<Border Padding="5" Height="100" Background="rgba(255, 255, 255, 0.1)" BorderThickness="0" BorderBrush="Red" DockPanel.Dock="Top">
+							<StackPanel Orientation="Horizontal" Spacing="20">
+								<StackPanel Margin="0" Width="350" HorizontalAlignment="Left">
+									<TextBlock HorizontalAlignment="Left">Character lv.23</TextBlock>
+									<ProgressBar  Margin="0 2" Height="20"
+												  Foreground="Brown"
+												  Minimum="0" Maximum="100" Value="44"
+												  ShowProgressText="True"/>
+									<ProgressBar  Margin="0 2" Height="20"
+												  Foreground="DarkBlue"
+												  Minimum="0" Maximum="100" Value="92"
+												  ShowProgressText="True"/>
+									<ProgressBar  Margin="0 2" Height="20"
+												  Minimum="0" Maximum="100" Value="92"
+												  Foreground="Green"
+												  ShowProgressText="True"/>
+								</StackPanel>
+								<StackPanel Margin="0 10">
+									<StackPanel Spacing="5" Orientation="Horizontal">
+										<TextBlock MinWidth="50" TextAlignment="Right" FontWeight="DemiBold">STR:</TextBlock>
+										<TextBlock Name="strValue" FontWeight="Normal" TextAlignment="Left" HorizontalAlignment="Left">209</TextBlock>
+									</StackPanel>
+									<StackPanel Spacing="5" Orientation="Horizontal">
+										<TextBlock MinWidth="50" TextAlignment="Right" FontWeight="DemiBold">INT:</TextBlock>
+										<TextBlock Name="intValue" FontWeight="Normal" TextAlignment="Left" HorizontalAlignment="Left">209</TextBlock>
+									</StackPanel>
+									<StackPanel Spacing="5" Orientation="Horizontal">
+										<TextBlock MinWidth="50" TextAlignment="Right" FontWeight="DemiBold">GOLD:</TextBlock>
+										<TextBlock Name="goldValue" FontWeight="Normal" TextAlignment="Left" HorizontalAlignment="Left" Foreground="Yellow">12.209.312.997</TextBlock>
+									</StackPanel>
+									<StackPanel Spacing="5" Orientation="Horizontal">
+										<TextBlock MinWidth="50" TextAlignment="Right" FontWeight="DemiBold">SP:</TextBlock>
+										<TextBlock Name="spValue" FontWeight="Normal" TextAlignment="Left" HorizontalAlignment="Left">209.322</TextBlock>
+									</StackPanel>
+								</StackPanel>
+							</StackPanel>
+						</Border>
+						<Border Background="rgba(255, 255, 255, 0.1)">
+						<TextBlock>This content will "Fill" the remaining space</TextBlock>
+						</Border>
+					</StackPanel>
+				</Border>
+			</DockPanel>
+		</Panel>
+	</Panel>
+	
+</Window>
