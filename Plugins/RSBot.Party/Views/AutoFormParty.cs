@@ -3,11 +3,11 @@ using System.Linq;
 using RSBot.Core;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Party;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Party.Views;
 
-public partial class AutoFormParty : UIWindowBase
+public partial class AutoFormParty : Form
 {
     public AutoFormParty()
     {

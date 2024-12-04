@@ -1,18 +1,16 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Components;
+using RSBot.Core.Objects;
 using RSBot.Views.Dialog;
 using SDUI;
-using SDUI.Controls;
-using SDUI.Helpers;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace RSBot.Views;
 
-public partial class SplashScreen : UIWindow
+public partial class SplashScreen : Form
 {
     private readonly Main _mainForm;
 
@@ -22,10 +20,7 @@ public partial class SplashScreen : UIWindow
     public SplashScreen()
     {
         InitializeComponent();
-
-        ColorScheme.BackColor = Main.DarkThemeColor;
-        BackColor = Main.DarkThemeColor;
-        CheckForIllegalCrossThreadCalls = false;
+        TitleBar.Visible = false;
 
         _mainForm = new Main();
 
@@ -38,9 +33,11 @@ public partial class SplashScreen : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void SplashScreen_Load(object sender, EventArgs e)
+    protected override async void OnLoad(EventArgs e)
     {
-        if (!LoadProfileConfig())
+        base.OnLoad(e);
+        
+        if (!await LoadProfileConfig())
         {
             Environment.Exit(0);
             return;
@@ -56,11 +53,11 @@ public partial class SplashScreen : UIWindow
             var dialog = new OpenFileDialog
             {
                 Title = LanguageManager.GetLang("OpenFileDialogTitle"),
-                Filter = "Executable (*.exe)|*.exe",
                 FileName = "sro_client.exe"
             };
+            dialog.AddFilter("Silkroad Sro_Client", "exe");
 
-            var result = dialog.ShowDialog(this);
+            var result = await dialog.ShowDialog(this);
 
             var silkroadDirectory = Path.GetDirectoryName(dialog.FileName);
 
@@ -73,27 +70,25 @@ public partial class SplashScreen : UIWindow
                 var content = LanguageManager.GetLang("ClientTypeInputDialogContent");
 
                 var clientTypeDialog = new InputDialog(title, title, content, InputDialog.InputType.Combobox);
-                clientTypeDialog.ShowInTaskbar = true;
                 clientTypeDialog.StartPosition = FormStartPosition.CenterScreen;
                 clientTypeDialog.Selector.Items.AddRange(Enum.GetNames(typeof(GameClientType)));
                 clientTypeDialog.Selector.SelectedIndex = 2;
-                clientTypeDialog.TopMost = true;
                 clientTypeDialog.StartPosition = FormStartPosition.CenterScreen;
 
-                if (clientTypeDialog.ShowDialog() == DialogResult.OK)
+                if (await clientTypeDialog.ShowDialog(this) == DialogResult.OK)
                 {
                     if (Enum.TryParse<GameClientType>(clientTypeDialog.Value.ToString(), out var clientType))
                         GlobalConfig.Set("RSBot.Game.ClientType", clientType);
                 }
                 else
                 {
-                    MessageBox.Show(LanguageManager.GetLang("ClientTypeNotSelected"));
+                    await MessageBox.Show(this, LanguageManager.GetLang("ClientTypeNotSelected"));
                     GlobalConfig.Set("RSBot.Game.ClientType", GameClientType.Vietnam);
                 }
             }
             else
             {
-                MessageBox.Show(LanguageManager.GetLang("SelectSroDirWarn"));
+                await MessageBox.Show(this,LanguageManager.GetLang("SelectSroDirWarn"));
                 Environment.Exit(0);
             }
         }
@@ -116,19 +111,18 @@ public partial class SplashScreen : UIWindow
         var detectDarkLight = GlobalConfig.Get("RSBot.Theme.Auto", true);
         if (detectDarkLight)
         {
-            if (WindowsHelper.IsDark())
-                ColorScheme.BackColor = Main.DarkThemeColor;
-            else
-                ColorScheme.BackColor = Main.LightThemeColor;
+            //if (WindowsHelper.IsDark())
+            //    ColorScheme.BackColor = Main.DarkThemeColor;
+            //else
+            //    ColorScheme.BackColor = Main.LightThemeColor;
         }
         else
         {
-            ColorScheme.BackColor = Color.FromArgb(GlobalConfig.Get("SDUI.Color", Color.White.ToArgb()));
+            //ColorScheme.BackColor = Color.FromArgb(GlobalConfig.Get("SDUI.Color", Color.White.ToArgb()));
         }
 
-        _mainForm.Show(this);
+        _mainForm.Show();
         _mainForm.RefreshTheme();
-        _mainForm.BringToFront();
 
         Hide();
     }
@@ -136,14 +130,17 @@ public partial class SplashScreen : UIWindow
     /// <summary>
     ///     Loads the profile configuration.
     /// </summary>
-    private bool LoadProfileConfig()
+    private async Task<bool> LoadProfileConfig()
     {
         if (!ProfileManager.IsProfileLoadedByArgs)
         {
             if (ProfileManager.ShowProfileDialog)
             {
                 var dialog = new ProfileSelectionDialog();
-                if (dialog.ShowDialog() != DialogResult.Cancel)
+                dialog.TitleBar.Visible = false;
+                dialog.Cursor = Cursor.Default;
+
+                if (await dialog.ShowDialog(this) != DialogResult.Cancel)
                     ProfileManager.SetSelectedProfile(dialog.SelectedProfile);
                 else
                     return false;
@@ -170,7 +167,7 @@ public partial class SplashScreen : UIWindow
     /// <summary>
     ///     Initializes the bot.
     /// </summary>
-    private void InitializeBot()
+    private async void InitializeBot()
     {
         //---- Boot kernel -----
         Kernel.Initialize();
@@ -179,14 +176,14 @@ public partial class SplashScreen : UIWindow
         //---- Load Plugins ----
         if (!Kernel.PluginManager.LoadAssemblies())
         {
-            MessageBox.Show(@"Failed to load plugins. Process canceled!", @"Initialize Application - Error",
+            await MessageBox.Show(this, @"Failed to load plugins. Process canceled!", @"Initialize Application - Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }
 
         //---- Load Botbases ----
         if (!Kernel.BotbaseManager.LoadAssemblies())
-            MessageBox.Show(@"Failed to load botbases. Process canceled!", @"Initialize Application - Error",
+            await MessageBox.Show(this, @"Failed to load botbases. Process canceled!", @"Initialize Application - Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
         CommandManager.Initialize();

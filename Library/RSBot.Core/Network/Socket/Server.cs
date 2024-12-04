@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
 using RSBot.Core.Network.SecurityAPI;
@@ -100,7 +101,7 @@ public class Server
     /// </summary>
     /// <param name="ip">The ip.</param>
     /// <param name="port">The port.</param>
-    public void Connect(string ip, ushort port)
+    public async Task Connect(string ip, ushort port)
     {
         IP = ip;
         Port = port;
@@ -121,7 +122,7 @@ public class Server
 
                 if (ProxyConfig.TryGetProxy(ip, port, out var proxyConfig))
                 {
-                    if (!_socket.ConnectViaProxy(proxyConfig).Result)
+                    if (!await _socket.ConnectViaProxy(proxyConfig))
                     {
                         Log.Warn("Proxy receiving has timeout!");
                         Disconnect();
@@ -130,7 +131,7 @@ public class Server
                 }
                 else
                 {
-                    _socket.Connect(ip, port, 3000);
+                    await _socket.ConnectAsync(new IPEndPoint(IPAddress.Parse(ip), port));
                 }
             }
             catch (AggregateException s)

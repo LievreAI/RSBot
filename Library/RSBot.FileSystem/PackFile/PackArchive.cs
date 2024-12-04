@@ -16,12 +16,12 @@ internal class PackArchive
     /// <param name="header">The header of the pack file.</param>
     /// <param name="blowfish">The cryptographic blowfish for this pack file or null if the file is not encrypted.</param>
     /// <param name="resolver"></param>
-    /// <param name="pathSeparator">The character to determine path separation.</param>
-    public PackArchive(PackHeader header, Blowfish? blowfish, PackResolver resolver, char pathSeparator = '\\')
+    /// <param name="pathSplitter">The character to determine path separation.</param>
+    public PackArchive(PackHeader header, Blowfish? blowfish, PackResolver resolver, char pathSplitter = '\\')
     {
         Header = header;
         Blowfish = blowfish;
-        PathSeparator = pathSeparator;
+        PathSplitter = pathSplitter;
 
         _packResolver = resolver;
     }
@@ -31,7 +31,7 @@ internal class PackArchive
     /// <summary>
     ///     Gets the character that determines path separation.
     /// </summary>
-    public char PathSeparator { get; }
+    public char PathSplitter { get; }
 
     /// <summary>
     ///     Gets the header of this pack file.

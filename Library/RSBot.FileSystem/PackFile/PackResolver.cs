@@ -5,15 +5,15 @@ namespace RSBot.FileSystem.PackFile;
 internal class PackResolver
 {
     private readonly PackReader _packReader;
-    private readonly char _pathSeparator;
+    private readonly char _pathSplitter;
     private readonly bool _caseSensitive;
 
     private readonly Dictionary<string, IEnumerable<PackBlock>> _blocksInMemory;
 
-    public PackResolver(PackReader packReader, char pathSeparator = '\\', bool caseSensitive = false)
+    public PackResolver(PackReader packReader, char pathSplitter = '\\', bool caseSensitive = false)
     {
         _packReader = packReader;
-        _pathSeparator = pathSeparator;
+        _pathSplitter = pathSplitter;
         _caseSensitive = caseSensitive;
 
         Root = packReader.ReadBlocksAt(256);
@@ -85,6 +85,6 @@ internal class PackResolver
 
     private string[] ExplodePath(string path)
     {
-        return path.Split(_pathSeparator);
+        return path.Split(_pathSplitter);
     }
 }

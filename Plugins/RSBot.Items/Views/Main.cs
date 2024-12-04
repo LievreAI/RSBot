@@ -1,25 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects;
-using SDUI.Controls;
-using CheckBox = SDUI.Controls.CheckBox;
-using GroupBox = SDUI.Controls.GroupBox;
-using ListViewExtensions = RSBot.Core.Extensions.ListViewExtensions;
+using SDUI;
+using SkiaSharp;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RSBot.Items.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
+    private Dictionary<object, SKBitmap> searchImageList = new();
     private List<RefShopGroup> _accessoryTrader;
     private List<RefShopGroup> _potionTrader;
     private List<RefShopGroup> _protectorTrader;
@@ -32,13 +30,8 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
-
         InitializeComponent();
         SubscribeEvents();
-
-        listShoppingList.SmallImageList = ListViewExtensions.StaticItemsImageList;
-        listAvailableProducts.SmallImageList = ListViewExtensions.StaticItemsImageList;
     }
 
     /// <summary>
@@ -88,7 +81,6 @@ public partial class Main : DoubleBufferedControl
         if (index < 0)
             return;
 
-        listAvailableProducts.BeginUpdate();
         listAvailableProducts.Items.Clear();
 
         List<RefShopGroup> groups;
@@ -153,12 +145,10 @@ public partial class Main : DoubleBufferedControl
                 { Tag = good, Name = item.CodeName, Group = listAvailableProducts.Groups[tabName] };
                 listItem.LoadItemImageAsync(good);
 
-                if (!listAvailableProducts.Items.ContainsKey(item.CodeName))
+                if (!listAvailableProducts.Items.Contains(item.CodeName))
                     listAvailableProducts.Items.Add(listItem);
             }
         }
-
-        listAvailableProducts.EndUpdate();
     }
 
     /// <summary>
@@ -166,19 +156,15 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private async void LoadSearchResultItemImagesAsync()
     {
-        listFilter.BeginUpdate();
-
         foreach (ListViewItem item in listFilter.Items)
         {
             var refItem = (RefObjItem)item.Tag;
 
-            if (!searchImageList.Images.ContainsKey(refItem.CodeName))
-                searchImageList.Images.Add(refItem.CodeName, refItem.GetIcon());
+            if (!searchImageList.ContainsKey(refItem.CodeName))
+                searchImageList.Add(refItem.CodeName, refItem.GetIcon());
 
-            item.ImageKey = refItem.CodeName;
+            item.Image = searchImageList[refItem.CodeName];
         }
-
-        listFilter.EndUpdate();
 
         await Task.Yield();
     }
@@ -201,7 +187,7 @@ public partial class Main : DoubleBufferedControl
                 if (ShoppingManager.ShoppingList.ContainsKey(packageItem))
                     continue;
 
-                if (!int.TryParse(item.SubItems[1].Text.Substring(1), out var amount))
+                if (!int.TryParse(item.SubItems[1].Substring(1), out var amount))
                     continue;
 
                 ShoppingManager.ShoppingList.Add(packageItem, amount);
@@ -218,7 +204,6 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void LoadShoppingList()
     {
-        listShoppingList.BeginUpdate();
         listShoppingList.Items.Clear();
 
         foreach (ListViewGroup group in listShoppingList.Groups)
@@ -248,8 +233,6 @@ public partial class Main : DoubleBufferedControl
                     ShoppingManager.ShoppingList.Add(good, int.Parse(amount));
             }
         }
-
-        listShoppingList.EndUpdate();
     }
 
     /// <summary>
@@ -260,9 +243,7 @@ public partial class Main : DoubleBufferedControl
         await Task.Delay(1).ConfigureAwait(false);
 
         listFilter.Visible = false;
-        listFilter.BeginUpdate();
         listFilter.Items.Clear();
-        listFilter.EndUpdate();
 
         var filters = new List<TypeIdFilter>();
 
@@ -486,8 +467,6 @@ public partial class Main : DoubleBufferedControl
     /// <param name="items">The items.</param>
     private async Task PopulateSellListAsync(List<RefObjItem> items)
     {
-        listFilter.BeginUpdate();
-
         string getSubItemString(RefObjItem item)
         {
             var filter = PickupManager.PickupFilter.Find(p => p.CodeName == item.CodeName);
@@ -523,7 +502,6 @@ public partial class Main : DoubleBufferedControl
         }
 
         listFilter.Items.AddRange(listViewItems);
-        listFilter.EndUpdate();
 
         //LoadSearchResultItemImagesAsync();
 
@@ -564,34 +542,31 @@ public partial class Main : DoubleBufferedControl
     {
         _loadingSettings = true;
 
-        Invoke(() =>
-        {
-            checkEnable.Checked = PlayerConfig.Get("RSBot.Shopping.Enabled", true);
-            checkRepairGear.Checked = PlayerConfig.Get("RSBot.Shopping.RepairGear", true);
-            checkSellItemsFromPet.Checked = PlayerConfig.Get("RSBot.Shopping.SellPetItems", true);
-            checkPickupGold.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Gold", true);
-            checkPickupRare.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Rare", true);
-            checkPickupBlue.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Blue", true);
-            checkEnableAbilityPet.Checked = PlayerConfig.Get("RSBot.Items.Pickup.EnableAbilityPet", true);
-            checkStoreItemsFromPet.Checked = PlayerConfig.Get("RSBot.Shopping.StorePetItems", true);
-            checkDontPickupInBerzerk.Checked = PlayerConfig.Get("RSBot.Items.Pickup.DontPickupInBerzerk", true);
-            cbJustpickmyitems.Checked = PlayerConfig.Get("RSBot.Items.Pickup.JustPickMyItems", false);
-            cbDontPickupWhileBotting.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.DontPickupWhileBotting");
+        checkEnable.Checked = PlayerConfig.Get("RSBot.Shopping.Enabled", true);
+        checkRepairGear.Checked = PlayerConfig.Get("RSBot.Shopping.RepairGear", true);
+        checkSellItemsFromPet.Checked = PlayerConfig.Get("RSBot.Shopping.SellPetItems", true);
+        checkPickupGold.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Gold", true);
+        checkPickupRare.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Rare", true);
+        checkPickupBlue.Checked = PlayerConfig.Get("RSBot.Items.Pickup.Blue", true);
+        checkEnableAbilityPet.Checked = PlayerConfig.Get("RSBot.Items.Pickup.EnableAbilityPet", true);
+        checkStoreItemsFromPet.Checked = PlayerConfig.Get("RSBot.Shopping.StorePetItems", true);
+        checkDontPickupInBerzerk.Checked = PlayerConfig.Get("RSBot.Items.Pickup.DontPickupInBerzerk", true);
+        cbJustpickmyitems.Checked = PlayerConfig.Get("RSBot.Items.Pickup.JustPickMyItems", false);
+        cbDontPickupWhileBotting.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.DontPickupWhileBotting");
 
-            checkQuestItems.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.Quest", true);
-            checkAllEquips.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.AnyEquips");
-            checkEverything.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.Everything");
+        checkQuestItems.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.Quest", true);
+        checkAllEquips.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.AnyEquips");
+        checkEverything.Checked = PlayerConfig.Get<bool>("RSBot.Items.Pickup.Everything");
 
-            ShoppingManager.Enabled = checkEnable.Checked;
-            ShoppingManager.RepairGear = checkRepairGear.Checked;
-            ShoppingManager.SellPetItems = checkSellItemsFromPet.Checked;
-            ShoppingManager.StorePetItems = checkStoreItemsFromPet.Checked;
+        ShoppingManager.Enabled = checkEnable.Checked;
+        ShoppingManager.RepairGear = checkRepairGear.Checked;
+        ShoppingManager.SellPetItems = checkSellItemsFromPet.Checked;
+        ShoppingManager.StorePetItems = checkStoreItemsFromPet.Checked;
 
-            LoadShoppingList();
+        LoadShoppingList();
 
-            ShoppingManager.LoadFilters();
-            PickupManager.LoadFilter();
-        });
+        ShoppingManager.LoadFilters();
+        PickupManager.LoadFilter();
 
         _loadingSettings = false;
     }
@@ -639,7 +614,7 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void menuAddToShoppingList_Click(object sender, EventArgs e)
+    private async void menuAddToShoppingList_Click(object sender, EventArgs e)
     {
         foreach (ListViewItem listItem in listAvailableProducts.SelectedItems)
         {
@@ -648,16 +623,16 @@ public partial class Main : DoubleBufferedControl
             var content = LanguageManager.GetLang("InputDialogContent");
             var itemNameTrans = LanguageManager.GetLang("InputDialogItemName", refItem.GetRealName(), refItem.MaxStack);
             var dialog = new InputDialog(title, itemNameTrans, content, InputDialog.InputType.Numeric);
-            if (dialog.ShowDialog(this) == DialogResult.Cancel)
+            if (await dialog.ShowDialog(this) == DialogResult.Cancel)
                 return;
 
-            if (listShoppingList.Items.ContainsKey(listItem.Name))
+            if (listShoppingList.Items.Contains(listItem.Name))
             {
                 var item = listShoppingList.Items[listItem.Name];
-                if (!int.TryParse(item.SubItems[1].Text.Substring(1), out var amount))
+                if (!int.TryParse(item.SubItems[1].Substring(1), out var amount))
                     continue;
 
-                item.SubItems[1].Text = $"x{Convert.ToInt32(dialog.Value) + amount}";
+                item.SubItems[1] = $"x{Convert.ToInt32(dialog.Value) + amount}";
                 continue;
             }
 
@@ -689,21 +664,21 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void menuChangeAmount_Click(object sender, EventArgs e)
+    private async void menuChangeAmount_Click(object sender, EventArgs e)
     {
         foreach (ListViewItem item in listShoppingList.SelectedItems)
         {
-            var defaultValue = int.Parse(item.SubItems[1].Text.Substring(1, item.SubItems[1].Text.Length - 1));
+            var defaultValue = int.Parse(item.SubItems[1].Substring(1, item.SubItems[1].Length - 1));
 
             var title = LanguageManager.GetLang("InputDialogTitle");
             var content = LanguageManager.GetLang("InputDialogContent");
             var dialog = new InputDialog(title, item.Text, content, InputDialog.InputType.Numeric);
             dialog.Numeric.Value = defaultValue;
 
-            if (dialog.ShowDialog(this) == DialogResult.Cancel)
+            if (await dialog.ShowDialog(this) == DialogResult.Cancel)
                 return;
 
-            item.SubItems[1].Text = "x" + dialog.Value;
+            item.SubItems[1] = "x" + dialog.Value;
         }
 
         SaveShoppingList();
@@ -761,7 +736,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[4].Text = "√";
+            item.SubItems[4] = "√";
 
             ShoppingManager.SellFilter.Remove((string)item.Tag);
             ShoppingManager.SellFilter.Add((string)item.Tag);
@@ -779,7 +754,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[3].Text = "√";
+            item.SubItems[3] = "√";
 
             PickupManager.RemoveFilter((string)item.Tag);
             PickupManager.AddFilter((string)item.Tag);
@@ -795,7 +770,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[3].Text = "√ (C)";
+            item.SubItems[3] = "√ (C)";
             PickupManager.RemoveFilter((string)item.Tag);
             PickupManager.AddFilter((string)item.Tag, true);
         }
@@ -810,7 +785,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[5].Text = "√";
+            item.SubItems[5] = "√";
 
             ShoppingManager.StoreFilter.Remove((string)item.Tag);
             ShoppingManager.StoreFilter.Add((string)item.Tag);
@@ -828,7 +803,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[4].Text = "•";
+            item.SubItems[4] = "•";
             ShoppingManager.SellFilter.Remove((string)item.Tag);
         }
 
@@ -844,7 +819,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[5].Text = "•";
+            item.SubItems[5] = "•";
             ShoppingManager.StoreFilter.Remove((string)item.Tag);
         }
 
@@ -860,7 +835,7 @@ public partial class Main : DoubleBufferedControl
     {
         foreach (ListViewItem item in listFilter.SelectedItems)
         {
-            item.SubItems[3].Text = "•";
+            item.SubItems[3] = "•";
             PickupManager.RemoveFilter((string)item.Tag);
         }
 

@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using RSBot.Core.Objects;
+﻿using RSBot.Core.Objects;
 
 namespace RSBot.Core.Plugins;
 
@@ -42,7 +41,7 @@ public interface IBotbase
     ///     Gets the view.
     /// </summary>
     /// <returns></returns>
-    Control View { get; }
+    SDUI.Control View { get; }
 
     /// <summary>
     ///     Ticks this instance.

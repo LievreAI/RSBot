@@ -1,8 +1,9 @@
-﻿using System.Windows.Forms;
+﻿
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Plugins;
 using RSBot.General.Components;
+using SDUI;
 
 namespace RSBot.General;
 

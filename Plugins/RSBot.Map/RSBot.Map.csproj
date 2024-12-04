@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>disable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    
     <ImplicitUsings>disable</ImplicitUsings>
 	<OutputPath>.\..\..\Build\Data\Plugins</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj" />
-    <ProjectReference Include="..\..\SDUI\SDUI\SDUI.csproj" />
+    <ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

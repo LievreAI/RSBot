@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+
 using RSBot.Core.Event;
-using SDUI.Controls;
+using SDUI;
 using CosAbility = RSBot.Core.Objects.Cos.Ability;
 using CosBase = RSBot.Core.Objects.Cos.Cos;
 using CosFellow = RSBot.Core.Objects.Cos.Fellow;
@@ -14,17 +14,16 @@ using CosTransport = RSBot.Core.Objects.Cos.Transport;
 namespace RSBot.Views.Controls.Cos;
 
 [ToolboxItem(true)]
-public partial class CosController : DoubleBufferedControl
+public partial class CosController : Panel
 {
     private readonly Dictionary<string, CosControlBase> _cachedControls;
     private int _selectedIndex;
 
     public CosController()
     {
-        SetStyle(ControlStyles.AllPaintingInWmPaint, true);
         InitializeComponent();
 
-        CheckForIllegalCrossThreadCalls = false;
+
         Visible = false;
 
         _cachedControls = new Dictionary<string, CosControlBase>();
@@ -139,10 +138,7 @@ public partial class CosController : DoubleBufferedControl
             ReOrder();
         });
 
-        if (panel.InvokeRequired)
-            panel.Invoke(action);
-        else
-            action();
+        action();
     }
 
     private void TryRemoveControlFromPanel<T>()
@@ -165,10 +161,7 @@ public partial class CosController : DoubleBufferedControl
             ReOrder();
         });
 
-        if (InvokeRequired)
-            panel.Invoke(action);
-        else
-            action();
+        action();
     }
 
     private void ReOrder()

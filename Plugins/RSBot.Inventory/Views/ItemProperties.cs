@@ -5,11 +5,11 @@ using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Item;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Inventory.Views;
 
-public partial class ItemProperties : UIWindowBase
+public partial class ItemProperties : Form
 {
     #region Constructor
 
@@ -24,15 +24,10 @@ public partial class ItemProperties : UIWindowBase
 
         try
         {
-            var iconImage = InventoryItem.Record.GetIcon();
-            var iconBitmap = new Bitmap(iconImage);
-            var iconHandle = iconBitmap.GetHicon();
-
-            Icon = Icon.FromHandle(iconHandle);
+            this.Image = InventoryItem.Record.GetIcon();
         }
         catch
         {
-            ShowIcon = false;
         }
 
         propItem.SelectedObject = new ItemDebugInformation(InventoryItem);
@@ -241,7 +236,7 @@ internal class ItemDebugInformation
 
     [Category("RefObjCommon")] public string AssocFileIcon { get; } //Icon
 
-    [Category("RefObjCommon")] public Image Icon { get; }
+    [Category("RefObjCommon")] public SkiaSharp.SKBitmap Icon { get; }
 
     [Category("RentalInfo")] public uint Type { get; }
 

@@ -7,19 +7,19 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Client;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.General.Components;
 using RSBot.General.Models;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.General.Views;
 
 [ToolboxItem(false)]
-internal partial class Main : DoubleBufferedControl
+internal partial class Main : Panel
 {
     private bool _clientVisible;
 
@@ -28,13 +28,8 @@ internal partial class Main : DoubleBufferedControl
     /// </summary>
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
-
         InitializeComponent();
         SubscribeEvents();
-
-        //btnStartClient.SetUseAsync(true);
-        //btnStartClientless.SetUseAsync(true);
     }
 
     /// <summary>
@@ -147,7 +142,9 @@ internal partial class Main : DoubleBufferedControl
         var autoLoginUserName = GlobalConfig.Get<string>("RSBot.General.AutoLoginAccountUsername");
         foreach (var account in Accounts.SavedAccounts)
         {
-            var index = comboAccounts.Items.Add(account);
+            var index = comboAccounts.Items.Count;
+            comboAccounts.Items.Add(account);
+
             if (account.Username == autoLoginUserName)
                 comboAccounts.SelectedIndex = index;
         }
@@ -173,7 +170,8 @@ internal partial class Main : DoubleBufferedControl
 
         foreach (var character in selectedAccount.Characters.Where(n => n != null))
         {
-            var index = comboCharacter.Items.Add(character);
+            var index = comboCharacter.Items.Count;
+            comboCharacter.Items.Add(character);
             if (character == selectedAccount.SelectedCharacter)
                 comboCharacter.SelectedIndex = index;
         }
@@ -344,9 +342,9 @@ internal partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void btnBrowseSilkroadPath_Click(object sender, EventArgs e)
+    private async void btnBrowseSilkroadPath_Click(object sender, EventArgs e)
     {
-        using (var dialog = new OpenFileDialog())
+        var dialog = new OpenFileDialog();
         {
             var title = LanguageManager.GetLang("BrowseSilkroadPathDialogTitle");
 
@@ -354,10 +352,10 @@ internal partial class Main : DoubleBufferedControl
             var msgBoxContent = LanguageManager.GetLang("BrowseSilkroadPathMsgBoxContent");
 
             dialog.Title = title;
-            dialog.Filter = "App (*.exe)|*.exe";
+            dialog.AddFilter("Application File", "exe");
             dialog.FileName = "sro_client.exe";
 
-            var result = dialog.ShowDialog();
+            var result = dialog.ShowDialog(FindForm()).GetAwaiter().GetResult();
             if (result != DialogResult.OK)
                 return;
 
@@ -365,7 +363,7 @@ internal partial class Main : DoubleBufferedControl
             GlobalConfig.Set("RSBot.SilkroadDirectory", Path.GetDirectoryName(dialog.FileName));
             GlobalConfig.Set("RSBot.SilkroadExecutable", Path.GetFileName(dialog.FileName));
 
-            result = MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            result = await MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.No)
                 return;
@@ -373,7 +371,7 @@ internal partial class Main : DoubleBufferedControl
             GlobalConfig.Save();
         }
 
-        Process.Start(Application.ExecutablePath);
+        Process.Start(Application.StartupPath);
         Application.Exit();
     }
 
@@ -404,7 +402,7 @@ internal partial class Main : DoubleBufferedControl
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private void btnAutoLoginSettings_Click(object sender, EventArgs e)
     {
-        if (View.AccountsWindow.ShowDialog() == DialogResult.OK)
+        if (View.AccountsWindow.ShowDialog(FindForm()).GetAwaiter().GetResult() == DialogResult.OK)
             LoadAccounts();
     }
 
@@ -479,7 +477,7 @@ internal partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void btnGoClientless_Click(object sender, EventArgs e)
+    private async void btnGoClientless_Click(object sender, EventArgs e)
     {
         if (Game.Clientless)
             return;
@@ -487,7 +485,7 @@ internal partial class Main : DoubleBufferedControl
         var msgBoxTitle = LanguageManager.GetLang("GoClientlessMsgBoxTitle");
         var msgBoxContent = LanguageManager.GetLang("GoClientlessMsgBoxContent");
 
-        if (MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) !=
+        if (await MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) !=
             DialogResult.Yes) return;
 
         ClientlessManager.GoClientless();
@@ -507,7 +505,7 @@ internal partial class Main : DoubleBufferedControl
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private async void btnStartClientless_Click(object sender, EventArgs e)
     {
-        await Task.Run(() =>
+        await Task.Run(async () =>
         {
             if (!Game.Clientless)
             {
@@ -534,7 +532,7 @@ internal partial class Main : DoubleBufferedControl
                 var msgBoxTitle = LanguageManager.GetLang("MsgBoxDisconnectDialogTitle");
                 var msgBoxContent = LanguageManager.GetLang("MsgBoxDisconnectDialogContent");
 
-                var result = MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo,
+                var result = await MessageBox.Show(msgBoxContent, msgBoxTitle, MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning);
                 if (result == DialogResult.No)
                     return;
@@ -555,7 +553,7 @@ internal partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void btnStartClient_Click(object sender, EventArgs e)
+    private async void btnStartClient_Click(object sender, EventArgs e)
     {
         if (!Game.Clientless && Kernel.Proxy != null && Kernel.Proxy.IsConnectedToAgentserver)
         {
@@ -566,7 +564,7 @@ internal partial class Main : DoubleBufferedControl
             var title = LanguageManager.GetLang("Warning");
             var content = LanguageManager.GetLang("KillClientWarnMsgBoxContent", extraStr);
 
-            if (MessageBox.Show(content, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (await MessageBox.Show(content, title, MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 ClientManager.Kill();
 
             return;
@@ -617,7 +615,7 @@ internal partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void comboBoxClientType_SelectedIndexChanged(object sender, EventArgs e)
+    private async void comboBoxClientType_SelectedIndexChanged(object sender, EventArgs e)
     {
         // Created from Activator.CreateInstance easy fix ^^
         if (comboBoxClientType.Parent.Parent == null)
@@ -625,7 +623,7 @@ internal partial class Main : DoubleBufferedControl
 
         if (Game.Player != null)
         {
-            MessageBox.Show(LanguageManager.GetLang("MsgBoxClientTypeWarn"));
+            await MessageBox.Show("", LanguageManager.GetLang("MsgBoxClientTypeWarn"));
             return;
         }
 

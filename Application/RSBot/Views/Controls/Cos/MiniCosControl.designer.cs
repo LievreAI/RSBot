@@ -1,4 +1,6 @@
-﻿namespace RSBot.Views.Controls
+﻿using SDUI;
+
+namespace RSBot.Views.Controls
 {
     partial class MiniCosControl
     {
@@ -28,35 +30,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Hp = new SDUI.Controls.ProgressBar();
-            Hgp = new SDUI.Controls.ProgressBar();
-            Satiety = new SDUI.Controls.ProgressBar();
-            Icon = new System.Windows.Forms.Panel();
-            Level = new System.Windows.Forms.Label();
-            panel = new SDUI.Controls.Panel();
+            Hp = new SDUI.ProgressBar();
+            Hgp = new SDUI.ProgressBar();
+            Satiety = new SDUI.ProgressBar();
+            Icon = new Panel();
+            Level = new Label();
+            panel = new SDUI.Panel();
             Icon.SuspendLayout();
             panel.SuspendLayout();
             SuspendLayout();
             // 
             // Hp
             // 
-            Hp.BackColor = System.Drawing.Color.Transparent;
-            Hp.Dock = System.Windows.Forms.DockStyle.Top;
-            Hp.DrawHatch = false;
-            Hp.Gradient = new System.Drawing.Color[]
-    {
-    System.Drawing.Color.Maroon,
-    System.Drawing.Color.Red
-    };
-            Hp.HatchType = System.Drawing.Drawing2D.HatchStyle.Percent10;
+            Hp.Dock = DockStyle.Top;
             Hp.Location = new System.Drawing.Point(3, 41);
             Hp.Maximum = 100L;
-            Hp.MaxPercentShowValue = 100F;
             Hp.Name = "Hp";
-            Hp.PercentIndices = 2;
-            Hp.Radius = 1;
-            Hp.ShowAsPercent = false;
-            Hp.ShowValue = false;
             Hp.Size = new System.Drawing.Size(34, 5);
             Hp.TabIndex = 1;
             Hp.Value = 55L;
@@ -64,23 +53,10 @@
             // 
             // Hgp
             // 
-            Hgp.BackColor = System.Drawing.Color.Transparent;
-            Hgp.Dock = System.Windows.Forms.DockStyle.Top;
-            Hgp.DrawHatch = false;
-            Hgp.Gradient = new System.Drawing.Color[]
-    {
-    System.Drawing.Color.Gold,
-    System.Drawing.Color.Yellow
-    };
-            Hgp.HatchType = System.Drawing.Drawing2D.HatchStyle.Percent10;
+            Hgp.Dock = DockStyle.Top;
             Hgp.Location = new System.Drawing.Point(3, 46);
             Hgp.Maximum = 100L;
-            Hgp.MaxPercentShowValue = 100F;
             Hgp.Name = "Hgp";
-            Hgp.PercentIndices = 2;
-            Hgp.Radius = 1;
-            Hgp.ShowAsPercent = false;
-            Hgp.ShowValue = false;
             Hgp.Size = new System.Drawing.Size(34, 5);
             Hgp.TabIndex = 2;
             Hgp.Value = 55L;
@@ -88,23 +64,10 @@
             // 
             // Satiety
             // 
-            Satiety.BackColor = System.Drawing.Color.Transparent;
-            Satiety.Dock = System.Windows.Forms.DockStyle.Top;
-            Satiety.DrawHatch = false;
-            Satiety.Gradient = new System.Drawing.Color[]
-    {
-    System.Drawing.Color.Turquoise,
-    System.Drawing.Color.DodgerBlue
-    };
-            Satiety.HatchType = System.Drawing.Drawing2D.HatchStyle.Percent10;
+            Satiety.Dock = DockStyle.Top;
             Satiety.Location = new System.Drawing.Point(3, 51);
             Satiety.Maximum = 100L;
-            Satiety.MaxPercentShowValue = 100F;
             Satiety.Name = "Satiety";
-            Satiety.PercentIndices = 2;
-            Satiety.Radius = 1;
-            Satiety.ShowAsPercent = false;
-            Satiety.ShowValue = false;
             Satiety.Size = new System.Drawing.Size(34, 5);
             Satiety.TabIndex = 3;
             Satiety.Value = 55L;
@@ -112,9 +75,8 @@
             // 
             // Icon
             // 
-            Icon.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             Icon.Controls.Add(Level);
-            Icon.Dock = System.Windows.Forms.DockStyle.Top;
+            Icon.Dock = DockStyle.Top;
             Icon.Location = new System.Drawing.Point(3, 3);
             Icon.Name = "Icon";
             Icon.Size = new System.Drawing.Size(34, 38);
@@ -123,11 +85,9 @@
             // 
             // Level
             // 
-            Level.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            Level.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             Level.AutoSize = true;
-            Level.BackColor = System.Drawing.Color.FromArgb(150, 0, 0, 0);
-            Level.Font = new System.Drawing.Font("Arial", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            Level.ForeColor = System.Drawing.Color.White;
+            Level.BackColor = new SkiaSharp.SKColor(150, 0, 0, 0);
             Level.Location = new System.Drawing.Point(0, 23);
             Level.Name = "Level";
             Level.Size = new System.Drawing.Size(26, 12);
@@ -137,18 +97,15 @@
             // 
             // panel
             // 
-            panel.BackColor = System.Drawing.Color.Transparent;
-            panel.Border = new System.Windows.Forms.Padding(1);
-            panel.BorderColor = System.Drawing.Color.Red;
+            panel.Border = new Padding(1);
             panel.Controls.Add(Satiety);
             panel.Controls.Add(Hgp);
             panel.Controls.Add(Hp);
             panel.Controls.Add(Icon);
-            panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel.Dock = DockStyle.Fill;
             panel.Location = new System.Drawing.Point(1, 1);
             panel.Name = "panel";
-            panel.Padding = new System.Windows.Forms.Padding(3);
-            panel.Radius = 8;
+            panel.Padding = new Padding(3);
             panel.ShadowDepth = 4F;
             panel.Size = new System.Drawing.Size(40, 60);
             panel.TabIndex = 1;
@@ -157,10 +114,9 @@
             // MiniCosControl
             // 
             Controls.Add(panel);
-            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            Margin = new System.Windows.Forms.Padding(0);
+            Margin = new Padding(0);
             Name = "MiniCosControl";
-            Padding = new System.Windows.Forms.Padding(1);
+            Padding = new Padding(1);
             Size = new System.Drawing.Size(42, 62);
             Icon.ResumeLayout(false);
             Icon.PerformLayout();
@@ -169,11 +125,11 @@
         }
 
         #endregion
-        public SDUI.Controls.ProgressBar Hp;
-        public SDUI.Controls.ProgressBar Satiety;
-        public SDUI.Controls.ProgressBar Hgp;
-        public System.Windows.Forms.Label Level;
-        private SDUI.Controls.Panel panel;
-        public System.Windows.Forms.Panel Icon;
+        public SDUI.ProgressBar Hp;
+        public SDUI.ProgressBar Satiety;
+        public SDUI.ProgressBar Hgp;
+        public Label Level;
+        private SDUI.Panel panel;
+        public Panel Icon;
     }
 }

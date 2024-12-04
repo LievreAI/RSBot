@@ -1,19 +1,20 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects.Quests;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Quest.Views.Sidebar;
 
-public partial class QuestItem : DoubleBufferedControl
+public partial class QuestItem : Panel
 {
     public QuestItem(uint questId)
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         QuestId = questId;
 
         InitializeComponent();
@@ -49,9 +50,6 @@ public partial class QuestItem : DoubleBufferedControl
         lblObjective.Text = objectiveText;
 
         var rewardText = GetRewardText(playerQuest.Quest);
-
-        toolTipHide.SetToolTip(lblObjective, rewardText);
-        toolTipHide.SetToolTip(lblQuestName, rewardText);
     }
 
     private string GetRewardText(RefQuest quest)
@@ -105,9 +103,9 @@ public partial class QuestItem : DoubleBufferedControl
         return Game.ReferenceManager.GetTranslation(objective.NameStrId).JoymaxFormat(objective.Tasks[0]);
     }
 
-    public override void Refresh()
+    protected override void OnInvalidated(EventArgs<Rectangle> e)
     {
-        base.Refresh();
+        base.OnInvalidated(e);
 
         RefreshQuest();
     }
@@ -115,6 +113,6 @@ public partial class QuestItem : DoubleBufferedControl
     private void btnRemove_Click(object sender, EventArgs e)
     {
         View.SidebarElement.RemoveQuest(QuestId);
-        View.SidebarElement.Refresh();
+        View.SidebarElement.Invalidate();
     }
 }

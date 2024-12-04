@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects;
+using SkiaSharp;
 
 namespace RSBot.Core.Client.ReferenceObjects;
 
@@ -26,9 +27,9 @@ public class RefSkill : IReference<uint>
     ///     Gets the icon.
     /// </summary>
     /// <returns></returns>
-    public Image GetIcon()
+    public SKBitmap GetIcon()
     {
-        Image bitmap = null;
+        SKBitmap bitmap = null;
 
         try
         {
@@ -43,8 +44,7 @@ public class RefSkill : IReference<uint>
         }
         finally
         {
-            if (bitmap == null)
-                bitmap = new Bitmap(24, 24);
+            bitmap ??= new SKBitmap(24, 24);
         }
 
         return bitmap;

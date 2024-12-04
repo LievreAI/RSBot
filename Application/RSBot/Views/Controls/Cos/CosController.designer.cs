@@ -1,4 +1,6 @@
-﻿namespace RSBot.Views.Controls.Cos
+﻿using SDUI;
+
+namespace RSBot.Views.Controls.Cos
 {
     partial class CosController
     {
@@ -28,32 +30,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            separator = new SDUI.Controls.Separator();
-            panel = new System.Windows.Forms.Panel();
-            topPanel = new System.Windows.Forms.Panel();
-            panelTopCenter = new System.Windows.Forms.Panel();
-            panelTopRight = new System.Windows.Forms.Panel();
-            buttonNext = new SDUI.Controls.Button();
-            panelTopLeft = new System.Windows.Forms.Panel();
-            buttonPrev = new SDUI.Controls.Button();
-            separator1 = new SDUI.Controls.Separator();
+            Splitter = new SDUI.Splitter();
+            panel = new Panel();
+            topPanel = new Panel();
+            panelTopCenter = new Panel();
+            panelTopRight = new Panel();
+            buttonNext = new SDUI.Button();
+            panelTopLeft = new Panel();
+            buttonPrev = new SDUI.Button();
+            Splitter1 = new SDUI.Splitter();
             topPanel.SuspendLayout();
             panelTopRight.SuspendLayout();
             panelTopLeft.SuspendLayout();
             SuspendLayout();
             // 
-            // separator
+            // Splitter
             // 
-            separator.Dock = System.Windows.Forms.DockStyle.Bottom;
-            separator.IsVertical = false;
-            separator.Location = new System.Drawing.Point(3, 95);
-            separator.Name = "separator";
-            separator.Size = new System.Drawing.Size(242, 4);
-            separator.TabIndex = 2;
+            Splitter.Dock = DockStyle.Bottom;
+            Splitter.Location = new System.Drawing.Point(3, 95);
+            Splitter.Name = "Splitter";
+            Splitter.Size = new System.Drawing.Size(242, 4);
+            Splitter.TabIndex = 2;
             // 
             // panel
             // 
-            panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            panel.Dock = DockStyle.Fill;
             panel.Location = new System.Drawing.Point(3, 63);
             panel.Name = "panel";
             panel.Size = new System.Drawing.Size(242, 32);
@@ -61,11 +62,10 @@
             // 
             // topPanel
             // 
-            topPanel.BackColor = System.Drawing.Color.Transparent;
             topPanel.Controls.Add(panelTopCenter);
             topPanel.Controls.Add(panelTopRight);
             topPanel.Controls.Add(panelTopLeft);
-            topPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            topPanel.Dock = DockStyle.Top;
             topPanel.Location = new System.Drawing.Point(3, 3);
             topPanel.Name = "topPanel";
             topPanel.Size = new System.Drawing.Size(242, 56);
@@ -73,7 +73,7 @@
             // 
             // panelTopCenter
             // 
-            panelTopCenter.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelTopCenter.Dock = DockStyle.Fill;
             panelTopCenter.Location = new System.Drawing.Point(23, 0);
             panelTopCenter.Name = "panelTopCenter";
             panelTopCenter.Size = new System.Drawing.Size(196, 56);
@@ -81,9 +81,8 @@
             // 
             // panelTopRight
             // 
-            panelTopRight.BackColor = System.Drawing.Color.Transparent;
             panelTopRight.Controls.Add(buttonNext);
-            panelTopRight.Dock = System.Windows.Forms.DockStyle.Right;
+            panelTopRight.Dock = DockStyle.Right;
             panelTopRight.Location = new System.Drawing.Point(219, 0);
             panelTopRight.Name = "panelTopRight";
             panelTopRight.Size = new System.Drawing.Size(23, 56);
@@ -91,12 +90,9 @@
             // 
             // buttonNext
             // 
-            buttonNext.Color = System.Drawing.Color.Transparent;
-            buttonNext.Dock = System.Windows.Forms.DockStyle.Fill;
-            buttonNext.Font = new System.Drawing.Font("Marlett", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            buttonNext.Location = new System.Drawing.Point(0, 0);
+            buttonNext.Dock = DockStyle.Fill;
+             buttonNext.Location = new System.Drawing.Point(0, 0);
             buttonNext.Name = "buttonNext";
-            buttonNext.Radius = 4;
             buttonNext.ShadowDepth = 4F;
             buttonNext.Size = new System.Drawing.Size(23, 56);
             buttonNext.TabIndex = 1;
@@ -107,9 +103,8 @@
             // 
             // panelTopLeft
             // 
-            panelTopLeft.BackColor = System.Drawing.Color.Transparent;
             panelTopLeft.Controls.Add(buttonPrev);
-            panelTopLeft.Dock = System.Windows.Forms.DockStyle.Left;
+            panelTopLeft.Dock = DockStyle.Left;
             panelTopLeft.Location = new System.Drawing.Point(0, 0);
             panelTopLeft.Name = "panelTopLeft";
             panelTopLeft.Size = new System.Drawing.Size(23, 56);
@@ -117,12 +112,9 @@
             // 
             // buttonPrev
             // 
-            buttonPrev.Color = System.Drawing.Color.Transparent;
-            buttonPrev.Dock = System.Windows.Forms.DockStyle.Fill;
-            buttonPrev.Font = new System.Drawing.Font("Marlett", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            buttonPrev.Dock = DockStyle.Fill;
             buttonPrev.Location = new System.Drawing.Point(0, 0);
             buttonPrev.Name = "buttonPrev";
-            buttonPrev.Radius = 4;
             buttonPrev.ShadowDepth = 4F;
             buttonPrev.Size = new System.Drawing.Size(23, 56);
             buttonPrev.TabIndex = 2;
@@ -131,25 +123,24 @@
             buttonPrev.Visible = false;
             buttonPrev.Click += buttonPrev_Click;
             // 
-            // separator1
+            // Splitter1
             // 
-            separator1.Dock = System.Windows.Forms.DockStyle.Top;
-            separator1.IsVertical = false;
-            separator1.Location = new System.Drawing.Point(3, 59);
-            separator1.Name = "separator1";
-            separator1.Size = new System.Drawing.Size(242, 4);
-            separator1.TabIndex = 5;
+            Splitter1.Dock = DockStyle.Top;
+            Splitter1.Location = new System.Drawing.Point(3, 59);
+            Splitter1.Name = "Splitter1";
+            Splitter1.Size = new System.Drawing.Size(242, 4);
+            Splitter1.TabIndex = 5;
             // 
             // CosController
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            
+            
             Controls.Add(panel);
-            Controls.Add(separator1);
+            Controls.Add(Splitter1);
             Controls.Add(topPanel);
-            Controls.Add(separator);
+            Controls.Add(Splitter);
             Name = "CosController";
-            Padding = new System.Windows.Forms.Padding(3);
+            Padding = new Padding(3);
             Size = new System.Drawing.Size(248, 102);
             topPanel.ResumeLayout(false);
             panelTopRight.ResumeLayout(false);
@@ -158,14 +149,14 @@
         }
 
         #endregion
-        private SDUI.Controls.Separator separator;
-        private System.Windows.Forms.Panel panel;
-        private System.Windows.Forms.Panel topPanel;
-        private System.Windows.Forms.Panel panelTopCenter;
-        private System.Windows.Forms.Panel panelTopRight;
-        private SDUI.Controls.Button buttonNext;
-        private System.Windows.Forms.Panel panelTopLeft;
-        private SDUI.Controls.Button buttonPrev;
-        private SDUI.Controls.Separator separator1;
+        private SDUI.Splitter Splitter;
+        private Panel panel;
+        private Panel topPanel;
+        private Panel panelTopCenter;
+        private Panel panelTopRight;
+        private SDUI.Button buttonNext;
+        private Panel panelTopLeft;
+        private SDUI.Button buttonPrev;
+        private SDUI.Splitter Splitter1;
     }
 }

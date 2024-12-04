@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using RSBot.Core.Client;
 using RSBot.FileSystem;
+using SkiaSharp;
 
 namespace RSBot.Core.Extensions;
 
@@ -12,7 +14,7 @@ public static class Pk2Extensions
     /// </summary>
     /// <param name="file">The archive.</param>
     /// <returns></returns>
-    public static Image ToImage(this IFile file)
+    public static SKBitmap ToImage(this IFile file)
     {
         var ddjBuffer = file.OpenRead().ReadAllBytes();
 
@@ -20,11 +22,12 @@ public static class Pk2Extensions
         {
             var ddsBuffer = new byte[ddjBuffer.Length - 20];
             Array.ConstrainedCopy(ddjBuffer, 20, ddsBuffer, 0, ddjBuffer.Length - 20); //Cuts the first 20 bytes.
-            return DDSImage.ToBitmap(ddsBuffer);
+            using var memory = new MemoryStream(ddsBuffer);
+            return SKBitmap.FromImage(SKImage.FromEncodedData(memory));
         }
         catch
         {
-            return new Bitmap(16, 16);
+            return new SKBitmap(16, 16);
         }
     }
 }

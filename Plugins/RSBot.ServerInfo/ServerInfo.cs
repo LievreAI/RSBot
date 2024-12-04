@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Plugins;
@@ -29,7 +29,7 @@ public class ServerInfo : IPlugin
     }
 
     /// <inheritdoc />
-    public Control View => Views.View.Main;
+    public SDUI.Control View => Views.View.Main;
 
     /// <inheritdoc />
     public void Translate()

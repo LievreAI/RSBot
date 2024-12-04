@@ -2,17 +2,16 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Timers;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Statistics.Stats;
 using RSBot.Statistics.Stats.Calculators;
-using SDUI.Controls;
-using CheckBox = SDUI.Controls.CheckBox;
+using SDUI;
 
 namespace RSBot.Statistics.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     The initial reset
@@ -60,25 +59,22 @@ public partial class Main : DoubleBufferedControl
         var calculators = CalculatorRegistry.Calculators;
         calculators.Reverse();
 
-        Invoke(() =>
+        foreach (var calculator in calculators)
         {
-            foreach (var calculator in calculators)
+            var checkBox = new CheckBox
             {
-                var checkBox = new CheckBox
-                {
-                    Dock = DockStyle.Top,
-                    Text = calculator.Label,
-                    Name = calculator.Name
-                };
+                Dock = DockStyle.Top,
+                Text = calculator.Label,
+                Name = calculator.Name
+            };
 
-                checkBox.CheckedChanged += Filter_CheckedChanged;
+            checkBox.CheckedChanged += Filter_CheckedChanged;
 
-                if (calculator.UpdateType == UpdateType.Live)
-                    panelLiveFilters.Controls.Add(checkBox);
-                else
-                    panelStaticFilters.Controls.Add(checkBox);
-            }
-        });
+            if (calculator.UpdateType == UpdateType.Live)
+                panelLiveFilters.Controls.Add(checkBox);
+            else
+                panelStaticFilters.Controls.Add(checkBox);
+        }
     }
 
     /// <summary>
@@ -86,7 +82,6 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void PopulateStatisticsList()
     {
-        lvStatistics.BeginUpdate();
         lvStatistics.Items.Clear();
 
         foreach (var calculator in CalculatorRegistry.Calculators)
@@ -117,8 +112,6 @@ public partial class Main : DoubleBufferedControl
 
             lvStatistics.Items.Add(lvItem);
         }
-
-        lvStatistics.EndUpdate();
     }
 
     /// <summary>
@@ -131,7 +124,7 @@ public partial class Main : DoubleBufferedControl
             var calculator = (IStatisticCalculator)item?.Tag;
 
             if (calculator != null)
-                item.SubItems[1].Text = string.Format(calculator.ValueFormat, calculator.GetValue());
+                item.SubItems[1] = string.Format(calculator.ValueFormat, calculator.GetValue());
         }
     }
 
@@ -187,7 +180,7 @@ public partial class Main : DoubleBufferedControl
             calculator.Reset();
     }
 
-    private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+    private void resetMenuItem_Click(object sender, EventArgs e)
     {
         foreach (ListViewItem lvItem in lvStatistics.SelectedItems)
             if (lvItem.Tag is IStatisticCalculator calculator)

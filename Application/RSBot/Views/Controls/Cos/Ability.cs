@@ -13,7 +13,6 @@ public partial class Ability : CosControlBase
         MiniCosControl.Satiety.Visible = false;
         MiniCosControl.Hgp.Visible = false;
         MiniCosControl.Level.Visible = false;
-        progressHP.ShowAsPercent = true;
         SubscribeEvents();
     }
 
@@ -49,7 +48,7 @@ public partial class Ability : CosControlBase
         lblPetName.Text = Game.Player.AbilityPet.Name;
 
         var icon = Game.Player.AbilityPet.Record?.GetIcon();
-        if (icon != null)
-            MiniCosControl.Icon.BackgroundImage = icon;
+        //if (icon != null)
+        //    MiniCosControl.Icon.BackgroundImage = icon;
     }
 }

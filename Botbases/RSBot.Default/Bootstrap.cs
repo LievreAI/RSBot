@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Objects;
@@ -64,7 +64,7 @@ public class Bootstrap : IBotbase
     ///     Gets the view.
     /// </summary>
     /// <returns></returns>
-    public Control View => Container.View;
+    public SDUI.Control View => Container.View;
 
     /// <summary>
     ///     Starts this instance.

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Lure.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Lure.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     private const int ScriptRecorderOwnerId = 1000;
 
@@ -31,7 +31,7 @@ public partial class Main : DoubleBufferedControl
 
     private void OnSaveScript(int ownerId, string path)
     {
-        if (IsDisposed || Disposing)
+        if (Disposing)
             return;
 
         if (ownerId != ScriptRecorderOwnerId)
@@ -44,7 +44,7 @@ public partial class Main : DoubleBufferedControl
 
     private void OnLoadCharacter()
     {
-        if (IsDisposed || Disposing || !Game.Ready)
+        if (Disposing || !Game.Ready)
             return;
 
         checkUseHowlingShout.Enabled = Game.Player.Race == ObjectCountry.Europe;
@@ -146,10 +146,10 @@ public partial class Main : DoubleBufferedControl
 
     private void btnBrowse_Click(object sender, EventArgs e)
     {
-        var fileBrowser = new OpenFileDialog
-            { Title = "RSBot - Choose lure script", Filter = "RSBot script (*.rbs)|*.rbs", Multiselect = false };
-
-        if (fileBrowser.ShowDialog() != DialogResult.OK)
+        var fileBrowser = new OpenFileDialog { Title = "RSBot - Choose lure script" };
+        fileBrowser.AllowMultiple = true;
+        fileBrowser.AddFilter("RSBot Script", "rbs");
+        if (fileBrowser.ShowDialog(this).Result != DialogResult.OK)
             return;
 
         radioUseScript.Checked = true;
@@ -157,7 +157,7 @@ public partial class Main : DoubleBufferedControl
         LureConfig.SelectedScriptPath = fileBrowser.FileName;
     }
 
-    private void linkRecord_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkRecord_LinkClicked(object sender, EventArgs e)
     {
         if (!ScriptManager.Running)
             EventManager.FireEvent("OnShowScriptRecorder", ScriptRecorderOwnerId, true);
@@ -169,10 +169,10 @@ public partial class Main : DoubleBufferedControl
 
     private void btnBrowseWalkscript_Click(object sender, EventArgs e)
     {
-        var fileBrowser = new OpenFileDialog
-            { Title = "RSBot - Choose walkback script", Filter = "RSBot script (*.rbs)|*.rbs", Multiselect = false };
+        var fileBrowser = new OpenFileDialog{ Title = "RSBot - Choose walkback script" };
+        fileBrowser.AddFilter("RSBot Script", "rbs");
 
-        if (fileBrowser.ShowDialog() != DialogResult.OK)
+        if (fileBrowser.ShowDialog(this).Result != DialogResult.OK)
             return;
 
         txtWalkbackScript.Text = fileBrowser.FileName;

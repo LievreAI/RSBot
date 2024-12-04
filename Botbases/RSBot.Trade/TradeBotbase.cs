@@ -1,11 +1,12 @@
 ﻿using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Objects;
 using RSBot.Core.Plugins;
 using RSBot.Trade.Bundle;
 using RSBot.Trade.Components.Scripting;
+using SDUI;
 
 namespace RSBot.Trade;
 

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    
     <ImplicitUsings>disable</ImplicitUsings>
 	  <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 	  <Description>Acts as RSBot Library- includes all neccessary logic that the bot and 3rd party applications require.</Description>
@@ -15,6 +15,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
     <ProjectReference Include="..\RSBot.FileSystem\RSBot.FileSystem.csproj" />
     <ProjectReference Include="..\RSBot.NavMeshApi\RSBot.NavMeshApi.csproj" />
   </ItemGroup>

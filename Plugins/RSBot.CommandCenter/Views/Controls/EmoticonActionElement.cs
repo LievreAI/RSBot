@@ -1,15 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Forms;
+
 using RSBot.CommandCenter.Components;
 using RSBot.Core;
 using RSBot.Core.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.CommandCenter.Views.Controls;
 
 [ToolboxItem(false)]
-internal partial class EmoticonActionElement : DoubleBufferedControl
+internal partial class EmoticonActionElement : Panel
 {
     public EmoticonActionElement(EmoticonItem item, string selectedActionName = null)
     {
@@ -29,18 +29,16 @@ internal partial class EmoticonActionElement : DoubleBufferedControl
 
     private void PopulateActions()
     {
-        comboAction.BeginUpdate();
         comboAction.Items.Clear();
 
         foreach (var command in CommandManager.GetCommandDescriptions())
         {
-            var index = comboAction.Items.Add(new ActionComboBoxItem(command.Key, command.Value));
+            comboAction.Items.Add(new ActionComboBoxItem(command.Key, command.Value));
+            var index = comboAction.Items.Count - 1;
 
             if (SelectedActionName == command.Key)
                 comboAction.SelectedIndex = index;
         }
-
-        comboAction.EndUpdate();
     }
 
     private void comboAction_SelectedIndexChanged(object sender, EventArgs e)

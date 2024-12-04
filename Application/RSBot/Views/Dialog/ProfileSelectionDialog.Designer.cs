@@ -1,4 +1,7 @@
-﻿namespace RSBot.Views.Dialog
+﻿using SDUI;
+using SkiaSharp;
+
+namespace RSBot.Views.Dialog
 {
     partial class ProfileSelectionDialog
     {
@@ -28,19 +31,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            comboProfiles = new SDUI.Controls.ComboBox();
-            label1 = new SDUI.Controls.Label();
-            btnOK = new SDUI.Controls.Button();
-            checkSaveSelection = new SDUI.Controls.CheckBox();
-            buttonCreateProfile = new SDUI.Controls.Button();
-            buttonDeleteProfile = new SDUI.Controls.Button();
+            comboProfiles = new SDUI.ComboBox();
+            label1 = new SDUI.Label();
+            btnOK = new SDUI.Button();
+            checkSaveSelection = new SDUI.CheckBox();
+            buttonCreateProfile = new SDUI.Button();
+            buttonDeleteProfile = new SDUI.Button();
             SuspendLayout();
             // 
             // comboProfiles
             // 
-            comboProfiles.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboProfiles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboProfiles.FormattingEnabled = true;
             comboProfiles.Location = new System.Drawing.Point(122, 18);
             comboProfiles.Name = "comboProfiles";
             comboProfiles.Radius = 5;
@@ -54,11 +54,11 @@
             label1.ApplyGradient = false;
             label1.AutoSize = true;
             label1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            label1.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label1.Gradient = new System.Drawing.Color[]
+            label1.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
+            label1.Gradient = new SKColor[]
     {
-    System.Drawing.Color.Gray,
-    System.Drawing.Color.Black
+    SKColors.Gray,
+    SKColors.Black
     };
             label1.GradientAnimation = false;
             label1.Location = new System.Drawing.Point(20, 21);
@@ -69,10 +69,10 @@
             // 
             // btnOK
             // 
-            btnOK.Color = System.Drawing.Color.DodgerBlue;
-            btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            btnOK.Color = SKColors.DodgerBlue;
+            btnOK.DialogResult = DialogResult.OK;
             btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            btnOK.ForeColor = System.Drawing.Color.White;
+            btnOK.ForeColor = SKColors.White;
             btnOK.Location = new System.Drawing.Point(134, 84);
             btnOK.Name = "btnOK";
             btnOK.Radius = 8;
@@ -85,11 +85,11 @@
             // checkSaveSelection
             // 
             checkSaveSelection.AutoSize = true;
-            checkSaveSelection.BackColor = System.Drawing.Color.Transparent;
+            checkSaveSelection.BackColor = SKColors.Transparent;
             checkSaveSelection.Depth = 0;
             checkSaveSelection.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             checkSaveSelection.Location = new System.Drawing.Point(125, 45);
-            checkSaveSelection.Margin = new System.Windows.Forms.Padding(0);
+            checkSaveSelection.Margin = new Padding(0);
             checkSaveSelection.MouseLocation = new System.Drawing.Point(-1, -1);
             checkSaveSelection.Name = "checkSaveSelection";
             checkSaveSelection.Ripple = true;
@@ -101,9 +101,9 @@
             // 
             // buttonCreateProfile
             // 
-            buttonCreateProfile.Color = System.Drawing.Color.Green;
+            buttonCreateProfile.Color = SKColors.Green;
             buttonCreateProfile.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            buttonCreateProfile.ForeColor = System.Drawing.Color.White;
+            buttonCreateProfile.ForeColor = SKColors.White;
             buttonCreateProfile.Location = new System.Drawing.Point(316, 14);
             buttonCreateProfile.Name = "buttonCreateProfile";
             buttonCreateProfile.Radius = 6;
@@ -116,9 +116,6 @@
             // 
             // buttonDeleteProfile
             // 
-            buttonDeleteProfile.Color = System.Drawing.Color.IndianRed;
-            buttonDeleteProfile.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            buttonDeleteProfile.ForeColor = System.Drawing.Color.White;
             buttonDeleteProfile.Location = new System.Drawing.Point(350, 14);
             buttonDeleteProfile.Name = "buttonDeleteProfile";
             buttonDeleteProfile.Radius = 6;
@@ -131,10 +128,9 @@
             // 
             // ProfileSelectionDialog
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            ClientSize = new System.Drawing.Size(389, 129);
-            ControlBox = false;
+            
+            
+            Size = new System.Drawing.Size(389, 129);
             Controls.Add(btnOK);
             Controls.Add(buttonDeleteProfile);
             Controls.Add(buttonCreateProfile);
@@ -142,20 +138,18 @@
             Controls.Add(label1);
             Controls.Add(comboProfiles);
             Name = "ProfileSelectionDialog";
-            Padding = new System.Windows.Forms.Padding(1);
-            ShowIcon = false;
-            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            Padding = new Padding(1);
+            StartPosition = FormStartPosition.CenterScreen;
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-        private SDUI.Controls.ComboBox comboProfiles;
-        private SDUI.Controls.Label label1;
-        private SDUI.Controls.Button btnOK;
-        private SDUI.Controls.CheckBox checkSaveSelection;
-        private SDUI.Controls.Button buttonCreateProfile;
-        private SDUI.Controls.Button buttonDeleteProfile;
+        private SDUI.ComboBox comboProfiles;
+        private SDUI.Label label1;
+        private SDUI.Button btnOK;
+        private SDUI.CheckBox checkSaveSelection;
+        private SDUI.Button buttonCreateProfile;
+        private SDUI.Button buttonDeleteProfile;
     }
 }

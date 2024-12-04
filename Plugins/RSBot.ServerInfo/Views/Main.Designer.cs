@@ -1,4 +1,7 @@
-﻿namespace RSBot.ServerInfo.Views;
+﻿using SDUI;
+using SkiaSharp;
+
+namespace RSBot.ServerInfo.Views;
 
 partial class Main
 {
@@ -22,25 +25,25 @@ partial class Main
     
     private void InitializeComponent()
     {
-            this.lvServerInfo = new SDUI.Controls.ListView();
-            this.colServer = new System.Windows.Forms.ColumnHeader();
-            this.colCapacity = new System.Windows.Forms.ColumnHeader();
+            this.lvServerInfo = new SDUI.ListView();
+            this.colServer = new ColumnHeader();
+            this.colCapacity = new ColumnHeader();
             this.SuspendLayout();
             // 
             // lvServerInfo
             // 
-            this.lvServerInfo.BackColor = System.Drawing.Color.White;
-            this.lvServerInfo.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvServerInfo.BackColor = SKColors.White;
+            this.lvServerInfo.Columns.AddRange(new ColumnHeader[] {
             this.colServer,
             this.colCapacity});
-            this.lvServerInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lvServerInfo.ForeColor = new SkiaSharp.SKColor(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lvServerInfo.FullRowSelect = true;
             this.lvServerInfo.Location = new System.Drawing.Point(35, 28);
             this.lvServerInfo.Name = "lvServerInfo";
             this.lvServerInfo.Size = new System.Drawing.Size(257, 245);
             this.lvServerInfo.TabIndex = 1;
             this.lvServerInfo.UseCompatibleStateImageBehavior = false;
-            this.lvServerInfo.View = System.Windows.Forms.View.Details;
+            this.lvServerInfo.ViewType = ViewTypes.Details;
             // 
             // colServer
             // 
@@ -50,7 +53,7 @@ partial class Main
             // colCapacity
             // 
             this.colCapacity.Text = "Capacity";
-            this.colCapacity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.colCapacity.TextAlign = SKTextAlign.Center;
             this.colCapacity.Width = 100;
             // 
             // Main
@@ -62,8 +65,8 @@ partial class Main
 
     }
 
-    private SDUI.Controls.ListView lvServerInfo;
-    private System.Windows.Forms.ColumnHeader colServer;
-    private System.Windows.Forms.ColumnHeader colCapacity;
+    private SDUI.ListView lvServerInfo;
+    private ColumnHeader colServer;
+    private ColumnHeader colCapacity;
 }
     

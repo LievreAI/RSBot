@@ -2,7 +2,7 @@ namespace RSBot.FileSystem;
 
 public static class PathUtil
 {
-    public static char PathSeparator = '\\';
+    public static char PathSplitter = '\\';
 
     /// <summary>
     ///     Returns the parent path to the folder or file at the given path.
@@ -16,10 +16,10 @@ public static class PathUtil
 
         path = Prepare(path);
 
-        var paths = path.Split(PathSeparator);
+        var paths = path.Split(PathSplitter);
         var pathsWithoutLast = paths[..^1];
 
-        return string.Join(PathSeparator, pathsWithoutLast);
+        return string.Join(PathSplitter, pathsWithoutLast);
     }
 
     /// <summary>
@@ -31,7 +31,7 @@ public static class PathUtil
     {
         path = Prepare(path);
 
-        return string.IsNullOrEmpty(path) ? string.Empty : path.Split(PathSeparator).Last();
+        return string.IsNullOrEmpty(path) ? string.Empty : path.Split(PathSplitter).Last();
     }
 
     /// <summary>
@@ -45,7 +45,7 @@ public static class PathUtil
         if (!string.IsNullOrEmpty(path))
             path = Prepare(path);
 
-        return path + PathSeparator + folderOrFileName;
+        return path + PathSplitter + folderOrFileName;
     }
 
     /// <summary>
@@ -55,10 +55,10 @@ public static class PathUtil
     /// <returns></returns>
     public static string Prepare(string path)
     {
-        if (path.StartsWith(PathSeparator))
+        if (path.StartsWith(PathSplitter))
             path = path.Substring(1, path.Length - 1);
 
-        if (path.EndsWith(PathSeparator))
+        if (path.EndsWith(PathSplitter))
             path = path[..^1];
 
         return path;

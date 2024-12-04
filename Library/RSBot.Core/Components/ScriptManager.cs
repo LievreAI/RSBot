@@ -54,13 +54,13 @@ public class ScriptManager
     public static int CurrentLineIndex { get; private set; }
 
     /// <summary>
-    ///     Gets or sets the argument separator.
+    ///     Gets or sets the argument Splitter.
     ///     Modify this value in case of custom script syntax support
     /// </summary>
     /// <value>
-    ///     The argument separator.
+    ///     The argument Splitter.
     /// </value>
-    public static char ArgumentSeparator { get; set; } = ' ';
+    public static char ArgumentSplitter { get; set; } = ' ';
 
     public static bool Paused { get; private set; }
 
@@ -231,7 +231,7 @@ public class ScriptManager
     {
         var walkCommands = Commands.Where(c => c.Trim().StartsWith("move"));
 
-        return walkCommands.Select(command => command.Split(ArgumentSeparator).Skip(1).ToArray()).Select(ParsePosition)
+        return walkCommands.Select(command => command.Split(ArgumentSplitter).Skip(1).ToArray()).Select(ParsePosition)
             .ToList();
     }
 
@@ -290,7 +290,7 @@ public class ScriptManager
                 string.IsNullOrWhiteSpace(command))
                 continue;
 
-            var args = command.Split(ArgumentSeparator).Skip(1).ToArray();
+            var args = command.Split(ArgumentSplitter).Skip(1).ToArray();
             var curPos = ParsePosition(args);
             var distance = curPos.DistanceToPlayer();
 

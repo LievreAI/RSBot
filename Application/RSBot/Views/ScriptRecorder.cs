@@ -1,9 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Components.Scripting;
@@ -11,11 +12,11 @@ using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Spawn;
 using RSBot.Views.Dialog;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Views;
 
-public partial class ScriptRecorder : UIWindow
+public partial class ScriptRecorder : Form
 {
     private readonly int _ownerId;
 
@@ -78,7 +79,7 @@ public partial class ScriptRecorder : UIWindow
         if (!_recording)
             return;
 
-        txtScript.AppendText($"cast {Game.ReferenceManager.GetRefSkill(skillId).Basic_Code}\n");
+        txtScript.Text += ($"cast {Game.ReferenceManager.GetRefSkill(skillId).Basic_Code}\n");
     }
 
     /// <summary>
@@ -90,7 +91,7 @@ public partial class ScriptRecorder : UIWindow
         if (!_recording)
             return;
 
-        txtScript.AppendText(command + Environment.NewLine);
+        txtScript.Text += (command + Environment.NewLine);
     }
 
     /// <summary>
@@ -100,15 +101,15 @@ public partial class ScriptRecorder : UIWindow
     /// <param name="color">The color.</param>
     private void HighlightLine(int index, Color color)
     {
-        txtScript.SelectAll();
-        txtScript.SelectionBackColor = txtScript.BackColor;
-        var lines = txtScript.Lines;
+        txtScript.SelectionStart = 0;
+        txtScript.SelectionStart = txtScript.Text.Length - 1;
+        var lines = txtScript.Text.Split("\n");
         if (index < 0 || index >= lines.Length)
             return;
-        var start = txtScript.GetFirstCharIndexFromLine(index); // Get the 1st char index of the appended text
-        var length = lines[index].Length;
-        txtScript.Select(start, length); // Select from there to the end
-        txtScript.SelectionBackColor = color;
+        //var start = txtScript.GetFirstCharIndexFromLine(index); // Get the 1st char index of the appended text
+        //var length = lines[index].Length;
+        //txtScript.Select(start, length); // Select from there to the end
+        //txtScript.SelectionBackColor = color;
     }
 
     private class CommandComboBoxItem
@@ -156,11 +157,11 @@ public partial class ScriptRecorder : UIWindow
         switch (option)
         {
             case TalkOption.Store:
-                txtScript.AppendText($"buy {entity.Record.CodeName}\n");
+                txtScript.Text += ($"buy {entity.Record.CodeName}\n");
                 break;
 
             case TalkOption.Trader:
-                txtScript.AppendText($"open-trade {entity.Record.CodeName}\n");
+                txtScript.Text += ($"open-trade {entity.Record.CodeName}\n");
                 break;
         }
     }
@@ -173,7 +174,7 @@ public partial class ScriptRecorder : UIWindow
         if (!SpawnManager.TryGetEntity<SpawnedBionic>(entityId, out var entity))
             return;
 
-        txtScript.AppendText($"store {entity.Record.CodeName}\n");
+        txtScript.Text += ($"store {entity.Record.CodeName}\n");
     }
 
     private void OnNpcRepairRequest(uint entityId, byte type, byte slot)
@@ -183,19 +184,19 @@ public partial class ScriptRecorder : UIWindow
         if (!SpawnManager.TryGetEntity<SpawnedBionic>(entityId, out var entity))
             return;
 
-        txtScript.AppendText($"repair {entity.Record.CodeName}\n");
+        txtScript.Text += ($"repair {entity.Record.CodeName}\n");
     }
 
     private void OnScriptStartExecuteCommand(IScriptCommand command, int lineNumber)
     {
-        if (IsDisposed)
+        if (Disposing)
             return;
 
         if (!ScriptManager.Running)
             return;
 
         if (txtScript.Text.Split('\n').Length >= lineNumber)
-            HighlightLine(lineNumber != 0 ? lineNumber + 1 : 0, Color.CornflowerBlue);
+            HighlightLine(lineNumber != 0 ? lineNumber + 1 : 0, System.Drawing.Color.CornflowerBlue);
     }
 
     /// <summary>
@@ -225,7 +226,7 @@ public partial class ScriptRecorder : UIWindow
         stepString.Append($" {destination.Region.Y}");
         stepString.AppendLine();
 
-        txtScript.AppendText(stepString.ToString());
+        txtScript.Text += (stepString.ToString());
     }
 
     /// <summary>
@@ -238,7 +239,7 @@ public partial class ScriptRecorder : UIWindow
         if (!_recording)
             return;
 
-        txtScript.AppendText($"teleport {npcCodeName} {destination}\n");
+        txtScript.Text += ($"teleport {npcCodeName} {destination}\n");
     }
 
     /// <summary>
@@ -249,7 +250,7 @@ public partial class ScriptRecorder : UIWindow
         if (!_recording)
             return;
 
-        txtScript.AppendText("dismount\n");
+        txtScript.Text += ("dismount\n");
     }
 
     /// <summary>
@@ -306,7 +307,7 @@ public partial class ScriptRecorder : UIWindow
     {
         if (!_recording) return;
 
-        txtScript.AppendText("wait 5000\n");
+        txtScript.Text += ("wait 5000\n");
     }
 
     /// <summary>
@@ -329,8 +330,8 @@ public partial class ScriptRecorder : UIWindow
     {
         btnStartStop.Text = LanguageManager.GetLang("Stop");
         labelStatus.Text = LanguageManager.GetLang("Recording");
-        btnStartStop.Color = Color.DarkRed;
-        TitleColor = btnStartStop.Color;
+        //btnStartStop.Color = Color.DarkRed;
+        //TitleColor = btnStartStop.Color;
         _recording = true;
 
         btnRun.Enabled = false;
@@ -340,8 +341,8 @@ public partial class ScriptRecorder : UIWindow
     {
         btnStartStop.Text = LanguageManager.GetLang("Start");
         labelStatus.Text = LanguageManager.GetLang("Idle");
-        btnStartStop.Color = Color.FromArgb(33, 150, 243);
-        TitleColor = btnStartStop.Color;
+        //btnStartStop.Color = Color.FromArgb(33, 150, 243);
+        //TitleColor = btnStartStop.Color;
 
         _recording = false;
         btnRun.Enabled = true;
@@ -352,13 +353,13 @@ public partial class ScriptRecorder : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void btnClear_Click(object sender, EventArgs e)
+    private async void btnClear_Click(object sender, EventArgs e)
     {
-        if (MessageBox.Show(@"Do you really want to clear the script?", @"Are you sure?",
+        if (await MessageBox.Show(@"Do you really want to clear the script?", @"Are you sure?",
                 MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) != DialogResult.Yes)
             return;
 
-        txtScript.Clear();
+        txtScript.Text = string.Empty;
     }
 
     /// <summary>
@@ -366,7 +367,7 @@ public partial class ScriptRecorder : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void btnSave_Click(object sender, EventArgs e)
+    private async void btnSave_Click(object sender, EventArgs e)
     {
         if (string.IsNullOrWhiteSpace(txtScript.Text))
             return;
@@ -374,11 +375,12 @@ public partial class ScriptRecorder : UIWindow
         var diag = new SaveFileDialog
         {
             Title = LanguageManager.GetLang("SaveRecordedScript"),
-            Filter = "RSBot Botbase File|*.rbs",
             InitialDirectory = ScriptManager.InitialDirectory
         };
 
-        if (diag.ShowDialog() == DialogResult.OK)
+        diag.AddFilter("RSBot Botbase File", "rbs");
+
+        if (await diag.ShowDialog(this) == DialogResult.OK)
         {
             EventManager.FireEvent("OnSaveScript", _ownerId, diag.FileName);
 
@@ -391,7 +393,7 @@ public partial class ScriptRecorder : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="FormClosedEventArgs" /> instance containing the event data.</param>
-    private void ScriptRecorder_FormClosed(object sender, FormClosedEventArgs e)
+    private void ScriptRecorder_FormClosed(object sender, EventArgs e)
     {
         _recording = false;
         _running = false;
@@ -414,7 +416,6 @@ public partial class ScriptRecorder : UIWindow
             labelStatus.Text = LanguageManager.GetLang("Idle");
             btnRun.Text = "▶";
             txtScript.ReadOnly = false;
-            TitleColor = Color.Transparent;
 
             _running = false;
         }
@@ -429,7 +430,6 @@ public partial class ScriptRecorder : UIWindow
             labelStatus.Text = LanguageManager.GetLang("Running");
             btnRun.Text = "◘";
             txtScript.ReadOnly = true;
-            TitleColor = Color.DodgerBlue;
 
             _running = true;
         }
@@ -440,20 +440,21 @@ public partial class ScriptRecorder : UIWindow
         LanguageManager.Translate(this, Kernel.Language);
     }
 
-    private void btnAddCommand_Click(object sender, EventArgs e)
+    private async void btnAddCommand_Click(object sender, EventArgs e)
     {
-        if (!(comboCommand.SelectedItem is CommandComboBoxItem selectedItem)) return;
+        if (!(comboCommand.SelectedItem is CommandComboBoxItem selectedItem)) 
+            return;
 
         if (selectedItem.Command.Arguments == null || selectedItem.Command.Arguments.Count == 0)
         {
-            txtScript.AppendText(selectedItem.Command.Name + Environment.NewLine);
+            txtScript.Text += (selectedItem.Command.Name + Environment.NewLine);
 
             return;
         }
 
         var diag = new CommandDialog(selectedItem.Command);
-        if (diag.ShowDialog() == DialogResult.OK)
-            txtScript.AppendText(diag.CommandText + Environment.NewLine);
+        if (await diag.ShowDialog(this) == DialogResult.OK)
+            txtScript.Text += (diag.CommandText + Environment.NewLine);
     }
 
     #endregion Events

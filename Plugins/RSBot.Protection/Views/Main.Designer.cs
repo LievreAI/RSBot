@@ -1,4 +1,6 @@
-﻿namespace RSBot.Protection.Views
+﻿using SDUI;
+
+namespace RSBot.Protection.Views
 {
     partial class Main
     {
@@ -28,71 +30,71 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label22 = new SDUI.Controls.Label();
-            groupBackTown = new SDUI.Controls.GroupBox();
-            checkStopBotOnReturnToTown = new SDUI.Controls.CheckBox();
-            label21 = new SDUI.Controls.Label();
-            numDeadTimeout = new SDUI.Controls.NumUpDown();
-            checkLevelUp = new SDUI.Controls.CheckBox();
-            checkFullPetInventory = new SDUI.Controls.CheckBox();
-            checkNoMPPotions = new SDUI.Controls.CheckBox();
-            checkNoHPPotions = new SDUI.Controls.CheckBox();
-            checkDurability = new SDUI.Controls.CheckBox();
-            checkDead = new SDUI.Controls.CheckBox();
-            checkInventory = new SDUI.Controls.CheckBox();
-            checkNoArrows = new SDUI.Controls.CheckBox();
-            groupBadStatus = new SDUI.Controls.GroupBox();
-            label18 = new SDUI.Controls.Label();
-            comboSkillBadStatus = new SDUI.Controls.ComboBox();
-            checkUseBadStatusSkill = new SDUI.Controls.CheckBox();
-            checkUseUniversalPills = new SDUI.Controls.CheckBox();
-            groupHPMP = new SDUI.Controls.GroupBox();
-            label17 = new SDUI.Controls.Label();
-            comboSkillPlayerMP = new SDUI.Controls.ComboBox();
-            comboSkillPlayerHP = new SDUI.Controls.ComboBox();
-            label11 = new SDUI.Controls.Label();
-            numPlayerSkillMPMin = new SDUI.Controls.NumUpDown();
-            label12 = new SDUI.Controls.Label();
-            label9 = new SDUI.Controls.Label();
-            numPlayerSkillHPMin = new SDUI.Controls.NumUpDown();
-            label10 = new SDUI.Controls.Label();
-            label7 = new SDUI.Controls.Label();
-            numPlayerMPVigorPotionMin = new SDUI.Controls.NumUpDown();
-            label8 = new SDUI.Controls.Label();
-            label5 = new SDUI.Controls.Label();
-            numPlayerHPVigorPotionMin = new SDUI.Controls.NumUpDown();
-            label6 = new SDUI.Controls.Label();
-            label3 = new SDUI.Controls.Label();
-            numPlayerMPPotionMin = new SDUI.Controls.NumUpDown();
-            label4 = new SDUI.Controls.Label();
-            label2 = new SDUI.Controls.Label();
-            numPlayerHPPotionMin = new SDUI.Controls.NumUpDown();
-            label1 = new SDUI.Controls.Label();
-            checkUseSkillHP = new SDUI.Controls.CheckBox();
-            checkUseSkillMP = new SDUI.Controls.CheckBox();
-            checkUseHPPotionsPlayer = new SDUI.Controls.CheckBox();
-            checkUseVigorMP = new SDUI.Controls.CheckBox();
-            checkUseMPPotionsPlayer = new SDUI.Controls.CheckBox();
-            checkUseVigorHP = new SDUI.Controls.CheckBox();
-            groupPet = new SDUI.Controls.GroupBox();
-            checkAutoSummonAttackPet = new SDUI.Controls.CheckBox();
-            checkUseAbnormalStatePotion = new SDUI.Controls.CheckBox();
-            checkReviveAttackPet = new SDUI.Controls.CheckBox();
-            label13 = new SDUI.Controls.Label();
-            numPetMinHGP = new SDUI.Controls.NumUpDown();
-            label14 = new SDUI.Controls.Label();
-            label15 = new SDUI.Controls.Label();
-            numPetMinHP = new SDUI.Controls.NumUpDown();
-            label16 = new SDUI.Controls.Label();
-            checkUsePetHP = new SDUI.Controls.CheckBox();
-            checkUseHGP = new SDUI.Controls.CheckBox();
-            groupStatPoints = new SDUI.Controls.GroupBox();
-            buttonRun = new SDUI.Controls.Button();
-            checkIncBotStopped = new SDUI.Controls.CheckBox();
-            numIncStr = new SDUI.Controls.NumUpDown();
-            numIncInt = new SDUI.Controls.NumUpDown();
-            checkIncStr = new SDUI.Controls.CheckBox();
-            checkIncInt = new SDUI.Controls.CheckBox();
+            label22 = new SDUI.Label();
+            groupBackTown = new SDUI.GroupBox();
+            checkStopBotOnReturnToTown = new SDUI.CheckBox();
+            label21 = new SDUI.Label();
+            numDeadTimeout = new SDUI.NumUpDown();
+            checkLevelUp = new SDUI.CheckBox();
+            checkFullPetInventory = new SDUI.CheckBox();
+            checkNoMPPotions = new SDUI.CheckBox();
+            checkNoHPPotions = new SDUI.CheckBox();
+            checkDurability = new SDUI.CheckBox();
+            checkDead = new SDUI.CheckBox();
+            checkInventory = new SDUI.CheckBox();
+            checkNoArrows = new SDUI.CheckBox();
+            groupBadStatus = new SDUI.GroupBox();
+            label18 = new SDUI.Label();
+            comboSkillBadStatus = new SDUI.ComboBox();
+            checkUseBadStatusSkill = new SDUI.CheckBox();
+            checkUseUniversalPills = new SDUI.CheckBox();
+            groupHPMP = new SDUI.GroupBox();
+            label17 = new SDUI.Label();
+            comboSkillPlayerMP = new SDUI.ComboBox();
+            comboSkillPlayerHP = new SDUI.ComboBox();
+            label11 = new SDUI.Label();
+            numPlayerSkillMPMin = new SDUI.NumUpDown();
+            label12 = new SDUI.Label();
+            label9 = new SDUI.Label();
+            numPlayerSkillHPMin = new SDUI.NumUpDown();
+            label10 = new SDUI.Label();
+            label7 = new SDUI.Label();
+            numPlayerMPVigorPotionMin = new SDUI.NumUpDown();
+            label8 = new SDUI.Label();
+            label5 = new SDUI.Label();
+            numPlayerHPVigorPotionMin = new SDUI.NumUpDown();
+            label6 = new SDUI.Label();
+            label3 = new SDUI.Label();
+            numPlayerMPPotionMin = new SDUI.NumUpDown();
+            label4 = new SDUI.Label();
+            label2 = new SDUI.Label();
+            numPlayerHPPotionMin = new SDUI.NumUpDown();
+            label1 = new SDUI.Label();
+            checkUseSkillHP = new SDUI.CheckBox();
+            checkUseSkillMP = new SDUI.CheckBox();
+            checkUseHPPotionsPlayer = new SDUI.CheckBox();
+            checkUseVigorMP = new SDUI.CheckBox();
+            checkUseMPPotionsPlayer = new SDUI.CheckBox();
+            checkUseVigorHP = new SDUI.CheckBox();
+            groupPet = new SDUI.GroupBox();
+            checkAutoSummonAttackPet = new SDUI.CheckBox();
+            checkUseAbnormalStatePotion = new SDUI.CheckBox();
+            checkReviveAttackPet = new SDUI.CheckBox();
+            label13 = new SDUI.Label();
+            numPetMinHGP = new SDUI.NumUpDown();
+            label14 = new SDUI.Label();
+            label15 = new SDUI.Label();
+            numPetMinHP = new SDUI.NumUpDown();
+            label16 = new SDUI.Label();
+            checkUsePetHP = new SDUI.CheckBox();
+            checkUseHGP = new SDUI.CheckBox();
+            groupStatPoints = new SDUI.GroupBox();
+            buttonRun = new SDUI.Button();
+            checkIncBotStopped = new SDUI.CheckBox();
+            numIncStr = new SDUI.NumUpDown();
+            numIncInt = new SDUI.NumUpDown();
+            checkIncStr = new SDUI.CheckBox();
+            checkIncInt = new SDUI.CheckBox();
             groupBackTown.SuspendLayout();
             groupBadStatus.SuspendLayout();
             groupHPMP.SuspendLayout();
@@ -102,11 +104,8 @@
             // 
             // label22
             // 
-            label22.ApplyGradient = false;
             label22.AutoSize = true;
-            label22.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label22.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label22.GradientAnimation = false;
+            label22.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label22.Location = new System.Drawing.Point(500, 449);
             label22.Name = "label22";
             label22.Size = new System.Drawing.Size(254, 15);
@@ -115,7 +114,6 @@
             // 
             // groupBackTown
             // 
-            groupBackTown.BackColor = System.Drawing.Color.Transparent;
             groupBackTown.Controls.Add(checkStopBotOnReturnToTown);
             groupBackTown.Controls.Add(label21);
             groupBackTown.Controls.Add(numDeadTimeout);
@@ -129,8 +127,6 @@
             groupBackTown.Controls.Add(checkNoArrows);
             groupBackTown.Location = new System.Drawing.Point(500, 7);
             groupBackTown.Name = "groupBackTown";
-            groupBackTown.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            groupBackTown.Radius = 10;
             groupBackTown.ShadowDepth = 4;
             groupBackTown.Size = new System.Drawing.Size(254, 266);
             groupBackTown.TabIndex = 17;
@@ -140,11 +136,7 @@
             // checkStopBotOnReturnToTown
             // 
             checkStopBotOnReturnToTown.AutoSize = true;
-            checkStopBotOnReturnToTown.BackColor = System.Drawing.Color.Transparent;
-            checkStopBotOnReturnToTown.Depth = 0;
             checkStopBotOnReturnToTown.Location = new System.Drawing.Point(12, 63);
-            checkStopBotOnReturnToTown.Margin = new System.Windows.Forms.Padding(0);
-            checkStopBotOnReturnToTown.MouseLocation = new System.Drawing.Point(-1, -1);
             checkStopBotOnReturnToTown.Name = "checkStopBotOnReturnToTown";
             checkStopBotOnReturnToTown.Ripple = true;
             checkStopBotOnReturnToTown.Size = new System.Drawing.Size(183, 30);
@@ -155,11 +147,8 @@
             // 
             // label21
             // 
-            label21.ApplyGradient = false;
             label21.AutoSize = true;
-            label21.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label21.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label21.GradientAnimation = false;
+            label21.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label21.Location = new System.Drawing.Point(235, 41);
             label21.Name = "label21";
             label21.Size = new System.Drawing.Size(17, 15);
@@ -168,27 +157,21 @@
             // 
             // numDeadTimeout
             // 
-            numDeadTimeout.BackColor = System.Drawing.Color.Transparent;
-            numDeadTimeout.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numDeadTimeout.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numDeadTimeout.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numDeadTimeout.Location = new System.Drawing.Point(153, 37);
-            numDeadTimeout.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numDeadTimeout.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numDeadTimeout.Maximum = 100;
+            numDeadTimeout.Minimum = 1;
             numDeadTimeout.MinimumSize = new System.Drawing.Size(80, 25);
             numDeadTimeout.Name = "numDeadTimeout";
             numDeadTimeout.Size = new System.Drawing.Size(80, 25);
             numDeadTimeout.TabIndex = 9;
-            numDeadTimeout.Value = new decimal(new int[] { 30, 0, 0, 0 });
-            numDeadTimeout.ValueChanged += numSettings_ValueChanged;
+            numDeadTimeout.Value = 30;
+            numDeadTimeout.TextChanged += numSettings_ValueChanged;
             // 
             // checkLevelUp
             // 
             checkLevelUp.AutoSize = true;
-            checkLevelUp.BackColor = System.Drawing.Color.Transparent;
-            checkLevelUp.Depth = 0;
             checkLevelUp.Location = new System.Drawing.Point(12, 231);
-            checkLevelUp.Margin = new System.Windows.Forms.Padding(0);
-            checkLevelUp.MouseLocation = new System.Drawing.Point(-1, -1);
             checkLevelUp.Name = "checkLevelUp";
             checkLevelUp.Ripple = true;
             checkLevelUp.Size = new System.Drawing.Size(75, 30);
@@ -200,11 +183,7 @@
             // checkFullPetInventory
             // 
             checkFullPetInventory.AutoSize = true;
-            checkFullPetInventory.BackColor = System.Drawing.Color.Transparent;
-            checkFullPetInventory.Depth = 0;
             checkFullPetInventory.Location = new System.Drawing.Point(12, 135);
-            checkFullPetInventory.Margin = new System.Windows.Forms.Padding(0);
-            checkFullPetInventory.MouseLocation = new System.Drawing.Point(-1, -1);
             checkFullPetInventory.Name = "checkFullPetInventory";
             checkFullPetInventory.Ripple = true;
             checkFullPetInventory.Size = new System.Drawing.Size(124, 30);
@@ -216,11 +195,7 @@
             // checkNoMPPotions
             // 
             checkNoMPPotions.AutoSize = true;
-            checkNoMPPotions.BackColor = System.Drawing.Color.Transparent;
-            checkNoMPPotions.Depth = 0;
             checkNoMPPotions.Location = new System.Drawing.Point(12, 183);
-            checkNoMPPotions.Margin = new System.Windows.Forms.Padding(0);
-            checkNoMPPotions.MouseLocation = new System.Drawing.Point(-1, -1);
             checkNoMPPotions.Name = "checkNoMPPotions";
             checkNoMPPotions.Ripple = true;
             checkNoMPPotions.Size = new System.Drawing.Size(133, 30);
@@ -232,11 +207,7 @@
             // checkNoHPPotions
             // 
             checkNoHPPotions.AutoSize = true;
-            checkNoHPPotions.BackColor = System.Drawing.Color.Transparent;
-            checkNoHPPotions.Depth = 0;
             checkNoHPPotions.Location = new System.Drawing.Point(12, 159);
-            checkNoHPPotions.Margin = new System.Windows.Forms.Padding(0);
-            checkNoHPPotions.MouseLocation = new System.Drawing.Point(-1, -1);
             checkNoHPPotions.Name = "checkNoHPPotions";
             checkNoHPPotions.Ripple = true;
             checkNoHPPotions.Size = new System.Drawing.Size(130, 30);
@@ -248,11 +219,7 @@
             // checkDurability
             // 
             checkDurability.AutoSize = true;
-            checkDurability.BackColor = System.Drawing.Color.Transparent;
-            checkDurability.Depth = 0;
             checkDurability.Location = new System.Drawing.Point(12, 207);
-            checkDurability.Margin = new System.Windows.Forms.Padding(0);
-            checkDurability.MouseLocation = new System.Drawing.Point(-1, -1);
             checkDurability.Name = "checkDurability";
             checkDurability.Ripple = true;
             checkDurability.Size = new System.Drawing.Size(166, 30);
@@ -264,11 +231,7 @@
             // checkDead
             // 
             checkDead.AutoSize = true;
-            checkDead.BackColor = System.Drawing.Color.Transparent;
-            checkDead.Depth = 0;
             checkDead.Location = new System.Drawing.Point(12, 36);
-            checkDead.Margin = new System.Windows.Forms.Padding(0);
-            checkDead.MouseLocation = new System.Drawing.Point(-1, -1);
             checkDead.Name = "checkDead";
             checkDead.Ripple = true;
             checkDead.Size = new System.Drawing.Size(132, 30);
@@ -280,11 +243,7 @@
             // checkInventory
             // 
             checkInventory.AutoSize = true;
-            checkInventory.BackColor = System.Drawing.Color.Transparent;
-            checkInventory.Depth = 0;
             checkInventory.Location = new System.Drawing.Point(12, 111);
-            checkInventory.Margin = new System.Windows.Forms.Padding(0);
-            checkInventory.MouseLocation = new System.Drawing.Point(-1, -1);
             checkInventory.Name = "checkInventory";
             checkInventory.Ripple = true;
             checkInventory.Size = new System.Drawing.Size(103, 30);
@@ -296,11 +255,7 @@
             // checkNoArrows
             // 
             checkNoArrows.AutoSize = true;
-            checkNoArrows.BackColor = System.Drawing.Color.Transparent;
-            checkNoArrows.Depth = 0;
             checkNoArrows.Location = new System.Drawing.Point(12, 87);
-            checkNoArrows.Margin = new System.Windows.Forms.Padding(0);
-            checkNoArrows.MouseLocation = new System.Drawing.Point(-1, -1);
             checkNoArrows.Name = "checkNoArrows";
             checkNoArrows.Ripple = true;
             checkNoArrows.Size = new System.Drawing.Size(145, 30);
@@ -311,15 +266,12 @@
             // 
             // groupBadStatus
             // 
-            groupBadStatus.BackColor = System.Drawing.Color.Transparent;
             groupBadStatus.Controls.Add(label18);
             groupBadStatus.Controls.Add(comboSkillBadStatus);
             groupBadStatus.Controls.Add(checkUseBadStatusSkill);
             groupBadStatus.Controls.Add(checkUseUniversalPills);
             groupBadStatus.Location = new System.Drawing.Point(15, 226);
             groupBadStatus.Name = "groupBadStatus";
-            groupBadStatus.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            groupBadStatus.Radius = 10;
             groupBadStatus.ShadowDepth = 4;
             groupBadStatus.Size = new System.Drawing.Size(468, 93);
             groupBadStatus.TabIndex = 6;
@@ -328,11 +280,8 @@
             // 
             // label18
             // 
-            label18.ApplyGradient = false;
             label18.AutoSize = true;
-            label18.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label18.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label18.GradientAnimation = false;
+            label18.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label18.Location = new System.Drawing.Point(316, 42);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(31, 15);
@@ -341,15 +290,8 @@
             // 
             // comboSkillBadStatus
             // 
-            comboSkillBadStatus.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboSkillBadStatus.DropDownHeight = 100;
-            comboSkillBadStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboSkillBadStatus.FormattingEnabled = true;
-            comboSkillBadStatus.IntegralHeight = false;
-            comboSkillBadStatus.ItemHeight = 17;
             comboSkillBadStatus.Location = new System.Drawing.Point(318, 59);
             comboSkillBadStatus.Name = "comboSkillBadStatus";
-            comboSkillBadStatus.Radius = 5;
             comboSkillBadStatus.ShadowDepth = 4F;
             comboSkillBadStatus.Size = new System.Drawing.Size(121, 23);
             comboSkillBadStatus.TabIndex = 26;
@@ -358,11 +300,7 @@
             // checkUseBadStatusSkill
             // 
             checkUseBadStatusSkill.AutoSize = true;
-            checkUseBadStatusSkill.BackColor = System.Drawing.Color.Transparent;
-            checkUseBadStatusSkill.Depth = 0;
             checkUseBadStatusSkill.Location = new System.Drawing.Point(11, 56);
-            checkUseBadStatusSkill.Margin = new System.Windows.Forms.Padding(0);
-            checkUseBadStatusSkill.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseBadStatusSkill.Name = "checkUseBadStatusSkill";
             checkUseBadStatusSkill.Ripple = true;
             checkUseBadStatusSkill.Size = new System.Drawing.Size(75, 30);
@@ -374,11 +312,7 @@
             // checkUseUniversalPills
             // 
             checkUseUniversalPills.AutoSize = true;
-            checkUseUniversalPills.BackColor = System.Drawing.Color.Transparent;
-            checkUseUniversalPills.Depth = 0;
             checkUseUniversalPills.Location = new System.Drawing.Point(11, 29);
-            checkUseUniversalPills.Margin = new System.Windows.Forms.Padding(0);
-            checkUseUniversalPills.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseUniversalPills.Name = "checkUseUniversalPills";
             checkUseUniversalPills.Ripple = true;
             checkUseUniversalPills.Size = new System.Drawing.Size(136, 30);
@@ -389,7 +323,6 @@
             // 
             // groupHPMP
             // 
-            groupHPMP.BackColor = System.Drawing.Color.Transparent;
             groupHPMP.Controls.Add(label17);
             groupHPMP.Controls.Add(comboSkillPlayerMP);
             groupHPMP.Controls.Add(comboSkillPlayerHP);
@@ -419,8 +352,6 @@
             groupHPMP.Controls.Add(checkUseVigorHP);
             groupHPMP.Location = new System.Drawing.Point(15, 7);
             groupHPMP.Name = "groupHPMP";
-            groupHPMP.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            groupHPMP.Radius = 10;
             groupHPMP.ShadowDepth = 4;
             groupHPMP.Size = new System.Drawing.Size(468, 213);
             groupHPMP.TabIndex = 5;
@@ -429,11 +360,8 @@
             // 
             // label17
             // 
-            label17.ApplyGradient = false;
             label17.AutoSize = true;
-            label17.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label17.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label17.GradientAnimation = false;
+            label17.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label17.Location = new System.Drawing.Point(332, 134);
             label17.Name = "label17";
             label17.Size = new System.Drawing.Size(31, 15);
@@ -442,15 +370,8 @@
             // 
             // comboSkillPlayerMP
             // 
-            comboSkillPlayerMP.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboSkillPlayerMP.DropDownHeight = 100;
-            comboSkillPlayerMP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboSkillPlayerMP.FormattingEnabled = true;
-            comboSkillPlayerMP.IntegralHeight = false;
-            comboSkillPlayerMP.ItemHeight = 17;
             comboSkillPlayerMP.Location = new System.Drawing.Point(332, 179);
             comboSkillPlayerMP.Name = "comboSkillPlayerMP";
-            comboSkillPlayerMP.Radius = 5;
             comboSkillPlayerMP.ShadowDepth = 4F;
             comboSkillPlayerMP.Size = new System.Drawing.Size(121, 23);
             comboSkillPlayerMP.TabIndex = 25;
@@ -458,15 +379,8 @@
             // 
             // comboSkillPlayerHP
             // 
-            comboSkillPlayerHP.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboSkillPlayerHP.DropDownHeight = 100;
-            comboSkillPlayerHP.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboSkillPlayerHP.FormattingEnabled = true;
-            comboSkillPlayerHP.IntegralHeight = false;
-            comboSkillPlayerHP.ItemHeight = 17;
             comboSkillPlayerHP.Location = new System.Drawing.Point(332, 152);
             comboSkillPlayerHP.Name = "comboSkillPlayerHP";
-            comboSkillPlayerHP.Radius = 5;
             comboSkillPlayerHP.ShadowDepth = 4F;
             comboSkillPlayerHP.Size = new System.Drawing.Size(121, 23);
             comboSkillPlayerHP.TabIndex = 7;
@@ -474,11 +388,8 @@
             // 
             // label11
             // 
-            label11.ApplyGradient = false;
             label11.AutoSize = true;
-            label11.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label11.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label11.GradientAnimation = false;
+            label11.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label11.Location = new System.Drawing.Point(301, 183);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(17, 15);
@@ -487,26 +398,21 @@
             // 
             // numPlayerSkillMPMin
             // 
-            numPlayerSkillMPMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerSkillMPMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerSkillMPMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPlayerSkillMPMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerSkillMPMin.Location = new System.Drawing.Point(220, 179);
-            numPlayerSkillMPMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerSkillMPMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerSkillMPMin.Maximum = 100;
+            numPlayerSkillMPMin.Minimum = 1;
             numPlayerSkillMPMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerSkillMPMin.Name = "numPlayerSkillMPMin";
             numPlayerSkillMPMin.Size = new System.Drawing.Size(80, 25);
             numPlayerSkillMPMin.TabIndex = 23;
-            numPlayerSkillMPMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerSkillMPMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerSkillMPMin.Value = 50;
+            numPlayerSkillMPMin.TextChanged += numSettings_ValueChanged;
             // 
             // label12
             // 
-            label12.ApplyGradient = false;
             label12.AutoSize = true;
-            label12.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label12.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label12.GradientAnimation = false;
+            label12.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label12.Location = new System.Drawing.Point(201, 182);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(15, 15);
@@ -515,11 +421,8 @@
             // 
             // label9
             // 
-            label9.ApplyGradient = false;
             label9.AutoSize = true;
-            label9.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label9.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label9.GradientAnimation = false;
+            label9.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label9.Location = new System.Drawing.Point(302, 156);
             label9.Name = "label9";
             label9.Size = new System.Drawing.Size(17, 15);
@@ -528,26 +431,21 @@
             // 
             // numPlayerSkillHPMin
             // 
-            numPlayerSkillHPMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerSkillHPMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerSkillHPMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+             numPlayerSkillHPMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerSkillHPMin.Location = new System.Drawing.Point(220, 152);
-            numPlayerSkillHPMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerSkillHPMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerSkillHPMin.Maximum = 100;
+            numPlayerSkillHPMin.Minimum = 1;
             numPlayerSkillHPMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerSkillHPMin.Name = "numPlayerSkillHPMin";
             numPlayerSkillHPMin.Size = new System.Drawing.Size(80, 25);
             numPlayerSkillHPMin.TabIndex = 20;
-            numPlayerSkillHPMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerSkillHPMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerSkillHPMin.Value = 50;
+            numPlayerSkillHPMin.TextChanged += numSettings_ValueChanged;
             // 
             // label10
             // 
-            label10.ApplyGradient = false;
             label10.AutoSize = true;
-            label10.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label10.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label10.GradientAnimation = false;
+            label10.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label10.Location = new System.Drawing.Point(201, 155);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(15, 15);
@@ -556,11 +454,8 @@
             // 
             // label7
             // 
-            label7.ApplyGradient = false;
             label7.AutoSize = true;
-            label7.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label7.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label7.GradientAnimation = false;
+            label7.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label7.Location = new System.Drawing.Point(302, 123);
             label7.Name = "label7";
             label7.Size = new System.Drawing.Size(17, 15);
@@ -569,26 +464,21 @@
             // 
             // numPlayerMPVigorPotionMin
             // 
-            numPlayerMPVigorPotionMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerMPVigorPotionMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerMPVigorPotionMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPlayerMPVigorPotionMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerMPVigorPotionMin.Location = new System.Drawing.Point(220, 118);
-            numPlayerMPVigorPotionMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerMPVigorPotionMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerMPVigorPotionMin.Maximum = 100;
+            numPlayerMPVigorPotionMin.Minimum = 1;
             numPlayerMPVigorPotionMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerMPVigorPotionMin.Name = "numPlayerMPVigorPotionMin";
             numPlayerMPVigorPotionMin.Size = new System.Drawing.Size(80, 25);
             numPlayerMPVigorPotionMin.TabIndex = 17;
-            numPlayerMPVigorPotionMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerMPVigorPotionMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerMPVigorPotionMin.Value = 50;
+            numPlayerMPVigorPotionMin.TextChanged += numSettings_ValueChanged;
             // 
             // label8
             // 
-            label8.ApplyGradient = false;
             label8.AutoSize = true;
-            label8.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label8.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label8.GradientAnimation = false;
+            label8.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label8.Location = new System.Drawing.Point(201, 122);
             label8.Name = "label8";
             label8.Size = new System.Drawing.Size(15, 15);
@@ -596,12 +486,9 @@
             label8.Text = "<";
             // 
             // label5
-            // 
-            label5.ApplyGradient = false;
+            //
             label5.AutoSize = true;
-            label5.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label5.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label5.GradientAnimation = false;
+            label5.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label5.Location = new System.Drawing.Point(302, 96);
             label5.Name = "label5";
             label5.Size = new System.Drawing.Size(17, 15);
@@ -610,26 +497,21 @@
             // 
             // numPlayerHPVigorPotionMin
             // 
-            numPlayerHPVigorPotionMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerHPVigorPotionMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerHPVigorPotionMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPlayerHPVigorPotionMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerHPVigorPotionMin.Location = new System.Drawing.Point(220, 91);
-            numPlayerHPVigorPotionMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerHPVigorPotionMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerHPVigorPotionMin.Maximum = 100;
+            numPlayerHPVigorPotionMin.Minimum = 1;
             numPlayerHPVigorPotionMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerHPVigorPotionMin.Name = "numPlayerHPVigorPotionMin";
             numPlayerHPVigorPotionMin.Size = new System.Drawing.Size(80, 25);
             numPlayerHPVigorPotionMin.TabIndex = 14;
-            numPlayerHPVigorPotionMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerHPVigorPotionMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerHPVigorPotionMin.Value = 50;
+            numPlayerHPVigorPotionMin.TextChanged += numSettings_ValueChanged;
             // 
             // label6
             // 
-            label6.ApplyGradient = false;
             label6.AutoSize = true;
-            label6.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label6.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label6.GradientAnimation = false;
+            label6.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label6.Location = new System.Drawing.Point(201, 95);
             label6.Name = "label6";
             label6.Size = new System.Drawing.Size(15, 15);
@@ -638,11 +520,8 @@
             // 
             // label3
             // 
-            label3.ApplyGradient = false;
             label3.AutoSize = true;
-            label3.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label3.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label3.GradientAnimation = false;
+            label3.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label3.Location = new System.Drawing.Point(306, 64);
             label3.Name = "label3";
             label3.Size = new System.Drawing.Size(17, 15);
@@ -651,26 +530,21 @@
             // 
             // numPlayerMPPotionMin
             // 
-            numPlayerMPPotionMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerMPPotionMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerMPPotionMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPlayerMPPotionMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerMPPotionMin.Location = new System.Drawing.Point(220, 60);
-            numPlayerMPPotionMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerMPPotionMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerMPPotionMin.Maximum = 100;
+            numPlayerMPPotionMin.Minimum = 1;
             numPlayerMPPotionMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerMPPotionMin.Name = "numPlayerMPPotionMin";
             numPlayerMPPotionMin.Size = new System.Drawing.Size(80, 25);
             numPlayerMPPotionMin.TabIndex = 11;
-            numPlayerMPPotionMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerMPPotionMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerMPPotionMin.Value = 50;
+            numPlayerMPPotionMin.TextChanged += numSettings_ValueChanged;
             // 
-            // label4
+            // label4"
             // 
-            label4.ApplyGradient = false;
             label4.AutoSize = true;
-            label4.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label4.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label4.GradientAnimation = false;
+            label4.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label4.Location = new System.Drawing.Point(201, 64);
             label4.Name = "label4";
             label4.Size = new System.Drawing.Size(15, 15);
@@ -679,11 +553,8 @@
             // 
             // label2
             // 
-            label2.ApplyGradient = false;
             label2.AutoSize = true;
-            label2.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label2.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label2.GradientAnimation = false;
+            label2.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label2.Location = new System.Drawing.Point(306, 37);
             label2.Name = "label2";
             label2.Size = new System.Drawing.Size(17, 15);
@@ -692,26 +563,21 @@
             // 
             // numPlayerHPPotionMin
             // 
-            numPlayerHPPotionMin.BackColor = System.Drawing.Color.Transparent;
-            numPlayerHPPotionMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPlayerHPPotionMin.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPlayerHPPotionMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPlayerHPPotionMin.Location = new System.Drawing.Point(220, 33);
-            numPlayerHPPotionMin.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPlayerHPPotionMin.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPlayerHPPotionMin.Maximum = 100;
+            numPlayerHPPotionMin.Minimum = 1;
             numPlayerHPPotionMin.MinimumSize = new System.Drawing.Size(80, 25);
             numPlayerHPPotionMin.Name = "numPlayerHPPotionMin";
             numPlayerHPPotionMin.Size = new System.Drawing.Size(80, 25);
             numPlayerHPPotionMin.TabIndex = 8;
-            numPlayerHPPotionMin.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPlayerHPPotionMin.ValueChanged += numSettings_ValueChanged;
+            numPlayerHPPotionMin.Value = 50;
+            numPlayerHPPotionMin.TextChanged += numSettings_ValueChanged;
             // 
             // label1
             // 
-            label1.ApplyGradient = false;
             label1.AutoSize = true;
-            label1.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label1.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label1.GradientAnimation = false;
+            label1.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label1.Location = new System.Drawing.Point(201, 37);
             label1.Name = "label1";
             label1.Size = new System.Drawing.Size(15, 15);
@@ -721,11 +587,7 @@
             // checkUseSkillHP
             // 
             checkUseSkillHP.AutoSize = true;
-            checkUseSkillHP.BackColor = System.Drawing.Color.Transparent;
-            checkUseSkillHP.Depth = 0;
             checkUseSkillHP.Location = new System.Drawing.Point(11, 149);
-            checkUseSkillHP.Margin = new System.Windows.Forms.Padding(0);
-            checkUseSkillHP.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseSkillHP.Name = "checkUseSkillHP";
             checkUseSkillHP.Ripple = true;
             checkUseSkillHP.Size = new System.Drawing.Size(103, 30);
@@ -737,11 +599,7 @@
             // checkUseSkillMP
             // 
             checkUseSkillMP.AutoSize = true;
-            checkUseSkillMP.BackColor = System.Drawing.Color.Transparent;
-            checkUseSkillMP.Depth = 0;
             checkUseSkillMP.Location = new System.Drawing.Point(9, 175);
-            checkUseSkillMP.Margin = new System.Windows.Forms.Padding(0);
-            checkUseSkillMP.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseSkillMP.Name = "checkUseSkillMP";
             checkUseSkillMP.Ripple = true;
             checkUseSkillMP.Size = new System.Drawing.Size(105, 30);
@@ -753,11 +611,7 @@
             // checkUseHPPotionsPlayer
             // 
             checkUseHPPotionsPlayer.AutoSize = true;
-            checkUseHPPotionsPlayer.BackColor = System.Drawing.Color.Transparent;
-            checkUseHPPotionsPlayer.Depth = 0;
             checkUseHPPotionsPlayer.Location = new System.Drawing.Point(11, 29);
-            checkUseHPPotionsPlayer.Margin = new System.Windows.Forms.Padding(0);
-            checkUseHPPotionsPlayer.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseHPPotionsPlayer.Name = "checkUseHPPotionsPlayer";
             checkUseHPPotionsPlayer.Ripple = true;
             checkUseHPPotionsPlayer.Size = new System.Drawing.Size(151, 30);
@@ -769,11 +623,7 @@
             // checkUseVigorMP
             // 
             checkUseVigorMP.AutoSize = true;
-            checkUseVigorMP.BackColor = System.Drawing.Color.Transparent;
-            checkUseVigorMP.Depth = 0;
             checkUseVigorMP.Location = new System.Drawing.Point(11, 113);
-            checkUseVigorMP.Margin = new System.Windows.Forms.Padding(0);
-            checkUseVigorMP.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseVigorMP.Name = "checkUseVigorMP";
             checkUseVigorMP.Ripple = true;
             checkUseVigorMP.Size = new System.Drawing.Size(158, 30);
@@ -785,11 +635,7 @@
             // checkUseMPPotionsPlayer
             // 
             checkUseMPPotionsPlayer.AutoSize = true;
-            checkUseMPPotionsPlayer.BackColor = System.Drawing.Color.Transparent;
-            checkUseMPPotionsPlayer.Depth = 0;
             checkUseMPPotionsPlayer.Location = new System.Drawing.Point(11, 56);
-            checkUseMPPotionsPlayer.Margin = new System.Windows.Forms.Padding(0);
-            checkUseMPPotionsPlayer.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseMPPotionsPlayer.Name = "checkUseMPPotionsPlayer";
             checkUseMPPotionsPlayer.Ripple = true;
             checkUseMPPotionsPlayer.Size = new System.Drawing.Size(156, 30);
@@ -801,11 +647,7 @@
             // checkUseVigorHP
             // 
             checkUseVigorHP.AutoSize = true;
-            checkUseVigorHP.BackColor = System.Drawing.Color.Transparent;
-            checkUseVigorHP.Depth = 0;
             checkUseVigorHP.Location = new System.Drawing.Point(11, 87);
-            checkUseVigorHP.Margin = new System.Windows.Forms.Padding(0);
-            checkUseVigorHP.MouseLocation = new System.Drawing.Point(-1, -1);
             checkUseVigorHP.Name = "checkUseVigorHP";
             checkUseVigorHP.Ripple = true;
             checkUseVigorHP.Size = new System.Drawing.Size(156, 30);
@@ -816,7 +658,6 @@
             // 
             // groupPet
             // 
-            groupPet.BackColor = System.Drawing.Color.Transparent;
             groupPet.Controls.Add(checkAutoSummonAttackPet);
             groupPet.Controls.Add(checkUseAbnormalStatePotion);
             groupPet.Controls.Add(checkReviveAttackPet);
@@ -830,8 +671,7 @@
             groupPet.Controls.Add(checkUseHGP);
             groupPet.Location = new System.Drawing.Point(15, 325);
             groupPet.Name = "groupPet";
-            groupPet.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            groupPet.Radius = 10;
+            groupPet.Padding = new Padding(3, 10, 3, 3);
             groupPet.ShadowDepth = 4;
             groupPet.Size = new System.Drawing.Size(468, 160);
             groupPet.TabIndex = 1;
@@ -841,11 +681,8 @@
             // checkAutoSummonAttackPet
             // 
             checkAutoSummonAttackPet.AutoSize = true;
-            checkAutoSummonAttackPet.BackColor = System.Drawing.Color.Transparent;
-            checkAutoSummonAttackPet.Depth = 0;
             checkAutoSummonAttackPet.Location = new System.Drawing.Point(11, 129);
-            checkAutoSummonAttackPet.Margin = new System.Windows.Forms.Padding(0);
-            checkAutoSummonAttackPet.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkAutoSummonAttackPet.Margin = new Padding(0);
             checkAutoSummonAttackPet.Name = "checkAutoSummonAttackPet";
             checkAutoSummonAttackPet.Ripple = true;
             checkAutoSummonAttackPet.Size = new System.Drawing.Size(215, 30);
@@ -857,11 +694,8 @@
             // checkUseAbnormalStatePotion
             // 
             checkUseAbnormalStatePotion.AutoSize = true;
-            checkUseAbnormalStatePotion.BackColor = System.Drawing.Color.Transparent;
-            checkUseAbnormalStatePotion.Depth = 0;
             checkUseAbnormalStatePotion.Location = new System.Drawing.Point(11, 82);
-            checkUseAbnormalStatePotion.Margin = new System.Windows.Forms.Padding(0);
-            checkUseAbnormalStatePotion.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkUseAbnormalStatePotion.Margin = new Padding(0);
             checkUseAbnormalStatePotion.Name = "checkUseAbnormalStatePotion";
             checkUseAbnormalStatePotion.Ripple = true;
             checkUseAbnormalStatePotion.Size = new System.Drawing.Size(238, 30);
@@ -873,11 +707,8 @@
             // checkReviveAttackPet
             // 
             checkReviveAttackPet.AutoSize = true;
-            checkReviveAttackPet.BackColor = System.Drawing.Color.Transparent;
-            checkReviveAttackPet.Depth = 0;
             checkReviveAttackPet.Location = new System.Drawing.Point(11, 105);
-            checkReviveAttackPet.Margin = new System.Windows.Forms.Padding(0);
-            checkReviveAttackPet.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkReviveAttackPet.Margin = new Padding(0);
             checkReviveAttackPet.Name = "checkReviveAttackPet";
             checkReviveAttackPet.Ripple = true;
             checkReviveAttackPet.Size = new System.Drawing.Size(172, 30);
@@ -888,11 +719,8 @@
             // 
             // label13
             // 
-            label13.ApplyGradient = false;
             label13.AutoSize = true;
-            label13.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label13.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label13.GradientAnimation = false;
+            label13.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label13.Location = new System.Drawing.Point(353, 64);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(17, 15);
@@ -901,26 +729,21 @@
             // 
             // numPetMinHGP
             // 
-            numPetMinHGP.BackColor = System.Drawing.Color.Transparent;
-            numPetMinHGP.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPetMinHGP.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPetMinHGP.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPetMinHGP.Location = new System.Drawing.Point(267, 59);
-            numPetMinHGP.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPetMinHGP.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPetMinHGP.Maximum = 100;
+            numPetMinHGP.Minimum = 1;
             numPetMinHGP.MinimumSize = new System.Drawing.Size(80, 25);
             numPetMinHGP.Name = "numPetMinHGP";
             numPetMinHGP.Size = new System.Drawing.Size(80, 25);
             numPetMinHGP.TabIndex = 19;
-            numPetMinHGP.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPetMinHGP.ValueChanged += numSettings_ValueChanged;
+            numPetMinHGP.Value = 50;
+            numPetMinHGP.TextChanged += numSettings_ValueChanged;
             // 
             // label14
             // 
-            label14.ApplyGradient = false;
             label14.AutoSize = true;
-            label14.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label14.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label14.GradientAnimation = false;
+            label14.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label14.Location = new System.Drawing.Point(246, 64);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(15, 15);
@@ -929,11 +752,8 @@
             // 
             // label15
             // 
-            label15.ApplyGradient = false;
             label15.AutoSize = true;
-            label15.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label15.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label15.GradientAnimation = false;
+            label15.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label15.Location = new System.Drawing.Point(353, 36);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(17, 15);
@@ -942,26 +762,21 @@
             // 
             // numPetMinHP
             // 
-            numPetMinHP.BackColor = System.Drawing.Color.Transparent;
-            numPetMinHP.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numPetMinHP.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numPetMinHP.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numPetMinHP.Location = new System.Drawing.Point(267, 31);
-            numPetMinHP.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            numPetMinHP.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            numPetMinHP.Maximum = 100;
+            numPetMinHP.Minimum = 1;
             numPetMinHP.MinimumSize = new System.Drawing.Size(80, 25);
             numPetMinHP.Name = "numPetMinHP";
             numPetMinHP.Size = new System.Drawing.Size(80, 25);
             numPetMinHP.TabIndex = 16;
-            numPetMinHP.Value = new decimal(new int[] { 50, 0, 0, 0 });
-            numPetMinHP.ValueChanged += numSettings_ValueChanged;
+            numPetMinHP.Value = 50;
+            numPetMinHP.TextChanged += numSettings_ValueChanged;
             // 
             // label16
             // 
-            label16.ApplyGradient = false;
             label16.AutoSize = true;
-            label16.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label16.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
-            label16.GradientAnimation = false;
+            label16.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             label16.Location = new System.Drawing.Point(246, 37);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(15, 15);
@@ -971,11 +786,8 @@
             // checkUsePetHP
             // 
             checkUsePetHP.AutoSize = true;
-            checkUsePetHP.BackColor = System.Drawing.Color.Transparent;
-            checkUsePetHP.Depth = 0;
             checkUsePetHP.Location = new System.Drawing.Point(11, 30);
-            checkUsePetHP.Margin = new System.Windows.Forms.Padding(0);
-            checkUsePetHP.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkUsePetHP.Margin = new Padding(0);
             checkUsePetHP.Name = "checkUsePetHP";
             checkUsePetHP.Ripple = true;
             checkUsePetHP.Size = new System.Drawing.Size(151, 30);
@@ -987,11 +799,8 @@
             // checkUseHGP
             // 
             checkUseHGP.AutoSize = true;
-            checkUseHGP.BackColor = System.Drawing.Color.Transparent;
-            checkUseHGP.Depth = 0;
             checkUseHGP.Location = new System.Drawing.Point(11, 57);
-            checkUseHGP.Margin = new System.Windows.Forms.Padding(0);
-            checkUseHGP.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkUseHGP.Margin = new Padding(0);
             checkUseHGP.Name = "checkUseHGP";
             checkUseHGP.Ripple = true;
             checkUseHGP.Size = new System.Drawing.Size(227, 30);
@@ -1002,7 +811,6 @@
             // 
             // groupStatPoints
             // 
-            groupStatPoints.BackColor = System.Drawing.Color.Transparent;
             groupStatPoints.Controls.Add(buttonRun);
             groupStatPoints.Controls.Add(checkIncBotStopped);
             groupStatPoints.Controls.Add(numIncStr);
@@ -1011,8 +819,7 @@
             groupStatPoints.Controls.Add(checkIncInt);
             groupStatPoints.Location = new System.Drawing.Point(500, 277);
             groupStatPoints.Name = "groupStatPoints";
-            groupStatPoints.Padding = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            groupStatPoints.Radius = 10;
+            groupStatPoints.Padding = new Padding(3, 10, 3, 3);
             groupStatPoints.ShadowDepth = 4;
             groupStatPoints.Size = new System.Drawing.Size(254, 169);
             groupStatPoints.TabIndex = 18;
@@ -1021,10 +828,8 @@
             // 
             // buttonRun
             // 
-            buttonRun.Color = System.Drawing.Color.Transparent;
             buttonRun.Location = new System.Drawing.Point(63, 137);
             buttonRun.Name = "buttonRun";
-            buttonRun.Radius = 6;
             buttonRun.ShadowDepth = 4F;
             buttonRun.Size = new System.Drawing.Size(97, 23);
             buttonRun.TabIndex = 27;
@@ -1035,11 +840,8 @@
             // checkIncBotStopped
             // 
             checkIncBotStopped.AutoSize = true;
-            checkIncBotStopped.BackColor = System.Drawing.Color.Transparent;
-            checkIncBotStopped.Depth = 0;
             checkIncBotStopped.Location = new System.Drawing.Point(18, 104);
-            checkIncBotStopped.Margin = new System.Windows.Forms.Padding(0);
-            checkIncBotStopped.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkIncBotStopped.Margin = new Padding(0);
             checkIncBotStopped.Name = "checkIncBotStopped";
             checkIncBotStopped.Ripple = true;
             checkIncBotStopped.Size = new System.Drawing.Size(165, 30);
@@ -1050,42 +852,35 @@
             // 
             // numIncStr
             // 
-            numIncStr.BackColor = System.Drawing.Color.Transparent;
-            numIncStr.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numIncStr.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numIncStr.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numIncStr.Location = new System.Drawing.Point(133, 76);
-            numIncStr.Maximum = new decimal(new int[] { 3, 0, 0, 0 });
-            numIncStr.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            numIncStr.Maximum = 3;
+            numIncStr.Minimum = 0;
             numIncStr.MinimumSize = new System.Drawing.Size(80, 25);
             numIncStr.Name = "numIncStr";
             numIncStr.Size = new System.Drawing.Size(80, 25);
             numIncStr.TabIndex = 22;
-            numIncStr.Value = new decimal(new int[] { 0, 0, 0, 0 });
-            numIncStr.ValueChanged += numIncStr_ValueChanged;
+            numIncStr.Value = 0;
+            numIncStr.TextChanged += numIncStr_ValueChanged;
             // 
             // numIncInt
             // 
-            numIncInt.BackColor = System.Drawing.Color.Transparent;
-            numIncInt.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            numIncInt.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            numIncInt.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             numIncInt.Location = new System.Drawing.Point(133, 45);
-            numIncInt.Maximum = new decimal(new int[] { 3, 0, 0, 0 });
-            numIncInt.Minimum = new decimal(new int[] { 0, 0, 0, 0 });
+            numIncInt.Maximum = 3;
+            numIncInt.Minimum = 0;
             numIncInt.MinimumSize = new System.Drawing.Size(80, 25);
             numIncInt.Name = "numIncInt";
             numIncInt.Size = new System.Drawing.Size(80, 25);
             numIncInt.TabIndex = 21;
-            numIncInt.Value = new decimal(new int[] { 0, 0, 0, 0 });
-            numIncInt.ValueChanged += numIncInt_ValueChanged;
+            numIncInt.Value = 0;
+            numIncInt.TextChanged += numIncInt_ValueChanged;
             // 
             // checkIncStr
             // 
             checkIncStr.AutoSize = true;
-            checkIncStr.BackColor = System.Drawing.Color.Transparent;
-            checkIncStr.Depth = 0;
             checkIncStr.Location = new System.Drawing.Point(18, 74);
-            checkIncStr.Margin = new System.Windows.Forms.Padding(0);
-            checkIncStr.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkIncStr.Margin = new Padding(0);
             checkIncStr.Name = "checkIncStr";
             checkIncStr.Ripple = true;
             checkIncStr.Size = new System.Drawing.Size(98, 30);
@@ -1097,11 +892,8 @@
             // checkIncInt
             // 
             checkIncInt.AutoSize = true;
-            checkIncInt.BackColor = System.Drawing.Color.Transparent;
-            checkIncInt.Depth = 0;
             checkIncInt.Location = new System.Drawing.Point(18, 43);
-            checkIncInt.Margin = new System.Windows.Forms.Padding(0);
-            checkIncInt.MouseLocation = new System.Drawing.Point(-1, -1);
+            checkIncInt.Margin = new Padding(0);
             checkIncInt.Name = "checkIncInt";
             checkIncInt.Ripple = true;
             checkIncInt.Size = new System.Drawing.Size(97, 30);
@@ -1112,18 +904,17 @@
             // 
             // Main
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            
+            
             Controls.Add(groupStatPoints);
             Controls.Add(groupBackTown);
             Controls.Add(label22);
             Controls.Add(groupBadStatus);
             Controls.Add(groupHPMP);
             Controls.Add(groupPet);
-            Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             Name = "Main";
             Size = new System.Drawing.Size(776, 497);
-            Load += Main_Load;
+            ParentChanged += Main_Load;
             groupBackTown.ResumeLayout(false);
             groupBackTown.PerformLayout();
             groupBadStatus.ResumeLayout(false);
@@ -1139,74 +930,74 @@
         }
 
         #endregion
-        private SDUI.Controls.GroupBox groupPet;
-        private SDUI.Controls.CheckBox checkUseUniversalPills;
-        private SDUI.Controls.GroupBox groupHPMP;
-        private SDUI.Controls.CheckBox checkUseHPPotionsPlayer;
-        private SDUI.Controls.CheckBox checkUseVigorMP;
-        private SDUI.Controls.CheckBox checkUseMPPotionsPlayer;
-        private SDUI.Controls.CheckBox checkUseVigorHP;
-        private SDUI.Controls.GroupBox groupBadStatus;
-        private SDUI.Controls.CheckBox checkUseSkillHP;
-        private SDUI.Controls.CheckBox checkUseSkillMP;
-        private SDUI.Controls.Label label11;
-        private SDUI.Controls.NumUpDown numPlayerSkillMPMin;
-        private SDUI.Controls.Label label12;
-        private SDUI.Controls.Label label9;
-        private SDUI.Controls.NumUpDown numPlayerSkillHPMin;
-        private SDUI.Controls.Label label10;
-        private SDUI.Controls.Label label7;
-        private SDUI.Controls.NumUpDown numPlayerMPVigorPotionMin;
-        private SDUI.Controls.Label label8;
-        private SDUI.Controls.Label label5;
-        private SDUI.Controls.NumUpDown numPlayerHPVigorPotionMin;
-        private SDUI.Controls.Label label6;
-        private SDUI.Controls.Label label3;
-        private SDUI.Controls.NumUpDown numPlayerMPPotionMin;
-        private SDUI.Controls.Label label4;
-        private SDUI.Controls.Label label2;
-        private SDUI.Controls.NumUpDown numPlayerHPPotionMin;
-        private SDUI.Controls.Label label1;
-        private SDUI.Controls.CheckBox checkUseBadStatusSkill;
-        private SDUI.Controls.ComboBox comboSkillPlayerMP;
-        private SDUI.Controls.ComboBox comboSkillPlayerHP;
-        private SDUI.Controls.ComboBox comboSkillBadStatus;
-        private SDUI.Controls.Label label13;
-        private SDUI.Controls.NumUpDown numPetMinHGP;
-        private SDUI.Controls.Label label14;
-        private SDUI.Controls.Label label15;
-        private SDUI.Controls.NumUpDown numPetMinHP;
-        private SDUI.Controls.Label label16;
-        private SDUI.Controls.CheckBox checkUsePetHP;
-        private SDUI.Controls.CheckBox checkUseHGP;
-        private SDUI.Controls.Label label18;
-        private SDUI.Controls.CheckBox checkUseAbnormalStatePotion;
-        private SDUI.Controls.CheckBox checkReviveAttackPet;
-        private SDUI.Controls.Label label19;
-        private SDUI.Controls.NumUpDown numMountMinHP;
-        private SDUI.Controls.Label label20;
-        private SDUI.Controls.CheckBox checkUseMountHP;
-        private SDUI.Controls.Label label22;
-        private SDUI.Controls.CheckBox checkAutoSummonAttackPet;
-        private SDUI.Controls.GroupBox groupBackTown;
-        private SDUI.Controls.Label label21;
-        private SDUI.Controls.NumUpDown numDeadTimeout;
-        private SDUI.Controls.CheckBox checkLevelUp;
-        private SDUI.Controls.CheckBox checkFullPetInventory;
-        private SDUI.Controls.CheckBox checkNoMPPotions;
-        private SDUI.Controls.CheckBox checkNoHPPotions;
-        private SDUI.Controls.CheckBox checkDurability;
-        private SDUI.Controls.CheckBox checkDead;
-        private SDUI.Controls.CheckBox checkInventory;
-        private SDUI.Controls.CheckBox checkNoArrows;
-        private SDUI.Controls.GroupBox groupStatPoints;
-        private SDUI.Controls.NumUpDown numIncStr;
-        private SDUI.Controls.NumUpDown numIncInt;
-        private SDUI.Controls.CheckBox checkIncStr;
-        private SDUI.Controls.CheckBox checkIncInt;
-        private SDUI.Controls.CheckBox checkIncBotStopped;
-        private SDUI.Controls.Button buttonRun;
-        private SDUI.Controls.CheckBox checkStopBotOnReturnToTown;
-        private SDUI.Controls.Label label17;
+        private SDUI.GroupBox groupPet;
+        private SDUI.CheckBox checkUseUniversalPills;
+        private SDUI.GroupBox groupHPMP;
+        private SDUI.CheckBox checkUseHPPotionsPlayer;
+        private SDUI.CheckBox checkUseVigorMP;
+        private SDUI.CheckBox checkUseMPPotionsPlayer;
+        private SDUI.CheckBox checkUseVigorHP;
+        private SDUI.GroupBox groupBadStatus;
+        private SDUI.CheckBox checkUseSkillHP;
+        private SDUI.CheckBox checkUseSkillMP;
+        private SDUI.Label label11;
+        private SDUI.NumUpDown numPlayerSkillMPMin;
+        private SDUI.Label label12;
+        private SDUI.Label label9;
+        private SDUI.NumUpDown numPlayerSkillHPMin;
+        private SDUI.Label label10;
+        private SDUI.Label label7;
+        private SDUI.NumUpDown numPlayerMPVigorPotionMin;
+        private SDUI.Label label8;
+        private SDUI.Label label5;
+        private SDUI.NumUpDown numPlayerHPVigorPotionMin;
+        private SDUI.Label label6;
+        private SDUI.Label label3;
+        private SDUI.NumUpDown numPlayerMPPotionMin;
+        private SDUI.Label label4;
+        private SDUI.Label label2;
+        private SDUI.NumUpDown numPlayerHPPotionMin;
+        private SDUI.Label label1;
+        private SDUI.CheckBox checkUseBadStatusSkill;
+        private SDUI.ComboBox comboSkillPlayerMP;
+        private SDUI.ComboBox comboSkillPlayerHP;
+        private SDUI.ComboBox comboSkillBadStatus;
+        private SDUI.Label label13;
+        private SDUI.NumUpDown numPetMinHGP;
+        private SDUI.Label label14;
+        private SDUI.Label label15;
+        private SDUI.NumUpDown numPetMinHP;
+        private SDUI.Label label16;
+        private SDUI.CheckBox checkUsePetHP;
+        private SDUI.CheckBox checkUseHGP;
+        private SDUI.Label label18;
+        private SDUI.CheckBox checkUseAbnormalStatePotion;
+        private SDUI.CheckBox checkReviveAttackPet;
+        private SDUI.Label label19;
+        private SDUI.NumUpDown numMountMinHP;
+        private SDUI.Label label20;
+        private SDUI.CheckBox checkUseMountHP;
+        private SDUI.Label label22;
+        private SDUI.CheckBox checkAutoSummonAttackPet;
+        private SDUI.GroupBox groupBackTown;
+        private SDUI.Label label21;
+        private SDUI.NumUpDown numDeadTimeout;
+        private SDUI.CheckBox checkLevelUp;
+        private SDUI.CheckBox checkFullPetInventory;
+        private SDUI.CheckBox checkNoMPPotions;
+        private SDUI.CheckBox checkNoHPPotions;
+        private SDUI.CheckBox checkDurability;
+        private SDUI.CheckBox checkDead;
+        private SDUI.CheckBox checkInventory;
+        private SDUI.CheckBox checkNoArrows;
+        private SDUI.GroupBox groupStatPoints;
+        private SDUI.NumUpDown numIncStr;
+        private SDUI.NumUpDown numIncInt;
+        private SDUI.CheckBox checkIncStr;
+        private SDUI.CheckBox checkIncInt;
+        private SDUI.CheckBox checkIncBotStopped;
+        private SDUI.Button buttonRun;
+        private SDUI.CheckBox checkStopBotOnReturnToTown;
+        private SDUI.Label label17;
     }
 }

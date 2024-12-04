@@ -1,15 +1,15 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Event;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Log.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
 
     /// <summary>
@@ -17,7 +17,7 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         InitializeComponent();
         LoadConfig();
 
@@ -58,7 +58,7 @@ public partial class Main : DoubleBufferedControl
         if (level == LogLevel.Warning && !checkWarning.Checked)
             return;
 
-        txtLog.Write($"<{level}> \t{message}", true, Kernel.Debug, logFile);
+        txtLog.Text += ($"<{level}> \t{message}", true, Kernel.Debug, logFile);
     }
 
     /// <summary>

@@ -1,13 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Default.Views.Dialogs;
 
-public partial class TrainingAreasDialog : UIWindowBase
+public partial class TrainingAreasDialog : Form
 {
     private const string DIALOG_AREA_NAME = "Enter area name";
     private const string DIALOG_AREA_DESC = "Example: For my custom party at jangan";
@@ -46,7 +47,6 @@ public partial class TrainingAreasDialog : UIWindowBase
     {
         var selectedIndex = PlayerConfig.Get("RSBot.Training.Index", 0);
 
-        listView.BeginUpdate();
         listView.Items.Clear();
 
         var areas = PlayerConfig.GetArray<string>("RSBot.Training.Areas");
@@ -61,10 +61,12 @@ public partial class TrainingAreasDialog : UIWindowBase
 
             var regionName = Game.ReferenceManager.GetTranslation(trainingArea.Position.Region.ToString());
 
-            var listViewItem = listView.Items.Add(new ListViewItem
+            var listViewItem = new ListViewItem
             {
                 Tag = trainingArea
-            });
+            };
+
+            listView.Items.Add(listViewItem);
             listViewItem.Text = (listViewItem.Index + 1).ToString();
 
             listViewItem.SubItems.AddRange(new[]
@@ -77,24 +79,22 @@ public partial class TrainingAreasDialog : UIWindowBase
                 listViewItem.Index == selectedIndex ? "Yes" : "No"
             });
 
-            if (listViewItem.Index == selectedIndex)
-                listView.SetItemState(listViewItem.Index, 2, 2);
+            //if (listViewItem.Index == selectedIndex)
+              //  listView.SetItemState(listViewItem.Index, 2, 2);
         }
-
-        listView.EndUpdate();
     }
 
-    private void TrainingAreas_FormClosing(object sender, FormClosingEventArgs e)
+    private void TrainingAreas_FormClosing(object sender, CancelEventArgs e)
     {
         if (DialogResult == DialogResult.Retry)
             e.Cancel = true;
     }
 
-    private void createToolStripMenuItem_Click(object sender, EventArgs e)
+    private async void createMenuItem_Click(object sender, EventArgs e)
     {
         var dialog = new CreateTrainingAreaDialog();
 
-        if (dialog.ShowDialog() == DialogResult.OK)
+        if (await dialog.ShowDialog() == DialogResult.OK)
         {
             var position = Game.Player.Position;
 
@@ -107,10 +107,11 @@ public partial class TrainingAreasDialog : UIWindowBase
 
             var regionName = Game.ReferenceManager.GetTranslation(trainingArea.Position.Region.ToString());
 
-            var listViewItem = listView.Items.Add(new ListViewItem
+            var listViewItem = new ListViewItem
             {
                 Tag = trainingArea
-            });
+            };
+            listView.Items.Add(listViewItem);
             listViewItem.Text = (listViewItem.Index + 1).ToString();
             listViewItem.SubItems.AddRange(new[]
             {
@@ -129,7 +130,7 @@ public partial class TrainingAreasDialog : UIWindowBase
         }
     }
 
-    private void removeSelectedAreaToolStripMenuItem_Click(object sender, EventArgs e)
+    private void removeSelectedAreaMenuItem_Click(object sender, EventArgs e)
     {
         if (listView.SelectedItems.Count <= 0)
             return;

@@ -2,10 +2,11 @@
 using System.Globalization;
 using System.Reflection;
 using System.Text;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Views;
+using SDUI;
 
 namespace RSBot;
 
@@ -42,9 +43,6 @@ internal static class Program
 
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(true);
-        Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
         Application.Run(new SplashScreen());
     }
 }

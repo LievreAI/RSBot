@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Default.Views.Dialogs;
-using SDUI.Controls;
-using CheckBox = SDUI.Controls.CheckBox;
+using SDUI;
+using CheckBox = SDUI.CheckBox;
 
 namespace RSBot.Default.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     private const int ScriptRecorderOwnerId = 2000;
 
@@ -31,16 +31,16 @@ public partial class Main : DoubleBufferedControl
         InitializeComponent();
         SubscribeEvents();
 
-        lvAvoidance.Items[0].Tag = MonsterRarity.General;
-        lvAvoidance.Items[1].Tag = MonsterRarity.Champion;
-        lvAvoidance.Items[2].Tag = MonsterRarity.Giant;
-        lvAvoidance.Items[3].Tag = MonsterRarity.GeneralParty;
-        lvAvoidance.Items[4].Tag = MonsterRarity.ChampionParty;
-        lvAvoidance.Items[5].Tag = MonsterRarity.GiantParty;
-        lvAvoidance.Items[6].Tag = MonsterRarity.Unique | MonsterRarity.Unique2;
-        lvAvoidance.Items[7].Tag = MonsterRarity.EliteStrong;
-        lvAvoidance.Items[8].Tag = MonsterRarity.Elite;
-        lvAvoidance.Items[9].Tag = MonsterRarity.Event;
+        lvAvoidance.Items["0"].Tag = MonsterRarity.General;
+        lvAvoidance.Items["1"].Tag = MonsterRarity.Champion;
+        lvAvoidance.Items["2"].Tag = MonsterRarity.Giant;
+        lvAvoidance.Items["3"].Tag = MonsterRarity.GeneralParty;
+        lvAvoidance.Items["4"].Tag = MonsterRarity.ChampionParty;
+        lvAvoidance.Items["5"].Tag = MonsterRarity.GiantParty;
+        lvAvoidance.Items["6"].Tag = MonsterRarity.Unique | MonsterRarity.Unique2;
+        lvAvoidance.Items["7"].Tag = MonsterRarity.EliteStrong;
+        lvAvoidance.Items["8"].Tag = MonsterRarity.Elite;
+        lvAvoidance.Items["9"].Tag = MonsterRarity.Event;
     }
 
     /// <summary>
@@ -131,7 +131,7 @@ public partial class Main : DoubleBufferedControl
     /// <param name="path"></param>
     private void OnSaveScript(int ownerId, string path)
     {
-        if (IsDisposed || Disposing)
+        if (Disposing)
             return;
 
         if (ownerId != ScriptRecorderOwnerId)
@@ -147,7 +147,7 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void OnSetTrainingArea()
     {
-        if (IsDisposed || Disposing)
+        if (Disposing)
             return;
 
         var area = Kernel.Bot.Botbase.Area;
@@ -257,11 +257,12 @@ public partial class Main : DoubleBufferedControl
     {
         var diag = new OpenFileDialog
         {
-            Filter = @"RSBot Bot script (*.rbs)|*.rbs",
             Title = @"Browse for a walkback script"
         };
 
-        if (diag.ShowDialog() != DialogResult.OK) return;
+        diag.AddFilter("RSBot Bot Script", "rbs");
+
+        if (diag.ShowDialog(this.FindForm()).Result != DialogResult.OK) return;
 
         txtWalkscript.Text = diag.FileName;
         PlayerConfig.Set("RSBot.Walkback.File", txtWalkscript.Text);
@@ -315,7 +316,7 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void OnLoadCharacter()
     {
-        if (IsDisposed || Disposing)
+        if (Disposing)
             return;
 
         var area = Kernel.Bot.Botbase.Area;
@@ -330,18 +331,18 @@ public partial class Main : DoubleBufferedControl
     private void buttonSelectTrainingArea_Click(object sender, EventArgs e)
     {
         var trainingArea = new TrainingAreasDialog();
-        if (trainingArea.ShowDialog(this) == DialogResult.OK)
+        if (trainingArea.ShowDialog(this.FindForm()).Result == DialogResult.OK)
             EventManager.FireEvent("OnSetTrainingArea");
     }
 
-    private void linkAttackWeakerMobsHelp_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkAttackWeakerMobsHelp_LinkClicked(object sender, EventArgs e)
     {
         MessageBox.Show(
             "If the player is under attack by a monster that is set to be avoided the bot will counter attack weaker mobs that are currently attacking the player first before targeting the avoided monster again. The bot will only kill weaker monsters that are attacking the player and won't start to pull new mobs to the battle.",
             "Attack weaker mobs first", MessageBoxButtons.OK, MessageBoxIcon.Question);
     }
 
-    private void linkRecord_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkRecord_LinkClicked(object sender, EventArgs e)
     {
         EventManager.FireEvent("OnShowScriptRecorder", ScriptRecorderOwnerId, true);
     }

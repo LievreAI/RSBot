@@ -41,7 +41,7 @@ public class PackFileSystem : IFileSystem
     public string BasePath { get; }
 
     /// <inheritdoc />
-    public char PathSeparator => '\\';
+    public char PathSplitter => '\\';
 
     public Encoding Encoding { get; set; } = Encoding.Default;
 
@@ -60,9 +60,9 @@ public class PackFileSystem : IFileSystem
 
         _fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
 
-        _archive = packFileReader.Read(_fileStream, null, this.PathSeparator);
+        _archive = packFileReader.Read(_fileStream, null, this.PathSplitter);
 
-        PathUtil.PathSeparator = this.PathSeparator;
+        PathUtil.PathSplitter = this.PathSplitter;
     }
 
     public PackFileSystem(string path, string password, byte[] salt)
@@ -76,9 +76,9 @@ public class PackFileSystem : IFileSystem
         var key = BlowfishUtil.GenerateFinalBlowfishKey(password, salt);
         var blowfish = new Blowfish(key);
 
-        _archive = packFileReader.Read(_fileStream, blowfish, this.PathSeparator);
+        _archive = packFileReader.Read(_fileStream, blowfish, this.PathSplitter);
 
-        PathUtil.PathSeparator = this.PathSeparator;
+        PathUtil.PathSplitter = this.PathSplitter;
     }
 
     public PackFileSystem(string path, string password) : this(path, password,

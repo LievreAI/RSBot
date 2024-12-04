@@ -1,17 +1,17 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Trade.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Trade.Views;
 
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     private bool _loadingConfig;
 
@@ -149,13 +149,13 @@ public partial class Main : DoubleBufferedControl
         RefreshRoutes();
     }
 
-    private void buttonDeleteList_Click(object sender, EventArgs e)
+    private async void buttonDeleteList_Click(object sender, EventArgs e)
     {
         //Can not delete Default
         if (comboRouteList.SelectedIndex <= 0)
             return;
 
-        if (MessageBox.Show(
+        if (await MessageBox.Show(
                 $"Do you realy want to delete the route list {comboRouteList.SelectedItem}?", "Delete list",
                 MessageBoxButtons.YesNo) !=
             DialogResult.Yes)
@@ -172,18 +172,19 @@ public partial class Main : DoubleBufferedControl
         RefreshRoutes();
     }
 
-    private void buttonCreateList_Click(object sender, EventArgs e)
+    private async void buttonCreateList_Click(object sender, EventArgs e)
     {
         var dialog = new InputDialog("New route list", "New route list",
             "Please enter the name for the new route list");
-        if (dialog.ShowDialog() != DialogResult.OK)
+
+        if (await dialog.ShowDialog() != DialogResult.OK)
             return;
 
         var userInput = (string)dialog.Value;
 
         if (userInput.Contains(';'))
         {
-            MessageBox.Show("The character ';' is invalid in route list names", "Invalid character",
+            await MessageBox.Show("The character ';' is invalid in route list names", "Invalid character",
                 MessageBoxButtons.OK);
 
             return;
@@ -216,17 +217,15 @@ public partial class Main : DoubleBufferedControl
         comboRouteList.SelectedIndex = comboRouteList.Items.Count - 1;
     }
 
-    private void menuChooseScript_Click(object sender, EventArgs e)
+    private async void menuChooseScript_Click(object sender, EventArgs e)
     {
         var openFileDiag = new OpenFileDialog
         {
             Title = "Select RSBot script file(s)",
-            AddExtension = true,
-            CheckFileExists = true,
-            Multiselect = true
         };
-
-        if (openFileDiag.ShowDialog() != DialogResult.OK)
+        openFileDiag.AllowMultiple = true;
+        
+        if (await openFileDiag.ShowDialog(this) != DialogResult.OK)
             return;
 
         var selectedRouteList = (string)comboRouteList.SelectedItem;
@@ -318,7 +317,7 @@ public partial class Main : DoubleBufferedControl
         TradeConfig.MaxTransportDistance = Convert.ToInt32(numMaxDistance.Value);
     }
 
-    private void linkRecord_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkRecord_LinkClicked(object sender, EventArgs e)
     {
         ShowScriptRecorder();
     }

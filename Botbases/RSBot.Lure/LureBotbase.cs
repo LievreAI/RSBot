@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
@@ -79,7 +79,7 @@ public class LureBotbase : IBotbase
     ///     Gets the view.
     /// </summary>
     /// <returns></returns>
-    public Control View => Views.View.Main;
+    public SDUI.Control View => Views.View.Main;
 
     /// <summary>
     ///     Starts this instance.

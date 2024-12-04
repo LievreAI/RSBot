@@ -1,5 +1,6 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
+﻿using SDUI;
+using System.Drawing;
+
 
 namespace RSBot.Map.Renderer;
 
@@ -32,211 +33,180 @@ partial class NavMeshRenderer
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
-        contextRenderSettings = new ContextMenuStrip(components);
-        displayToolStripMenuItem = new ToolStripMenuItem();
-        regionIDToolStripMenuItem = new ToolStripMenuItem();
-        regionBorderToolStripMenuItem = new ToolStripMenuItem();
-        terrainToolStripMenuItem = new ToolStripMenuItem();
-        terrainCellIDToolStripMenuItem = new ToolStripMenuItem();
-        toolStripSeparator1 = new ToolStripSeparator();
-        terrainGlobalEdgesToolStripMenuItem = new ToolStripMenuItem();
-        terrainGlobalEdgeIDToolStripMenuItem = new ToolStripMenuItem();
-        toolStripSeparator2 = new ToolStripSeparator();
-        terrainInternalEdgesToolStripMenuItem = new ToolStripMenuItem();
-        terrainInternalEdgeIDToolStripMenuItem = new ToolStripMenuItem();
-        objectsToolStripMenuItem = new ToolStripMenuItem();
-        objectCellIDToolStripMenuItem = new ToolStripMenuItem();
-        objectGroundToolStripMenuItem = new ToolStripMenuItem();
-        toolStripSeparator3 = new ToolStripSeparator();
-        objectGlobalEdgesToolStripMenuItem1 = new ToolStripMenuItem();
-        objectGlobalEdgeIDToolStripMenuItem = new ToolStripMenuItem();
-        toolStripSeparator4 = new ToolStripSeparator();
-        objectInternalEdgesToolStripMenuItem1 = new ToolStripMenuItem();
-        objectInternalEdgeIDToolStripMenuItem = new ToolStripMenuItem();
-        raycastMenuItem = new ToolStripMenuItem();
+        contextRenderSettings = new ContextMenu();
+        
+        displayMenuItem = new MenuItem();
+        regionIDMenuItem = new MenuItem();
+        regionBorderMenuItem = new MenuItem();
+        terrainMenuItem = new MenuItem();
+        terrainCellIDMenuItem = new MenuItem();
+        MenuSplitterItem1 = new MenuSplitterItem();
+        terrainGlobalEdgesMenuItem = new MenuItem();
+        terrainGlobalEdgeIDMenuItem = new MenuItem();
+        MenuSplitterItem2 = new MenuSplitterItem();
+        terrainInternalEdgesMenuItem = new MenuItem();
+        terrainInternalEdgeIDMenuItem = new MenuItem();
+        objectsMenuItem = new MenuItem();
+        objectCellIDMenuItem = new MenuItem();
+        objectGroundMenuItem = new MenuItem();
+        MenuSplitterItem3 = new MenuSplitterItem();
+        objectGlobalEdgesMenuItem1 = new MenuItem();
+        objectGlobalEdgeIDMenuItem = new MenuItem();
+        MenuSplitterItem4 = new MenuSplitterItem();
+        objectInternalEdgesMenuItem1 = new MenuItem();
+        objectInternalEdgeIDMenuItem = new MenuItem();
+        raycastMenuItem = new MenuItem();
         contextRenderSettings.SuspendLayout();
         SuspendLayout();
         // 
         // contextRenderSettings
         // 
-        contextRenderSettings.Items.AddRange(new ToolStripItem[] { displayToolStripMenuItem, raycastMenuItem });
-        contextRenderSettings.Name = "contextMenuStrip1";
+        contextRenderSettings.Items.AddRange(new MenuItem[] { displayMenuItem, raycastMenuItem });
+        contextRenderSettings.Name = "ContextMenu1";
         contextRenderSettings.Size = new Size(194, 74);
         // 
-        // displayToolStripMenuItem
+        // displayMenuItem
         // 
-        displayToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { regionIDToolStripMenuItem, regionBorderToolStripMenuItem, terrainToolStripMenuItem, objectsToolStripMenuItem });
-        displayToolStripMenuItem.Name = "displayToolStripMenuItem";
-        displayToolStripMenuItem.Size = new Size(193, 24);
-        displayToolStripMenuItem.Text = "&Display";
+        displayMenuItem.Items.AddRange(new MenuItem[] { regionIDMenuItem, regionBorderMenuItem, terrainMenuItem, objectsMenuItem });
+        displayMenuItem.Name = "displayMenuItem";
+        displayMenuItem.Text = "&Display";
         // 
-        // regionIDToolStripMenuItem
+        // regionIDMenuItem
         // 
-        regionIDToolStripMenuItem.Checked = true;
-        regionIDToolStripMenuItem.CheckOnClick = true;
-        regionIDToolStripMenuItem.CheckState = CheckState.Checked;
-        regionIDToolStripMenuItem.Name = "regionIDToolStripMenuItem";
-        regionIDToolStripMenuItem.Size = new Size(170, 24);
-        regionIDToolStripMenuItem.Text = "RegionID";
-        regionIDToolStripMenuItem.CheckedChanged += regionIDToolStripMenuItem_CheckedChange;
+        regionIDMenuItem.Checked = true;
+        regionIDMenuItem.CheckOnClick = true;
+        regionIDMenuItem.Name = "regionIDMenuItem";
+        regionIDMenuItem.Text = "RegionID";
+        regionIDMenuItem.Click += regionIDMenuItem_CheckedChange;
         // 
-        // regionBorderToolStripMenuItem
+        // regionBorderMenuItem
         // 
-        regionBorderToolStripMenuItem.Checked = true;
-        regionBorderToolStripMenuItem.CheckOnClick = true;
-        regionBorderToolStripMenuItem.CheckState = CheckState.Checked;
-        regionBorderToolStripMenuItem.Name = "regionBorderToolStripMenuItem";
-        regionBorderToolStripMenuItem.Size = new Size(170, 24);
-        regionBorderToolStripMenuItem.Text = "RegionBorder";
-        regionBorderToolStripMenuItem.CheckedChanged += regionBorderToolStripMenuItem_CheckedChange;
+        regionBorderMenuItem.Checked = true;
+        regionBorderMenuItem.CheckOnClick = true;
+        regionBorderMenuItem.Name = "regionBorderMenuItem";
+        regionBorderMenuItem.Text = "RegionBorder";
+        regionBorderMenuItem.Click += regionBorderMenuItem_CheckedChange;
         // 
-        // terrainToolStripMenuItem
+        // terrainMenuItem
         // 
-        terrainToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { terrainCellIDToolStripMenuItem, toolStripSeparator1, terrainGlobalEdgesToolStripMenuItem, terrainGlobalEdgeIDToolStripMenuItem, toolStripSeparator2, terrainInternalEdgesToolStripMenuItem, terrainInternalEdgeIDToolStripMenuItem });
-        terrainToolStripMenuItem.Name = "terrainToolStripMenuItem";
-        terrainToolStripMenuItem.Size = new Size(170, 24);
-        terrainToolStripMenuItem.Text = "Terrain";
+        terrainMenuItem.Items.AddRange(new MenuItem[] { terrainCellIDMenuItem, MenuSplitterItem1, terrainGlobalEdgesMenuItem, terrainGlobalEdgeIDMenuItem, MenuSplitterItem2, terrainInternalEdgesMenuItem, terrainInternalEdgeIDMenuItem });
+        terrainMenuItem.Name = "terrainMenuItem";
+        terrainMenuItem.Text = "Terrain";
         // 
-        // terrainCellIDToolStripMenuItem
+        // terrainCellIDMenuItem
         // 
-        terrainCellIDToolStripMenuItem.CheckOnClick = true;
-        terrainCellIDToolStripMenuItem.Name = "terrainCellIDToolStripMenuItem";
-        terrainCellIDToolStripMenuItem.Size = new Size(177, 24);
-        terrainCellIDToolStripMenuItem.Text = "&CellID";
-        terrainCellIDToolStripMenuItem.Click += terrainCellIDToolStripMenuItem_Click;
+        terrainCellIDMenuItem.CheckOnClick = true;
+        terrainCellIDMenuItem.Name = "terrainCellIDMenuItem";
+        terrainCellIDMenuItem.Text = "&CellID";
+        terrainCellIDMenuItem.Click += terrainCellIDMenuItem_Click;
         // 
-        // toolStripSeparator1
+        // MenuSplitterItem1
         // 
-        toolStripSeparator1.Name = "toolStripSeparator1";
-        toolStripSeparator1.Size = new Size(174, 6);
+        MenuSplitterItem1.Name = "MenuSplitterItem1";
         // 
-        // terrainGlobalEdgesToolStripMenuItem
+        // terrainGlobalEdgesMenuItem
         // 
-        terrainGlobalEdgesToolStripMenuItem.Checked = true;
-        terrainGlobalEdgesToolStripMenuItem.CheckOnClick = true;
-        terrainGlobalEdgesToolStripMenuItem.CheckState = CheckState.Checked;
-        terrainGlobalEdgesToolStripMenuItem.Name = "terrainGlobalEdgesToolStripMenuItem";
-        terrainGlobalEdgesToolStripMenuItem.Size = new Size(177, 24);
-        terrainGlobalEdgesToolStripMenuItem.Text = "&GlobalEdges";
-        terrainGlobalEdgesToolStripMenuItem.CheckedChanged += globalEdgesToolStripMenuItem_CheckedChanged;
+        terrainGlobalEdgesMenuItem.Checked = true;
+        terrainGlobalEdgesMenuItem.CheckOnClick = true;
+        terrainGlobalEdgesMenuItem.Name = "terrainGlobalEdgesMenuItem";
+        terrainGlobalEdgesMenuItem.Text = "&GlobalEdges";
+        terrainGlobalEdgesMenuItem.Click += globalEdgesMenuItem_CheckedChanged;
         // 
-        // terrainGlobalEdgeIDToolStripMenuItem
+        // terrainGlobalEdgeIDMenuItem
         // 
-        terrainGlobalEdgeIDToolStripMenuItem.CheckOnClick = true;
-        terrainGlobalEdgeIDToolStripMenuItem.Name = "terrainGlobalEdgeIDToolStripMenuItem";
-        terrainGlobalEdgeIDToolStripMenuItem.Size = new Size(177, 24);
-        terrainGlobalEdgeIDToolStripMenuItem.Text = "&GlobalEdgeID";
-        terrainGlobalEdgeIDToolStripMenuItem.Click += terrainGlobalEdgeIDToolStripMenuItem_Click;
+        terrainGlobalEdgeIDMenuItem.CheckOnClick = true;
+        terrainGlobalEdgeIDMenuItem.Name = "terrainGlobalEdgeIDMenuItem";
+        terrainGlobalEdgeIDMenuItem.Text = "&GlobalEdgeID";
+        terrainGlobalEdgeIDMenuItem.Click += terrainGlobalEdgeIDMenuItem_Click;
         // 
-        // toolStripSeparator2
+        // MenuSplitterItem2
         // 
-        toolStripSeparator2.Name = "toolStripSeparator2";
-        toolStripSeparator2.Size = new Size(174, 6);
+        MenuSplitterItem2.Name = "MenuSplitterItem2";
         // 
-        // terrainInternalEdgesToolStripMenuItem
+        // terrainInternalEdgesMenuItem
         // 
-        terrainInternalEdgesToolStripMenuItem.Checked = true;
-        terrainInternalEdgesToolStripMenuItem.CheckOnClick = true;
-        terrainInternalEdgesToolStripMenuItem.CheckState = CheckState.Checked;
-        terrainInternalEdgesToolStripMenuItem.Name = "terrainInternalEdgesToolStripMenuItem";
-        terrainInternalEdgesToolStripMenuItem.Size = new Size(177, 24);
-        terrainInternalEdgesToolStripMenuItem.Text = "&InternalEdges";
-        terrainInternalEdgesToolStripMenuItem.CheckedChanged += internalEdgesToolStripMenuItem_CheckedChanged;
+        terrainInternalEdgesMenuItem.Checked = true;
+        terrainInternalEdgesMenuItem.CheckOnClick = true;
+        terrainInternalEdgesMenuItem.Name = "terrainInternalEdgesMenuItem";
+        terrainInternalEdgesMenuItem.Text = "&InternalEdges";
+        terrainInternalEdgesMenuItem.Click += internalEdgesMenuItem_CheckedChanged;
         // 
-        // terrainInternalEdgeIDToolStripMenuItem
+        // terrainInternalEdgeIDMenuItem
         // 
-        terrainInternalEdgeIDToolStripMenuItem.CheckOnClick = true;
-        terrainInternalEdgeIDToolStripMenuItem.Name = "terrainInternalEdgeIDToolStripMenuItem";
-        terrainInternalEdgeIDToolStripMenuItem.Size = new Size(177, 24);
-        terrainInternalEdgeIDToolStripMenuItem.Text = "&InternalEdgeID";
-        terrainInternalEdgeIDToolStripMenuItem.Click += terrainInternalEdgeIDToolStripMenuItem_Click;
+        terrainInternalEdgeIDMenuItem.CheckOnClick = true;
+        terrainInternalEdgeIDMenuItem.Name = "terrainInternalEdgeIDMenuItem";
+        terrainInternalEdgeIDMenuItem.Text = "&InternalEdgeID";
+        terrainInternalEdgeIDMenuItem.Click += terrainInternalEdgeIDMenuItem_Click;
         // 
-        // objectsToolStripMenuItem
+        // objectsMenuItem
         // 
-        objectsToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { objectCellIDToolStripMenuItem, objectGroundToolStripMenuItem, toolStripSeparator3, objectGlobalEdgesToolStripMenuItem1, objectGlobalEdgeIDToolStripMenuItem, toolStripSeparator4, objectInternalEdgesToolStripMenuItem1, objectInternalEdgeIDToolStripMenuItem });
-        objectsToolStripMenuItem.Name = "objectsToolStripMenuItem";
-        objectsToolStripMenuItem.Size = new Size(170, 24);
-        objectsToolStripMenuItem.Text = "Objects";
+        objectsMenuItem.Items.AddRange(new MenuItem[] { objectCellIDMenuItem, objectGroundMenuItem, MenuSplitterItem3, objectGlobalEdgesMenuItem1, objectGlobalEdgeIDMenuItem, MenuSplitterItem4, objectInternalEdgesMenuItem1, objectInternalEdgeIDMenuItem });
+        objectsMenuItem.Name = "objectsMenuItem";
+        objectsMenuItem.Text = "Objects";
         // 
-        // objectCellIDToolStripMenuItem
+        // objectCellIDMenuItem
         // 
-        objectCellIDToolStripMenuItem.CheckOnClick = true;
-        objectCellIDToolStripMenuItem.Name = "objectCellIDToolStripMenuItem";
-        objectCellIDToolStripMenuItem.Size = new Size(177, 24);
-        objectCellIDToolStripMenuItem.Text = "&CellID";
-        objectCellIDToolStripMenuItem.Click += objectCellIDToolStripMenuItem_Click;
+        objectCellIDMenuItem.CheckOnClick = true;
+        objectCellIDMenuItem.Name = "objectCellIDMenuItem";
+        objectCellIDMenuItem.Text = "&CellID";
+        objectCellIDMenuItem.Click += objectCellIDMenuItem_Click;
         // 
-        // objectGroundToolStripMenuItem
+        // objectGroundMenuItem
         // 
-        objectGroundToolStripMenuItem.Checked = true;
-        objectGroundToolStripMenuItem.CheckOnClick = true;
-        objectGroundToolStripMenuItem.CheckState = CheckState.Checked;
-        objectGroundToolStripMenuItem.Name = "objectGroundToolStripMenuItem";
-        objectGroundToolStripMenuItem.Size = new Size(177, 24);
-        objectGroundToolStripMenuItem.Text = "&Ground";
-        objectGroundToolStripMenuItem.CheckedChanged += groundToolStripMenuItem_CheckedChanged;
+        objectGroundMenuItem.Checked = true;
+        objectGroundMenuItem.CheckOnClick = true;
+        objectGroundMenuItem.Name = "objectGroundMenuItem";
+        objectGroundMenuItem.Text = "&Ground";
+        objectGroundMenuItem.Click += groundMenuItem_CheckedChanged;
         // 
-        // toolStripSeparator3
+        // MenuSplitterItem3
         // 
-        toolStripSeparator3.Name = "toolStripSeparator3";
-        toolStripSeparator3.Size = new Size(174, 6);
+        MenuSplitterItem3.Name = "MenuSplitterItem3";
         // 
-        // objectGlobalEdgesToolStripMenuItem1
+        // objectGlobalEdgesMenuItem1
         // 
-        objectGlobalEdgesToolStripMenuItem1.Checked = true;
-        objectGlobalEdgesToolStripMenuItem1.CheckOnClick = true;
-        objectGlobalEdgesToolStripMenuItem1.CheckState = CheckState.Checked;
-        objectGlobalEdgesToolStripMenuItem1.Name = "objectGlobalEdgesToolStripMenuItem1";
-        objectGlobalEdgesToolStripMenuItem1.Size = new Size(177, 24);
-        objectGlobalEdgesToolStripMenuItem1.Text = "&GlobalEdges";
-        objectGlobalEdgesToolStripMenuItem1.CheckedChanged += globalEdgesToolStripMenuItem1_CheckedChanged;
+        objectGlobalEdgesMenuItem1.Checked = true;
+        objectGlobalEdgesMenuItem1.CheckOnClick = true;
+        objectGlobalEdgesMenuItem1.Name = "objectGlobalEdgesMenuItem1";
+        objectGlobalEdgesMenuItem1.Text = "&GlobalEdges";
+        objectGlobalEdgesMenuItem1.Click += globalEdgesMenuItem1_CheckedChanged;
         // 
-        // objectGlobalEdgeIDToolStripMenuItem
+        // objectGlobalEdgeIDMenuItem
         // 
-        objectGlobalEdgeIDToolStripMenuItem.CheckOnClick = true;
-        objectGlobalEdgeIDToolStripMenuItem.Name = "objectGlobalEdgeIDToolStripMenuItem";
-        objectGlobalEdgeIDToolStripMenuItem.Size = new Size(177, 24);
-        objectGlobalEdgeIDToolStripMenuItem.Text = "&GlobalEdgeID";
-        objectGlobalEdgeIDToolStripMenuItem.Click += objectGlobalEdgeIDToolStripMenuItem_Click;
+        objectGlobalEdgeIDMenuItem.CheckOnClick = true;
+        objectGlobalEdgeIDMenuItem.Name = "objectGlobalEdgeIDMenuItem";
+        objectGlobalEdgeIDMenuItem.Text = "&GlobalEdgeID";
+        objectGlobalEdgeIDMenuItem.Click += objectGlobalEdgeIDMenuItem_Click;
         // 
-        // toolStripSeparator4
+        // MenuSplitterItem4
         // 
-        toolStripSeparator4.Name = "toolStripSeparator4";
-        toolStripSeparator4.Size = new Size(174, 6);
+        MenuSplitterItem4.Name = "MenuSplitterItem4";
         // 
-        // objectInternalEdgesToolStripMenuItem1
+        // objectInternalEdgesMenuItem1
         // 
-        objectInternalEdgesToolStripMenuItem1.Checked = true;
-        objectInternalEdgesToolStripMenuItem1.CheckOnClick = true;
-        objectInternalEdgesToolStripMenuItem1.CheckState = CheckState.Checked;
-        objectInternalEdgesToolStripMenuItem1.Name = "objectInternalEdgesToolStripMenuItem1";
-        objectInternalEdgesToolStripMenuItem1.Size = new Size(177, 24);
-        objectInternalEdgesToolStripMenuItem1.Text = "&InternalEdges";
-        objectInternalEdgesToolStripMenuItem1.CheckedChanged += internalEdgesToolStripMenuItem1_CheckedChanged;
+        objectInternalEdgesMenuItem1.Checked = true;
+        objectInternalEdgesMenuItem1.CheckOnClick = true;
+        objectInternalEdgesMenuItem1.Name = "objectInternalEdgesMenuItem1";
+        objectInternalEdgesMenuItem1.Text = "&InternalEdges";
+        objectInternalEdgesMenuItem1.Click += internalEdgesMenuItem1_CheckedChanged;
         // 
-        // objectInternalEdgeIDToolStripMenuItem
+        // objectInternalEdgeIDMenuItem
         // 
-        objectInternalEdgeIDToolStripMenuItem.CheckOnClick = true;
-        objectInternalEdgeIDToolStripMenuItem.Name = "objectInternalEdgeIDToolStripMenuItem";
-        objectInternalEdgeIDToolStripMenuItem.Size = new Size(177, 24);
-        objectInternalEdgeIDToolStripMenuItem.Text = "&InternalEdgeID";
-        objectInternalEdgeIDToolStripMenuItem.Click += objectInternalEdgeIDToolStripMenuItem_Click;
+        objectInternalEdgeIDMenuItem.CheckOnClick = true;
+        objectInternalEdgeIDMenuItem.Name = "objectInternalEdgeIDMenuItem";
+        objectInternalEdgeIDMenuItem.Text = "&InternalEdgeID";
+        objectInternalEdgeIDMenuItem.Click += objectInternalEdgeIDMenuItem_Click;
         // 
         // raycastMenuItem
         // 
         raycastMenuItem.CheckOnClick = true;
         raycastMenuItem.Name = "raycastMenuItem";
-        raycastMenuItem.Size = new Size(193, 24);
         raycastMenuItem.Text = "Raycast visualizer";
-        raycastMenuItem.CheckedChanged += raycastMenuItem_CheckedChanged;
+        raycastMenuItem.Click += raycastMenuItem_CheckedChanged;
         // 
         // NavMeshRenderer
         // 
-        AutoScaleDimensions = new SizeF(8F, 20F);
-        AutoScaleMode = AutoScaleMode.Font;
-        BackColor = Color.MidnightBlue;
-        ContextMenuStrip = contextRenderSettings;
-        DoubleBuffered = true;
+        ContextMenu = contextRenderSettings;
         Margin = new Padding(3, 4, 3, 4);
         Name = "NavMeshRenderer";
         Size = new Size(293, 341);
@@ -246,26 +216,26 @@ partial class NavMeshRenderer
 
     #endregion
 
-    private ContextMenuStrip contextRenderSettings;
-    private ToolStripMenuItem displayToolStripMenuItem;
-    private ToolStripMenuItem regionIDToolStripMenuItem;
-    private ToolStripMenuItem regionBorderToolStripMenuItem;
-    private ToolStripMenuItem terrainToolStripMenuItem;
-    private ToolStripMenuItem terrainGlobalEdgesToolStripMenuItem;
-    private ToolStripMenuItem terrainInternalEdgesToolStripMenuItem;
-    private ToolStripMenuItem objectsToolStripMenuItem;
-    private ToolStripMenuItem objectGlobalEdgesToolStripMenuItem1;
-    private ToolStripMenuItem objectInternalEdgesToolStripMenuItem1;
-    private ToolStripMenuItem objectGroundToolStripMenuItem;
-    private ToolStripMenuItem terrainCellIDToolStripMenuItem;
-    private ToolStripSeparator toolStripSeparator1;
-    private ToolStripMenuItem terrainGlobalEdgeIDToolStripMenuItem;
-    private ToolStripSeparator toolStripSeparator2;
-    private ToolStripMenuItem terrainInternalEdgeIDToolStripMenuItem;
-    private ToolStripMenuItem objectCellIDToolStripMenuItem;
-    private ToolStripSeparator toolStripSeparator3;
-    private ToolStripMenuItem objectGlobalEdgeIDToolStripMenuItem;
-    private ToolStripSeparator toolStripSeparator4;
-    private ToolStripMenuItem objectInternalEdgeIDToolStripMenuItem;
-    private ToolStripMenuItem raycastMenuItem;
+    private ContextMenu contextRenderSettings;
+    private MenuItem displayMenuItem;
+    private MenuItem regionIDMenuItem;
+    private MenuItem regionBorderMenuItem;
+    private MenuItem terrainMenuItem;
+    private MenuItem terrainGlobalEdgesMenuItem;
+    private MenuItem terrainInternalEdgesMenuItem;
+    private MenuItem objectsMenuItem;
+    private MenuItem objectGlobalEdgesMenuItem1;
+    private MenuItem objectInternalEdgesMenuItem1;
+    private MenuItem objectGroundMenuItem;
+    private MenuItem terrainCellIDMenuItem;
+    private MenuSplitterItem MenuSplitterItem1;
+    private MenuItem terrainGlobalEdgeIDMenuItem;
+    private MenuSplitterItem MenuSplitterItem2;
+    private MenuItem terrainInternalEdgeIDMenuItem;
+    private MenuItem objectCellIDMenuItem;
+    private MenuSplitterItem MenuSplitterItem3;
+    private MenuItem objectGlobalEdgeIDMenuItem;
+    private MenuSplitterItem MenuSplitterItem4;
+    private MenuItem objectInternalEdgeIDMenuItem;
+    private MenuItem raycastMenuItem;
 }

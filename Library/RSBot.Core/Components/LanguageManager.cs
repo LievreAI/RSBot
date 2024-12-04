@@ -1,10 +1,11 @@
-﻿using System;
+﻿using SDUI;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+
 
 namespace RSBot.Core.Components;
 
@@ -24,12 +25,11 @@ public class LanguageManager
     /// </summary>
     /// <param name="menuItem">The toolstrip menu item</param>
     /// <returns></returns>
-    private static List<ToolStripMenuItem> GetAllMenuItems(ToolStripMenuItem menuItem)
+    private static List<MenuItem> GetAllMenuItems(MenuItem menuItem)
     {
-        var collection = new List<ToolStripMenuItem> { menuItem };
-        foreach (ToolStripMenuItem item in menuItem.DropDownItems)
-            collection.AddRange(GetAllMenuItems(item));
+        var collection = new List<MenuItem> { menuItem };
 
+        collection.AddRange(menuItem.Items);
         return collection;
     }
 
@@ -109,10 +109,10 @@ public class LanguageManager
         foreach (Control control in main.Controls)
         {
             var headerEx = $"{header}.{control.Parent.GetType().Name}";
-            if (control is ToolStrip toolStrip)
+            if (control is MenuBase toolStrip)
             {
-                var menuItems = new List<ToolStripItem>();
-                foreach (var menuItem in toolStrip.Items.OfType<ToolStripMenuItem>())
+                var menuItems = new List<MenuItem>();
+                foreach (var menuItem in toolStrip.Items.OfType<MenuItem>())
                     menuItems.AddRange(GetAllMenuItems(menuItem));
 
                 foreach (var item in menuItems)
@@ -131,17 +131,17 @@ public class LanguageManager
                 }
             }
 
-            if (control is ToolStrip)
+            if (control is Menu)
                 continue;
 
             CheckMissings(file, headerEx, control, languages);
 
-            if (!(control is Label) &&
-                !(control is GroupBox) &&
-                !(control is ButtonBase) &&
-                !(control is TabControl) &&
-                !(control is TabPage) &&
-                !(control is ToolStrip))
+            if (control is not Label &&
+                control is not GroupBox &&
+                control is not Button &&
+                control is not TabControl &&
+                control is not TabPage &&
+                control is not MenuBase)
                 continue;
 
             if (string.IsNullOrEmpty(control.Name) ||
@@ -248,11 +248,11 @@ public class LanguageManager
 
             string translatedText;
 
-            if (control is ToolStrip strip)
+            if (control is Menu strip)
             {
-                foreach (var toolStripItem in strip.Items.OfType<ToolStripMenuItem>())
+                foreach (var MenuItem in strip.Items.OfType<MenuItem>())
                 {
-                    var subItems = GetAllMenuItems(toolStripItem);
+                    var subItems = GetAllMenuItems(MenuItem);
                     foreach (var subMenuItem in subItems)
                         if (values.TryGetValue($"{headerEx}.{subMenuItem.Name}", out translatedText))
                             if (!string.IsNullOrWhiteSpace(translatedText))
@@ -275,7 +275,7 @@ public class LanguageManager
         var filePath = Path.Combine(_path, "langs.rsl");
         if (!File.Exists(filePath))
         {
-            MessageBox.Show($"Language list file is missing! \n {filePath}");
+            MessageBox.Show("", $"Language list file is missing! \n {filePath}");
             Environment.Exit(0);
         }
 

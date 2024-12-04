@@ -2,18 +2,18 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Objects.Skill;
 using RSBot.Protection.Components.Player;
-using SDUI.Controls;
-using CheckBox = SDUI.Controls.CheckBox;
+using SDUI;
+using CheckBox = SDUI.CheckBox;
 
 namespace RSBot.Protection.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     public Main()
     {
@@ -140,19 +140,22 @@ public partial class Main : DoubleBufferedControl
                 continue;
 
             // TODO: Check is the cure skill?
-            var index = comboSkillBadStatus.Items.Add(skill);
+            var index = comboSkillBadStatus.Items.Count;
+            comboSkillBadStatus.Items.Add(skill);
             var skillId = PlayerConfig.Get<uint>("RSBot.Protection.BadStatusSkill");
             if (skillId == skill.Id)
                 comboSkillBadStatus.SelectedIndex = index;
 
             // TODO: Check is the hp skill?
-            index = comboSkillPlayerHP.Items.Add(skill);
+            index = comboSkillPlayerHP.Items.Count;
+            comboSkillPlayerHP.Items.Add(skill);
             skillId = PlayerConfig.Get<uint>("RSBot.Protection.HpSkill");
             if (skillId == skill.Id)
                 comboSkillPlayerHP.SelectedIndex = index;
 
             // TODO: Check is the mp skill?
-            index = comboSkillPlayerMP.Items.Add(skill);
+            index = comboSkillPlayerMP.Items.Count;
+            comboSkillPlayerMP.Items.Add(skill);
             skillId = PlayerConfig.Get<uint>("RSBot.Protection.MpSkill");
             if (skillId == skill.Id)
                 comboSkillPlayerMP.SelectedIndex = index;

@@ -25,7 +25,7 @@ internal static class Container
     {
         get
         {
-            if (_mainView == null || _mainView.Disposing || _mainView.IsDisposed)
+            if (_mainView == null || _mainView.Disposing)
                 _mainView = new Main();
 
             return _mainView;

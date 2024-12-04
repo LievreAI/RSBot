@@ -8,20 +8,22 @@ using RSBot.Core.Objects;
 using RSBot.Core.Objects.Spawn;
 using RSBot.Map.Renderer;
 using RSBot.NavMeshApi.Dungeon;
-using SDUI.Controls;
+using SDUI;
+using SkiaSharp;
+using SkiaSharp.HarfBuzz;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
-using System.Windows.Forms;
+
 using Region = RSBot.Core.Objects.Region;
 
 namespace RSBot.Map.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     The grid size
@@ -36,12 +38,12 @@ public partial class Main : DoubleBufferedControl
     /// <summary>
     ///     The cached Images
     /// </summary>
-    private readonly Dictionary<string, Image> _cachedImages;
+    private readonly Dictionary<string, SKBitmap> _cachedImages;
 
     /// <summary>
     ///     The current sector graphic
     /// </summary>
-    private Image _currentSectorGraphic;
+    private SKBitmap _currentSectorGraphic;
 
     /// <summary>
     ///     The X Sector identifier
@@ -57,7 +59,7 @@ public partial class Main : DoubleBufferedControl
     /// <summary>
     ///     The map points
     /// </summary>
-    private Image[] _mapEntityImages;
+    private SKBitmap[] _mapEntityImages;
 
     /// <summary>
     ///     The Zoom identifier
@@ -65,15 +67,8 @@ public partial class Main : DoubleBufferedControl
     private readonly float _scale = SectorSize / 192.0f;
 
     /// <summary>
-    ///     <inheritdoc />
+    /// <inheritdoc/>
     /// </summary>
-    private BufferedGraphics bufferedGraphics;
-
-    /// <summary>
-    ///     <inheritdoc />
-    /// </summary>
-    private readonly BufferedGraphicsContext bufferedGraphicsContext;
-
     private readonly NavMeshRenderer _navMeshRenderer;
 
     /// <summary>
@@ -93,10 +88,6 @@ public partial class Main : DoubleBufferedControl
         _cachedImages ??= new();
 
         EventManager.SubscribeEvent("OnEnterGame", OnEnterGame);
-
-        bufferedGraphicsContext = BufferedGraphicsManager.Current;
-        bufferedGraphicsContext.MaximumBuffer = new Size(mapCanvas.Width + 1, mapCanvas.Height + 1);
-        bufferedGraphics = bufferedGraphicsContext.Allocate(mapCanvas.CreateGraphics(), mapCanvas.ClientRectangle);
 
         // All
         comboViewType.SelectedIndex = 6;
@@ -158,7 +149,7 @@ public partial class Main : DoubleBufferedControl
     /// <summary>
     ///     Draws the point at.
     /// </summary>
-    private void DrawPointAt(Graphics gfx, Position position, int entityIndex)
+    private void DrawPointAt(SKCanvas gfx, Position position, int entityIndex)
     {
         var distanceToPosition = position.DistanceToPlayer();
         if (distanceToPosition > 150)
@@ -169,21 +160,24 @@ public partial class Main : DoubleBufferedControl
             var x = GetMapX(position);
             var y = GetMapY(position);
 
-            using var img = (Image)_mapEntityImages[entityIndex].Clone();
+            using var img = new SKBitmap(_mapEntityImages[entityIndex].Info);
 
             if (entityIndex == 0)
-                gfx.DrawImage(RotateImage(img, Geometry.RadianToDegree(Game.Player.Movement.Angle)),
+            {
+                using var image = RotateImage(img, Geometry.RadianToDegree(Game.Player.Movement.Angle));
+                gfx.DrawBitmap(image,
                     x - img.Width / 2,
                     y - img.Height / 2);
+            }
             else
-                gfx.DrawImage(img, x - img.Width / 2, y - img.Height / 2);
+                gfx.DrawBitmap(img, x - img.Width / 2, y - img.Height / 2);
         }
         catch
         {
         }
     }
 
-    private void DrawRectangleAt(Graphics gfx, Position position, Brush brush, Size size, string label = "")
+    private void DrawRectangleAt(SKCanvas gfx, Position position, SKColor brush, Size size, string label = "")
     {
         var distanceToPosition = position.DistanceToPlayer();
         if (distanceToPosition > 150)
@@ -194,17 +188,18 @@ public partial class Main : DoubleBufferedControl
             var x = GetMapX(position);
             var y = GetMapY(position);
 
+            var paint = new SKPaint { Color = brush };
             if (!string.IsNullOrEmpty(label))
-                gfx.DrawString(label, Font, brush, x + size.Width, y - size.Width / 2);
+                gfx.DrawText(label, x + size.Width, y - size.Width / 2, paint);
 
-            gfx.FillRectangle(brush, new RectangleF(new PointF(x, y), size));
+            gfx.DrawRect(x, y, size.Width, size.Height, paint);
         }
         catch
         {
         }
     }
 
-    private void DrawLineAt(Graphics gfx, Position source, Position destination, Pen color)
+    private void DrawLineAt(SKCanvas gfx, Position source, Position destination, SKColor color)
     {
         var distanceToPositionA = source.DistanceToPlayer();
         var distanceToPositionB = destination.DistanceToPlayer();
@@ -216,10 +211,11 @@ public partial class Main : DoubleBufferedControl
         var destinationX = GetMapX(destination);
         var destinationY = GetMapY(destination);
 
-        gfx.DrawLine(color, srcX, srcY, destinationX, destinationY);
+        using var paint = new SKPaint { Color = color };
+        gfx.DrawLine(srcX, srcY, destinationX, destinationY, paint);
     }
 
-    private void DrawCircleAt(Graphics gfx, Position position, Color color, int diameter)
+    private void DrawCircleAt(SKCanvas gfx, Position position, SKColor color, int diameter)
     {
         var distanceToPosition = position.DistanceToPlayer();
         if (distanceToPosition > 150)
@@ -230,13 +226,14 @@ public partial class Main : DoubleBufferedControl
             var x = GetMapX(position);
             var y = GetMapY(position);
 
-            using var brush = new SolidBrush(color);
+            using var brush = new SKPaint { Color = color, IsAntialias = true };
 
             var diameterF = diameter * _scale;
-            var point = new PointF(x - diameterF / 2, y - diameterF / 2);
+            var point = new SKPoint(x - diameterF / 2, y - diameterF / 2);
 
-            gfx.FillEllipse(brush, new RectangleF(point, new SizeF(diameterF, diameterF)));
-            gfx.DrawEllipse(new Pen(color), new RectangleF(point, new SizeF(diameterF, diameterF)));
+            gfx.DrawCircle(point, diameterF, brush);
+
+            gfx.DrawCircle(point.X, point.Y, diameterF, brush);
         }
         catch
         {
@@ -246,22 +243,17 @@ public partial class Main : DoubleBufferedControl
     /// <summary>
     ///     Fills the grid.
     /// </summary>
-    private void PopulateMapAndGrid(Graphics graphics)
+    private void PopulateMapAndGrid(SKCanvas graphics)
     {
-        lvMonster.BeginUpdate();
         lvMonster.Items.Clear();
 
         try
         {
             if (Game.Player.Movement.HasDestination)
             {
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                using var pen = new Pen(Color.BlanchedAlmond, 1);
-                pen.DashStyle = DashStyle.Dot;
-                DrawLineAt(graphics, Game.Player.Movement.Source, Game.Player.Movement.Destination, pen);
+                DrawLineAt(graphics, Game.Player.Movement.Source, Game.Player.Movement.Destination, SKColors.BlanchedAlmond);
 
-                DrawCircleAt(graphics, Game.Player.Movement.Destination, Color.PaleGreen, 4);
-                graphics.SmoothingMode = SmoothingMode.HighSpeed;
+                DrawCircleAt(graphics, Game.Player.Movement.Destination, SKColors.PaleGreen, 4);
             }
 
             //Draw walk script
@@ -272,8 +264,8 @@ public partial class Main : DoubleBufferedControl
                 {
                     var nextPosition = walkScript[i];
 
-                    DrawLineAt(graphics, i != 0 ? walkScript[i - 1] : nextPosition, nextPosition, Pens.LightBlue);
-                    DrawCircleAt(graphics, nextPosition, Color.CornflowerBlue.Alpha(150), 4);
+                    DrawLineAt(graphics, i != 0 ? walkScript[i - 1] : nextPosition, nextPosition, SKColors.LightBlue);
+                    DrawCircleAt(graphics, nextPosition, SKColors.CornflowerBlue.Alpha(150), 4);
                 }
             }
 
@@ -282,8 +274,8 @@ public partial class Main : DoubleBufferedControl
                 var position = Kernel.Bot.Botbase.Area.Position;
                 var radius = Kernel.Bot.Botbase.Area.Radius;
 
-                DrawCircleAt(graphics, position, Color.DarkRed.Alpha(100), radius * 2);
-                DrawCircleAt(graphics, position, Color.LawnGreen.Alpha(50), radius);
+                DrawCircleAt(graphics, position, SKColors.DarkRed.Alpha(100), radius * 2);
+                DrawCircleAt(graphics, position, SKColors.LawnGreen.Alpha(50), radius);
             }
 
             if (comboViewType.SelectedIndex == 0 || comboViewType.SelectedIndex == 6)
@@ -294,7 +286,7 @@ public partial class Main : DoubleBufferedControl
                             entry.Record.Level, entry.Movement.Source);
 
                         if (Game.SelectedEntity?.UniqueId == entry.UniqueId)
-                            DrawCircleAt(graphics, entry.Position, Color.Wheat.Alpha(100), 6);
+                            DrawCircleAt(graphics, entry.Position, SKColors.Wheat.Alpha(100), 6);
 
                         if (entry.Rarity == MonsterRarity.Unique || entry.Rarity == MonsterRarity.Unique2)
                             DrawPointAt(graphics, entry.Position, 5);
@@ -359,24 +351,22 @@ public partial class Main : DoubleBufferedControl
         {
             Log.Debug($"[Map] Render error: {ex.Message}");
         }
-
-        lvMonster.EndUpdate();
     }
 
-    private Image LoadSectorImage(string sectorImgName)
+    private SKBitmap LoadSectorImage(string sectorImgName)
     {
         if (_cachedImages.ContainsKey(sectorImgName))
-            return (Image)_cachedImages[sectorImgName].Clone();
+            return new SKBitmap(_cachedImages[sectorImgName].Info);
 
         if (Game.MediaPk2.FileExists(sectorImgName) && Game.MediaPk2.TryGetFile(sectorImgName, out var file))
         {
             var img = file.ToImage();
             _cachedImages.Add(sectorImgName, img);
 
-            return (Image)img.Clone();
+            return new SKBitmap(_cachedImages[sectorImgName].Info);
         }
 
-        return new Bitmap(SectorSize, SectorSize);
+        return new SKBitmap(SectorSize, SectorSize);
     }
 
 
@@ -385,13 +375,6 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void RedrawMap()
     {
-        if (bufferedGraphicsContext.MaximumBuffer.Width != mapCanvas.Width + 1)
-        {
-            bufferedGraphicsContext.MaximumBuffer = mapCanvas.Size;
-
-            bufferedGraphics = bufferedGraphicsContext.Allocate(mapCanvas.CreateGraphics(), mapCanvas.ClientRectangle);
-        }
-
         // Set layer path & sectors
         var p = Game.Player.Movement.Source;
 
@@ -415,10 +398,10 @@ public partial class Main : DoubleBufferedControl
 
         try
         {
-            _currentSectorGraphic = new Bitmap(SectorSize * 3, SectorSize * 3, PixelFormat.Format32bppArgb);
-
-            using var gfx = Graphics.FromImage(_currentSectorGraphic);
-            gfx.InterpolationMode = InterpolationMode.Bicubic;
+            _currentSectorGraphic = new SKBitmap(SectorSize * 3, SectorSize * 3);
+            using var canvas = new SKCanvas(_currentSectorGraphic);
+            canvas.Clear(SKColors.Transparent);
+            canvas.DrawCircle(400, 300, 100, new SKPaint { Color = SKColors.Blue });
 
             var floorName = string.Empty;
             var dungeonName = string.Empty;
@@ -452,16 +435,14 @@ public partial class Main : DoubleBufferedControl
 
                     var sectorImgName = GetMinimapFileName(new Region(xSector, ySector), dungeonName, floorName);
                     using var bitmap = LoadSectorImage(sectorImgName);
-                    var pos = new Point(bitmap.Width * x, bitmap.Height * (GridSize - 1 - z));
+                    var pos = new SKPoint(bitmap.Width * x, bitmap.Height * (GridSize - 1 - z));
 
-                    gfx.DrawImage(bitmap, pos);
+                    canvas.DrawBitmap(bitmap, pos);
 
                     if (Kernel.Debug)
                     {
-                        using var pen = new Pen(Color.Black);
-                        pen.DashStyle = DashStyle.Dot;
-                        gfx.DrawRectangle(pen, new Rectangle(pos, new Size(SectorSize, SectorSize)));
-
+                        using var paint = new SKPaint { Color = SKColors.Black };
+                        canvas.DrawRect(pos.X, pos.Y, SectorSize, SectorSize, paint);
                     }
                 }
             }
@@ -481,45 +462,58 @@ public partial class Main : DoubleBufferedControl
         return $"minimap\\{region.X}x{region.Y}.ddj";
     }
 
-    private Bitmap RotateImage(Image image, float angle)
+    private SKBitmap RotateImage(SKBitmap image, float angle)
     {
-        var sizedBitmap = new Bitmap(image.Width + 1, image.Height + 1);
+        var sizedBitmap = new SKBitmap(image.Width + 1, image.Height + 1);
 
-        using (var matrix = new Matrix())
+        using (var canvas = new SKCanvas(sizedBitmap))
         {
-            matrix.RotateAt(angle, new PointF(sizedBitmap.Width / 2, sizedBitmap.Height / 2));
+            canvas.Clear(SKColors.Transparent);
 
-            sizedBitmap.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+            SKMatrix rotationMatrix = SKMatrix.CreateRotationDegrees(
+                angle,
+                (image.Width + 1) / 2f,
+                (image.Height + 1) / 2f
+            );
 
-            using (var graphics = Graphics.FromImage(sizedBitmap))
-            {
-                graphics.Transform = matrix;
-                graphics.InterpolationMode = InterpolationMode.Bicubic;
-                graphics.DrawImage(image, 1, 1);
-            }
+            canvas.SetMatrix(rotationMatrix);
+            canvas.DrawBitmap(image, 1, 1);
+            canvas.Flush();
         }
 
-        sizedBitmap.RotateFlip(RotateFlipType.RotateNoneFlipY);
+        // Görüntüyü ters çevirmek (flip) için
+        using (var flippedBitmap = new SKBitmap(sizedBitmap.Width, sizedBitmap.Height))
+        using (var canvas = new SKCanvas(flippedBitmap))
+        {
+            // Y ekseni üzerinde Flip (ters çevir)
+            SKMatrix flipMatrix = SKMatrix.CreateScale(1, -1, 0, sizedBitmap.Height / 2f);
+            canvas.SetMatrix(flipMatrix);
 
-        return sizedBitmap;
+            // Dönüştürülmüş bitmap'i çiz
+            canvas.DrawBitmap(sizedBitmap, 0, 0);
+
+            // Sonuç bitmap'i döndür
+            return flippedBitmap;
+        }
     }
 
-    private void DrawObjects(Graphics graphics)
+
+    private void DrawObjects(SKCanvas graphics)
     {
         if (_currentSectorGraphic != null)
         {
-            graphics.InterpolationMode = InterpolationMode.Bicubic;
-            graphics.SmoothingMode = SmoothingMode.HighSpeed;
-            graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
-            graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            //graphics.InterpolationMode = InterpolationMode.Bicubic;
+            //graphics.SmoothingMode = SmoothingMode.HighSpeed;
+            //graphics.PixelOffsetMode = PixelOffsetMode.HighSpeed;
+            //graphics.CompositingQuality = CompositingQuality.HighSpeed;
 
-            PointF point = new()
+            SKPoint point = new()
             {
                 X = mapCanvas.Width / 2f - SectorSize - Game.Player.Movement.Source.XSectorOffset / 10f * _scale,
                 Y = mapCanvas.Height / 2f - SectorSize * 2f + Game.Player.Movement.Source.YSectorOffset / 10f * _scale
             };
 
-            graphics.DrawImage(_currentSectorGraphic, point);
+            graphics.DrawBitmap(_currentSectorGraphic, point);
 
             PopulateMapAndGrid(graphics);
             DrawPointAt(graphics, Game.Player.Movement.Source, 0);
@@ -537,23 +531,6 @@ public partial class Main : DoubleBufferedControl
         if (Kernel.Debug)
             labelSectorInfo.Text =
                 $"{Game.Player.Movement.Source.Region} ({Game.Player.Movement.Source.Region.X}x{Game.Player.Movement.Source.Region.Y})";
-
-        bufferedGraphics.Graphics.Clear(Color.Black);
-        RedrawMap();
-        DrawObjects(bufferedGraphics.Graphics);
-
-        using var font = new Font(Font, FontStyle.Bold);
-
-        var text = Game.Player.Position.ToString();
-        var measuredText = bufferedGraphics.Graphics.MeasureString(text, font);
-
-        var x = mapCanvas.Width - measuredText.Width;
-
-        bufferedGraphics.Graphics.DrawString(_regionName, font, Brushes.Black, 12, 7);
-        bufferedGraphics.Graphics.DrawString(_regionName, font, Brushes.White, 10, 5);
-
-        bufferedGraphics.Graphics.DrawString(text, font, Brushes.Black, x - 8, 21 - measuredText.Height / 2);
-        bufferedGraphics.Graphics.DrawString(text, font, Brushes.White, x - 10, 20 - measuredText.Height / 2);
 
         mapCanvas.Invalidate();
     }
@@ -593,7 +570,7 @@ public partial class Main : DoubleBufferedControl
 
     private void mapCanvas_MouseClick(object sender, MouseEventArgs e)
     {
-        if(!Game.Ready) return;
+        if (!Game.Ready) return;
 
         var position = Game.Player.Movement.Source;
         position.XOffset = Game.Player.Movement.Source.XOffset +
@@ -627,6 +604,20 @@ public partial class Main : DoubleBufferedControl
 
     private void tabMinimap_Paint(object sender, PaintEventArgs e)
     {
-        bufferedGraphics.Render();
+        RedrawMap();
+        DrawObjects(e.Canvas);
+
+        var text = Game.Player.Position.ToString();
+
+        var measuredText = TextMeasurer.MeasureText(text, mapCanvas);
+
+        var x = mapCanvas.Width - measuredText.Width;
+
+        using var bPaint = new SKPaint { Color = SKColors.Black };
+        using var wPaint = new SKPaint { Color = SKColors.White };
+
+        e.Canvas.DrawText(_regionName, 10, 5, bPaint);
+        e.Canvas.DrawText(text, x - 8, 21 - measuredText.Height / 2, bPaint);
+        e.Canvas.DrawText(text, x - 10, 20 - measuredText.Height / 2, wPaint);
     }
 }

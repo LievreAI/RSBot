@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Components;
@@ -11,14 +12,14 @@ using RSBot.Core.Extensions;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Skill;
 using RSBot.Skills.Components;
-using SDUI.Controls;
-using CheckBox = SDUI.Controls.CheckBox;
+using SDUI;
+using CheckBox = SDUI.CheckBox;
 using ListViewExtensions = RSBot.Core.Extensions.ListViewExtensions;
 
 namespace RSBot.Skills.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Main" /> class.
@@ -28,10 +29,10 @@ public partial class Main : DoubleBufferedControl
         InitializeComponent();
         SubscribeEvents();
 
-        listAttackingSkills.SmallImageList = ListViewExtensions.StaticImageList;
-        listBuffs.SmallImageList = ListViewExtensions.StaticImageList;
-        listSkills.SmallImageList = ListViewExtensions.StaticImageList;
-        listActiveBuffs.SmallImageList = ListViewExtensions.StaticImageList;
+        //listAttackingSkills.SmallImageList = ListViewExtensions.StaticImageList;
+        //listBuffs.SmallImageList = ListViewExtensions.StaticImageList;
+        //listSkills.SmallImageList = ListViewExtensions.StaticImageList;
+        //listActiveBuffs.SmallImageList = ListViewExtensions.StaticImageList;
 
         _lock = new object();
     }
@@ -71,8 +72,7 @@ public partial class Main : DoubleBufferedControl
             var listItem = listActiveBuffs.Items[i];
 
             if (listItem?.Tag is not ItemPerk perkInfo || perkInfo.Token != removedPerk.Token) continue;
-
-            listItem.Remove();
+            listActiveBuffs.Items.Remove(listItem);
             return;
         }
     }
@@ -289,7 +289,7 @@ public partial class Main : DoubleBufferedControl
     private void LoadMasteries()
     {
         var selectedMastery = PlayerConfig.Get<string>("RSBot.Skills.selectedMastery");
-        comboLearnMastery.BeginUpdate();
+
         comboLearnMastery.Items.Clear();
 
         foreach (var mastery in Game.Player.Skills.Masteries)
@@ -298,10 +298,6 @@ public partial class Main : DoubleBufferedControl
         foreach (MasteryComboBoxItem item in comboLearnMastery.Items)
             if (item.Record.NameCode == selectedMastery)
                 comboLearnMastery.SelectedItem = item;
-
-        comboLearnMastery.EndUpdate();
-
-        comboLearnMastery.Update();
     }
 
     /// <summary>
@@ -309,15 +305,14 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     private void LoadTeleportSkills()
     {
-        comboTeleportSkill.BeginUpdate();
         comboTeleportSkill.Items.Clear();
 
         var selectedTeleportSkill = PlayerConfig.Get<uint>("RSBot.Skills.TeleportSkill");
         foreach (var skill in Game.Player.Skills.KnownSkills.Where(s =>
                      s.CanBeCasted && s.Record.Action_ActionDuration == 0 && s.Record.Params[2] == 500))
         {
-            var index = comboTeleportSkill.Items.Add(new TeleportSkillComboBoxItem
-                { Level = skill.Record.Basic_Level, Record = skill.Record });
+            var index = comboTeleportSkill.Items.Count;
+            comboTeleportSkill.Items.Add(new TeleportSkillComboBoxItem { Level = skill.Record.Basic_Level, Record = skill.Record });
 
             if (selectedTeleportSkill == skill.Record.ID)
             {
@@ -325,8 +320,6 @@ public partial class Main : DoubleBufferedControl
                 SkillManager.TeleportSkill = skill;
             }
         }
-
-        comboLearnMastery.EndUpdate();
     }
 
     /// <summary>
@@ -337,7 +330,6 @@ public partial class Main : DoubleBufferedControl
     {
         lock (_lock)
         {
-            listAttackingSkills.BeginUpdate();
             listAttackingSkills.Items.Clear();
 
             var skillArray = PlayerConfig.GetArray<uint>("RSBot.Skills.Attacks_" + index);
@@ -352,8 +344,6 @@ public partial class Main : DoubleBufferedControl
                 listAttackingSkills.Items.Add(item);
                 item.LoadSkillImageAsync();
             }
-
-            listAttackingSkills.EndUpdate();
         }
     }
 
@@ -364,7 +354,6 @@ public partial class Main : DoubleBufferedControl
     {
         lock (_lock)
         {
-            listBuffs.BeginUpdate();
             listBuffs.Items.Clear();
 
             Game.Player.TryGetAbilitySkills(out var abilitySkills);
@@ -386,8 +375,6 @@ public partial class Main : DoubleBufferedControl
                 listBuffs.Items.Add(item);
                 item.LoadSkillImageAsync();
             }
-
-            listBuffs.EndUpdate();
         }
     }
 
@@ -402,7 +389,9 @@ public partial class Main : DoubleBufferedControl
 
             var selectedImbue = PlayerConfig.Get<int>("RSBot.Skills.Imbue");
 
-            comboImbue.SelectedIndex = comboImbue.Items.Add("None");
+            var index = comboImbue.Items.Count;
+            comboImbue.Items.Add("None");
+            comboImbue.SelectedIndex = index;
 
             foreach (var skill in Game.Player.Skills.KnownSkills.Where(s => s.IsImbue && s.Enabled))
             {
@@ -410,7 +399,8 @@ public partial class Main : DoubleBufferedControl
                 if (skill.IsLowLevel())
                     continue;
                 */
-                var index = comboImbue.Items.Add(skill);
+                index = comboImbue.Items.Count;
+                comboImbue.Items.Add(skill);
 
                 if (selectedImbue == 0)
                     continue;
@@ -437,7 +427,9 @@ public partial class Main : DoubleBufferedControl
                 if (skill.IsLowLevel())
                     continue;
 
-                var index = comboResurrectionSkill.Items.Add(skill);
+                var index = comboResurrectionSkill.Items.Count;
+                comboResurrectionSkill.Items.Add(skill);
+
                 var resurrectionSkillId = PlayerConfig.Get<int>("RSBot.Skills.ResurrectionSkill");
                 if (skill.Id == resurrectionSkillId)
                     comboResurrectionSkill.SelectedIndex = index;
@@ -467,7 +459,6 @@ public partial class Main : DoubleBufferedControl
             LoadMasteries();
             LoadAttacks(comboMonsterType.SelectedIndex);
 
-            listSkills.BeginUpdate();
             listSkills.Items.Clear();
             listSkills.Groups.Clear();
 
@@ -532,8 +523,6 @@ public partial class Main : DoubleBufferedControl
 
                 item.LoadSkillImage();
             }
-
-            listSkills.EndUpdate();
         }
     }
 
@@ -604,7 +593,7 @@ public partial class Main : DoubleBufferedControl
                     itemBuffInfo.Id == removingBuff.Id &&
                     itemBuffInfo.Token == removingBuff.Token)
                 {
-                    listItem?.Remove();
+                    listActiveBuffs.Items.Remove(listItem);
                     return;
                 }
             }
@@ -811,8 +800,13 @@ public partial class Main : DoubleBufferedControl
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private void btnRemoveAttackSkill_Click(object sender, EventArgs e)
     {
+        var removingItems = new List<ListViewItem>();
+
         foreach (ListViewItem item in listAttackingSkills.SelectedItems)
-            item.Remove();
+            removingItems.Add(item);
+
+        foreach (ListViewItem item in removingItems)
+            listAttackingSkills.Items.Remove(item);
 
         SaveAttacks();
     }
@@ -824,8 +818,13 @@ public partial class Main : DoubleBufferedControl
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private void btnRemoveBuffSkill_Click(object sender, EventArgs e)
     {
+        var removingItems = new List<ListViewItem>();
+
         foreach (ListViewItem item in listBuffs.SelectedItems)
-            item.Remove();
+            removingItems.Add(item);
+
+        foreach (ListViewItem item in removingItems)
+            listBuffs.Items.Remove(item);
 
         SaveBuffs();
     }
@@ -962,7 +961,7 @@ public partial class Main : DoubleBufferedControl
         itemForm.Show();
     }
 
-    private void useToolStripMenuItem_Click(object sender, EventArgs e)
+    private void useMenuItem_Click(object sender, EventArgs e)
     {
         if (listSkills.SelectedItems.Count <= 0)
             return;
@@ -978,7 +977,7 @@ public partial class Main : DoubleBufferedControl
 
     private void skillContextMenu_Opening(object sender, CancelEventArgs e)
     {
-        useToPartyMemberToolStripMenuItem.DropDownItems.Clear();
+        useToPartyMemberMenuItem.Items.Clear();
 
         if (!Game.Party.IsInParty)
             return;
@@ -988,7 +987,7 @@ public partial class Main : DoubleBufferedControl
             if (member == null)
                 return;
 
-            useToPartyMemberToolStripMenuItem.DropDown.Items.Add(member.Name, null, (menuItemSender, _2) =>
+            useToPartyMemberMenuItem.Items.Add(member.Name, null, (menuItemSender, _2) =>
             {
                 try
                 {
@@ -1001,7 +1000,7 @@ public partial class Main : DoubleBufferedControl
                     if (skillInfo.IsAttack)
                         return;
 
-                    var menuItem = menuItemSender as ToolStripMenuItem;
+                    var menuItem = menuItemSender as MenuItem;
                     if (menuItem == null)
                         return;
 

@@ -1,9 +1,9 @@
 ﻿using RSBot.Core.Objects.Spawn;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Map.Views.Dialog;
 
-public partial class EntityDetailsDialog : UIWindowBase
+public partial class EntityDetailsDialog : Form
 {
     public EntityDetailsDialog(SpawnedEntity entity)
     {

@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Bundle.Enhance;
 using RSBot.Alchemy.Helper;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Alchemy.Views.Settings;
 
 [ToolboxItem(false)]
-public partial class EnhanceSettingsView : DoubleBufferedControl
+public partial class EnhanceSettingsView : Panel
 {
     #region Member
 
@@ -28,13 +28,8 @@ public partial class EnhanceSettingsView : DoubleBufferedControl
     /// </summary>
     public EnhanceSettingsView()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         InitializeComponent();
-        SetStyle(
-            ControlStyles.UserPaint |
-            ControlStyles.AllPaintingInWmPaint |
-            ControlStyles.OptimizedDoubleBuffer,
-            true);
 
         EventManager.SubscribeEvent("OnEnterGame", SubscribeMainFormEvents);
     }

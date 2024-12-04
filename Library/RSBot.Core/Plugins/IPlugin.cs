@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace RSBot.Core.Plugins;
+﻿namespace RSBot.Core.Plugins;
 
 public interface IPlugin
 {
@@ -52,7 +50,7 @@ public interface IPlugin
     /// <summary>
     ///     Gets the view that will be displayed as tab page.
     /// </summary>
-    Control View { get; }
+    SDUI.Control View { get; }
 
     /// <summary>
     ///     Initializes this instance.

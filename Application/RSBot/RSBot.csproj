@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>disable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
+		
 		<ImplicitUsings>disable</ImplicitUsings>
 		<OutputPath>.\..\..\Build</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -15,9 +15,7 @@
 		<ApplicationIcon>app.ico</ApplicationIcon>
 		<AssemblyVersion>2.9.9</AssemblyVersion>
 		<ApplicationHighDpiMode>PerMonitor, PerMonitorV2</ApplicationHighDpiMode>
-		<ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
 		<PlatformTarget>x86</PlatformTarget>
-		<UseWPF>False</UseWPF>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -28,6 +26,6 @@
 		<ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj">
 		  <Private>True</Private>
 		</ProjectReference>
-		<ProjectReference Include="..\..\SDUI\SDUI\SDUI.csproj" />
+		<ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
 	</ItemGroup>
 </Project>

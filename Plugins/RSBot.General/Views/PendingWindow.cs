@@ -1,18 +1,16 @@
-﻿using System;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Network;
 using RSBot.General.Components;
-using SDUI.Controls;
-using Label = SDUI.Controls.Label;
+using SDUI;
+using System;
+using System.Text;
+using Label = SDUI.Label;
 
 namespace RSBot.General.Views;
 
-public partial class PendingWindow : UIWindowBase
+public partial class PendingWindow : Form
 {
     /// <summary>
     ///     The Queue Notify Index
@@ -27,20 +25,19 @@ public partial class PendingWindow : UIWindowBase
     public PendingWindow()
     {
         InitializeComponent();
-        CheckForIllegalCrossThreadCalls = false;
         Text = "Pending";
 
         EventManager.SubscribeEvent("OnClock", OnClock);
     }
 
-    public void ShowAtTop(IWin32Window owner)
-    {
+    public void ShowAtTop(object owner/*IWin32Window owner*/)
+    {/*
         var form = (owner as UserControl).ParentForm;
 
         var point = new Point(form.Left + form.Width / 2 - Width / 2, form.Top); //  + form.Height / 2 - Height / 2
-
+        
         Location = point;
-        Show(owner);
+        Show(owner);*/
     }
 
     internal void Update(Packet packet)
@@ -62,10 +59,10 @@ public partial class PendingWindow : UIWindowBase
             var queue = GlobalConfig.Get("RSBot.General.QueueLeft", 30);
             if (begin <= queue && _queueNotifyIndex == 0)
             {
-                notifyIcon.Visible = true;
-                notifyIcon.BalloonTipTitle = "Pending Queue Notification";
-                notifyIcon.BalloonTipText = $"{begin} / {end}";
-                notifyIcon.ShowBalloonTip(2000);
+                //notifyIcon.Visible = true;
+                //notifyIcon.BalloonTipTitle = "Pending Queue Notification";
+                //notifyIcon.BalloonTipText = $"{begin} / {end}";
+                //notifyIcon.ShowBalloonTip(2000);
             }
 
             if (++_queueNotifyIndex > 3)

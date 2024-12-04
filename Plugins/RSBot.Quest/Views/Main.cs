@@ -1,34 +1,25 @@
-﻿using System;
-using System.ComponentModel;
-using System.Linq;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Objects.Quests;
 using SDUI;
-using SDUI.Controls;
+using System;
+using System.ComponentModel;
+using System.Linq;
 
 namespace RSBot.Quest.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Main" /> class.
     /// </summary>
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         InitializeComponent();
 
         SubscribeEvents();
-        ApplyTheme();
-    }
-
-    private void ApplyTheme()
-    {
-        treeQuests.BackColor = ColorScheme.BackColor;
-        treeQuests.ForeColor = ColorScheme.ForeColor;
     }
 
     private void SubscribeEvents()
@@ -44,32 +35,32 @@ public partial class Main : DoubleBufferedControl
             if (!treeQuests.Created)
                 return;
 
-            treeQuests.Invoke(() =>
+            //treeQuests.Invoke(() =>
             {
-                treeQuests.Nodes.Clear();
+                treeQuests.Items.Clear();
                 foreach (var activeQuest in Game.Player.QuestLog.ActiveQuests)
                 {
                     var node = CreateNode(activeQuest.Value);
                     node.Tag = activeQuest.Key;
 
-                    node.ContextMenuStrip = contextQuest;
+                    node.ContextMenu = contextQuest;
 
-                    treeQuests.Nodes.Add(node);
+                    treeQuests.Items.Add(node);
                 }
 
                 if (!checkShowCompleted.Checked) return;
 
-                var completedNode = new TreeNode("Completed");
+                var completedNode = new TreeViewItem("Completed");
                 foreach (var questId in Game.Player.QuestLog.CompletedQuests)
                 {
                     var quest = Game.ReferenceManager.GetRefQuest(questId);
 
-                    var node = new TreeNode($"{quest.GetTranslatedName()} (lv. {quest.Level})");
-                    completedNode.Nodes.Add(node);
+                    var node = new TreeViewItem($"{quest.GetTranslatedName()} (lv. {quest.Level})");
+                    completedNode.Items.Add(node);
                 }
 
-                treeQuests.Nodes.Add(completedNode);
-            });
+                treeQuests.Items.Add(completedNode);
+            };
         }
         catch (Exception e)
         {
@@ -77,93 +68,93 @@ public partial class Main : DoubleBufferedControl
         }
     }
 
-    private TreeNode CreateNode(ActiveQuest quest)
+    private TreeViewItem CreateNode(ActiveQuest quest)
     {
         if (quest.Quest == null)
-            return new TreeNode($"Unknown quest [{quest.Id}]");
+            return new TreeViewItem($"Unknown quest [{quest.Id}]");
 
         var name = Game.ReferenceManager.GetTranslation(quest.Quest.NameString);
 
-        var node = new TreeNode(name);
-        node.Nodes.Add($"Id: {quest.Id}");
-        node.Nodes.Add($"Level: {quest.Quest.Level}");
-        node.Nodes.Add($"Status: {GetStatusText(quest.Status)}");
+        var node = new TreeViewItem(name);
+        node.Items.Add($"Id: {quest.Id}");
+        node.Items.Add($"Level: {quest.Quest.Level}");
+        node.Items.Add($"Status: {GetStatusText(quest.Status)}");
 
         node.Tag = quest.Id;
 
         if (quest.Npcs?.Length > 0)
         {
-            var npcNode = new TreeNode("NPCs");
+            var npcNode = new TreeViewItem("NPCs");
             foreach (var npcId in quest.Npcs)
             {
                 var npc = Game.ReferenceManager.GetRefObjChar(npcId);
                 var npcName = Game.ReferenceManager.GetTranslation(npc.NameStrID);
-                npcNode.Nodes.Add(npcName);
+                npcNode.Items.Add(npcName);
             }
 
-            node.Nodes.Add(npcNode);
+            node.Items.Add(npcNode);
         }
 
-        var rewardNode = new TreeNode("Rewards");
+        var rewardNode = new TreeViewItem("Rewards");
 
         if (quest.Quest.Reward != null)
         {
             if (quest.Quest.Reward.Exp > 0)
-                rewardNode.Nodes.Add($"Exp: {quest.Quest.Reward.Exp}");
+                rewardNode.Items.Add($"Exp: {quest.Quest.Reward.Exp}");
 
             if (quest.Quest.Reward.Gold > 0)
-                rewardNode.Nodes.Add($"Gold: {quest.Quest.Reward.Gold}");
+                rewardNode.Items.Add($"Gold: {quest.Quest.Reward.Gold}");
 
             if (quest.Quest.Reward.SP > 0)
-                rewardNode.Nodes.Add($"Skill points: {quest.Quest.Reward.Gold}");
+                rewardNode.Items.Add($"Skill points: {quest.Quest.Reward.Gold}");
 
             if (quest.Quest.Reward.SP > 0)
-                rewardNode.Nodes.Add($"Skill Exp: {quest.Quest.Reward.Gold}");
+                rewardNode.Items.Add($"Skill Exp: {quest.Quest.Reward.Gold}");
 
             if (quest.Quest.Reward.InventorySlots > 0)
-                rewardNode.Nodes.Add($"Inv. slots: {quest.Quest.Reward.Gold}");
+                rewardNode.Items.Add($"Inv. slots: {quest.Quest.Reward.Gold}");
 
             if (quest.Quest.Reward.Hwan > 0)
-                rewardNode.Nodes.Add($"Hwan: {quest.Quest.Reward.Gold}");
+                rewardNode.Items.Add($"Hwan: {quest.Quest.Reward.Gold}");
         }
 
         if (quest.Quest.RewardItems != null && quest.Quest.RewardItems.Any())
         {
-            var itemsNode = new TreeNode("Items");
+            var itemsNode = new TreeViewItem("Items");
 
             foreach (var rewardItem in quest.Quest.RewardItems)
             {
                 if (rewardItem.Item != null)
-                    itemsNode.Nodes.Add($"{rewardItem.Item.GetRealName()}");
+                    itemsNode.Items.Add($"{rewardItem.Item.GetRealName()}");
 
                 if (rewardItem.OptionalItem != null)
-                    itemsNode.Nodes.Add($"{rewardItem.OptionalItem.GetRealName()}");
+                    itemsNode.Items.Add($"{rewardItem.OptionalItem.GetRealName()}");
             }
 
-            rewardNode.Nodes.Add(itemsNode);
+            rewardNode.Items.Add(itemsNode);
         }
 
-        node.Nodes.Add(rewardNode);
+        node.Items.Add(rewardNode);
 
         if (quest.Objectives?.Length > 0)
             foreach (var objective in quest.Objectives)
             {
                 var objectiveName = Game.ReferenceManager.GetTranslation(objective.NameStrId);
-                var objectiveSubNode = new TreeNode(objectiveName);
+                var objectiveSubNode = new TreeViewItem(objectiveName);
                 if (objective.InProgress)
-                    objectiveSubNode.Nodes.Add("Status: In progress");
+                    objectiveSubNode.Items.Add("Status: In progress");
                 else
-                    objectiveSubNode.Nodes.Add("Status: Complete");
+                    objectiveSubNode.Items.Add("Status: Complete");
 
                 foreach (var task in objective.Tasks)
                 {
                     var actualTitle = objectiveName.Replace("%d", task.ToString());
 
-                    objectiveSubNode.Nodes.Add($"Progress: {task}");
+                    objectiveSubNode.Items.Add($"Progress: {task}");
                     objectiveSubNode.Text = actualTitle;
                 }
 
-                node.Nodes.Add(objectiveSubNode);
+                node.Items.Add(objectiveSubNode);
             }
 
         return node;
@@ -201,9 +192,9 @@ public partial class Main : DoubleBufferedControl
         RefreshQuestList();
     }
 
-    private void watchQuestToolStripMenuItem_Click(object sender, EventArgs e)
+    private void watchQuestMenuItem_Click(object sender, EventArgs e)
     {
-        if (!uint.TryParse(treeQuests.SelectedNode?.Tag.ToString(), out var questId))
+        if (!uint.TryParse(treeQuests.SelectedItem?.Tag.ToString(), out var questId))
             return;
 
         if (View.SidebarElement.HasQuest(questId))
@@ -212,20 +203,20 @@ public partial class Main : DoubleBufferedControl
             View.SidebarElement.AddQuest(questId);
     }
 
-    private void treeQuests_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+    private void treeQuests_NodeMouseClick(object sender, EventArgs e)
     {
-        treeQuests.SelectedNode = e.Node;
+        //treeQuests.SelectedNode = e.Node;
     }
 
-    private void abandonToolStripMenuItem_Click(object sender, EventArgs e)
+    private async void abandonMenuItem_Click(object sender, EventArgs e)
     {
-        if (!uint.TryParse(treeQuests.SelectedNode?.Tag.ToString(), out var questId))
+        if (!uint.TryParse(treeQuests.SelectedItem?.Tag.ToString(), out var questId))
             return;
 
         if (!Game.Player.QuestLog.ActiveQuests.TryGetValue(questId, out var activeQuest))
             return;
 
-        if (MessageBox.Show($"Do you really want to abandon the quest [{activeQuest.Quest.GetTranslatedName()}]?",
+        if (await MessageBox.Show($"Do you really want to abandon the quest [{activeQuest.Quest.GetTranslatedName()}]?",
                 "Abandon quest", MessageBoxButtons.YesNo) == DialogResult.Yes)
             Game.Player.QuestLog.AbandonQuest(questId);
     }

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using SDUI;
+using SkiaSharp;
+using System;
+using System.Timers;
 
 namespace RSBot.Map.Views
 {
@@ -31,27 +34,27 @@ namespace RSBot.Map.Views
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            label4 = new SDUI.Controls.Label();
-            comboViewType = new SDUI.Controls.ComboBox();
-            trmInterval = new System.Windows.Forms.Timer(components);
-            lvMonster = new SDUI.Controls.ListView();
-            colName = new System.Windows.Forms.ColumnHeader();
-            colType = new System.Windows.Forms.ColumnHeader();
-            colLevel = new System.Windows.Forms.ColumnHeader();
-            colPosition = new System.Windows.Forms.ColumnHeader();
-            checkBoxAutoSelectUniques = new SDUI.Controls.CheckBox();
-            label3 = new SDUI.Controls.Label();
-            timerUniqueChecker = new System.Windows.Forms.Timer(components);
-            checkEnableCollisions = new SDUI.Controls.CheckBox();
-            tabControl1 = new SDUI.Controls.TabControl();
-            mapCanvas = new System.Windows.Forms.TabPage();
-            tabNavMeshViewer = new System.Windows.Forms.TabPage();
-            btnNvmResetToPlayer = new SDUI.Controls.Button();
-            labelSectorInfo = new SDUI.Controls.Label();
-            panelNavMeshRendererCanvas = new System.Windows.Forms.Panel();
-            panel1 = new System.Windows.Forms.Panel();
-            panel2 = new System.Windows.Forms.Panel();
-            panel3 = new System.Windows.Forms.Panel();
+            label4 = new SDUI.Label();
+            comboViewType = new SDUI.ComboBox();
+            trmInterval = new Timer();
+            lvMonster = new SDUI.ListView();
+            colName = new ColumnHeader();
+            colType = new ColumnHeader();
+            colLevel = new ColumnHeader();
+            colPosition = new ColumnHeader();
+            checkBoxAutoSelectUniques = new SDUI.CheckBox();
+            label3 = new SDUI.Label();
+            timerUniqueChecker = new Timer();
+            checkEnableCollisions = new SDUI.CheckBox();
+            tabControl1 = new SDUI.TabControl();
+            mapCanvas = new TabPage();
+            tabNavMeshViewer = new TabPage();
+            btnNvmResetToPlayer = new SDUI.Button();
+            labelSectorInfo = new SDUI.Label();
+            panelNavMeshRendererCanvas = new Panel();
+            panel1 = new Panel();
+            panel2 = new Panel();
+            panel3 = new Panel();
             tabControl1.SuspendLayout();
             tabNavMeshViewer.SuspendLayout();
             panel1.SuspendLayout();
@@ -63,11 +66,11 @@ namespace RSBot.Map.Views
             // 
             label4.ApplyGradient = false;
             label4.AutoSize = true;
-            label4.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label4.Gradient = new System.Drawing.Color[]
+            label4.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
+            label4.Gradient = new SKColor[]
     {
-    System.Drawing.Color.Gray,
-    System.Drawing.Color.Black
+    SKColors.Gray,
+    SKColors.Black
     };
             label4.GradientAnimation = false;
             label4.Location = new System.Drawing.Point(23, 15);
@@ -78,11 +81,6 @@ namespace RSBot.Map.Views
             // 
             // comboViewType
             // 
-            comboViewType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboViewType.DropDownHeight = 100;
-            comboViewType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboViewType.IntegralHeight = false;
-            comboViewType.ItemHeight = 17;
             comboViewType.Items.AddRange(new object[] { "Monsters", "Players", "Party", "NPCs", "COS", "Portals", "All" });
             comboViewType.Location = new System.Drawing.Point(81, 14);
             comboViewType.Name = "comboViewType";
@@ -95,21 +93,21 @@ namespace RSBot.Map.Views
             // 
             trmInterval.Enabled = true;
             trmInterval.Interval = 50;
-            trmInterval.Tick += trmInterval_Tick;
+            trmInterval.Elapsed += trmInterval_Tick;
             // 
             // lvMonster
             // 
-            lvMonster.BackColor = System.Drawing.Color.White;
-            lvMonster.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { colName, colType, colLevel, colPosition });
-            lvMonster.Dock = System.Windows.Forms.DockStyle.Top;
-            lvMonster.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
+            lvMonster.BackColor = SKColors.White;
+            lvMonster.Columns.AddRange(new ColumnHeader[] { colName, colType, colLevel, colPosition });
+            lvMonster.Dock = DockStyle.Top;
+            lvMonster.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             lvMonster.FullRowSelect = true;
             lvMonster.Location = new System.Drawing.Point(0, 49);
             lvMonster.Name = "lvMonster";
             lvMonster.Size = new System.Drawing.Size(384, 291);
             lvMonster.TabIndex = 8;
             lvMonster.UseCompatibleStateImageBehavior = false;
-            lvMonster.View = System.Windows.Forms.View.Details;
+            lvMonster.ViewType = ViewTypes.Details;
             // 
             // colName
             // 
@@ -134,10 +132,10 @@ namespace RSBot.Map.Views
             // checkBoxAutoSelectUniques
             // 
             checkBoxAutoSelectUniques.AutoSize = true;
-            checkBoxAutoSelectUniques.BackColor = System.Drawing.Color.Transparent;
+            checkBoxAutoSelectUniques.BackColor = SKColors.Transparent;
             checkBoxAutoSelectUniques.Depth = 0;
             checkBoxAutoSelectUniques.Location = new System.Drawing.Point(23, 383);
-            checkBoxAutoSelectUniques.Margin = new System.Windows.Forms.Padding(0);
+            checkBoxAutoSelectUniques.Margin = new Padding(0);
             checkBoxAutoSelectUniques.MouseLocation = new System.Drawing.Point(-1, -1);
             checkBoxAutoSelectUniques.Name = "checkBoxAutoSelectUniques";
             checkBoxAutoSelectUniques.Ripple = true;
@@ -152,11 +150,11 @@ namespace RSBot.Map.Views
             label3.ApplyGradient = false;
             label3.AutoSize = true;
             label3.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point);
-            label3.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            label3.Gradient = new System.Drawing.Color[]
+            label3.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
+            label3.Gradient = new SKColor[]
     {
-    System.Drawing.Color.Gray,
-    System.Drawing.Color.Black
+    SKColors.Gray,
+    SKColors.Black
     };
             label3.GradientAnimation = false;
             label3.Location = new System.Drawing.Point(23, 416);
@@ -169,17 +167,17 @@ namespace RSBot.Map.Views
             // 
             timerUniqueChecker.Enabled = true;
             timerUniqueChecker.Interval = 2500;
-            timerUniqueChecker.Tick += timerUniqueChecker_Tick;
+            timerUniqueChecker.Elapsed += timerUniqueChecker_Tick;
             // 
             // checkEnableCollisions
             // 
             checkEnableCollisions.AutoSize = true;
-            checkEnableCollisions.BackColor = System.Drawing.Color.Transparent;
+            checkEnableCollisions.BackColor = SKColors.Transparent;
             checkEnableCollisions.Checked = true;
-            checkEnableCollisions.CheckState = System.Windows.Forms.CheckState.Checked;
+            checkEnableCollisions.CheckState = CheckState.Checked;
             checkEnableCollisions.Depth = 0;
             checkEnableCollisions.Location = new System.Drawing.Point(23, 355);
-            checkEnableCollisions.Margin = new System.Windows.Forms.Padding(0);
+            checkEnableCollisions.Margin = new Padding(0);
             checkEnableCollisions.MouseLocation = new System.Drawing.Point(-1, -1);
             checkEnableCollisions.Name = "checkEnableCollisions";
             checkEnableCollisions.Ripple = true;
@@ -191,44 +189,43 @@ namespace RSBot.Map.Views
             // 
             // tabControl1
             // 
-            tabControl1.Controls.Add(mapCanvas);
-            tabControl1.Controls.Add(tabNavMeshViewer);
-            tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            tabControl1.ItemSize = new System.Drawing.Size(80, 24);
+            tabControl1.TabPages.Add(mapCanvas);
+            tabControl1.TabPages.Add(tabNavMeshViewer);
+            tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new System.Drawing.Point(0, 0);
             tabControl1.Name = "tabControl1";
-            tabControl1.Radius = new System.Windows.Forms.Padding(4);
+            tabControl1.Radius = new Padding(4);
             tabControl1.SelectedIndex = 0;
             tabControl1.Size = new System.Drawing.Size(366, 501);
             tabControl1.TabIndex = 20;
             // 
             // mapCanvas
             // 
-            mapCanvas.BackColor = System.Drawing.Color.White;
+            mapCanvas.BackColor = SKColors.White;
             mapCanvas.Location = new System.Drawing.Point(4, 28);
             mapCanvas.Name = "mapCanvas";
-            mapCanvas.Padding = new System.Windows.Forms.Padding(3);
+            mapCanvas.Padding = new Padding(3);
             mapCanvas.Size = new System.Drawing.Size(358, 469);
             mapCanvas.TabIndex = 0;
             mapCanvas.Text = "Minimap";
             mapCanvas.Paint += tabMinimap_Paint;
-            mapCanvas.MouseClick += mapCanvas_MouseClick;
+            mapCanvas.Click += mapCanvas_MouseClick;
             // 
             // tabNavMeshViewer
             // 
-            tabNavMeshViewer.BackColor = System.Drawing.Color.White;
+            tabNavMeshViewer.BackColor = SKColors.White;
             tabNavMeshViewer.Controls.Add(panelNavMeshRendererCanvas);
             tabNavMeshViewer.Controls.Add(panel2);
             tabNavMeshViewer.Location = new System.Drawing.Point(4, 28);
             tabNavMeshViewer.Name = "tabNavMeshViewer";
-            tabNavMeshViewer.Padding = new System.Windows.Forms.Padding(3);
+            tabNavMeshViewer.Padding = new Padding(3);
             tabNavMeshViewer.Size = new System.Drawing.Size(358, 469);
             tabNavMeshViewer.TabIndex = 1;
             tabNavMeshViewer.Text = "NavMesh Viewer";
             // 
             // btnNvmResetToPlayer
             // 
-            btnNvmResetToPlayer.Color = System.Drawing.Color.Transparent;
+            btnNvmResetToPlayer.Color = SKColors.Transparent;
             btnNvmResetToPlayer.Location = new System.Drawing.Point(14, 7);
             btnNvmResetToPlayer.Name = "btnNvmResetToPlayer";
             btnNvmResetToPlayer.Radius = 6;
@@ -242,11 +239,11 @@ namespace RSBot.Map.Views
             // labelSectorInfo
             // 
             labelSectorInfo.ApplyGradient = false;
-            labelSectorInfo.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            labelSectorInfo.Gradient = new System.Drawing.Color[]
+            labelSectorInfo.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
+            labelSectorInfo.Gradient = new SKColor[]
     {
-    System.Drawing.Color.Gray,
-    System.Drawing.Color.Black
+    SKColors.Gray,
+    SKColors.Black
     };
             labelSectorInfo.GradientAnimation = false;
             labelSectorInfo.Location = new System.Drawing.Point(619, 10);
@@ -254,13 +251,12 @@ namespace RSBot.Map.Views
             labelSectorInfo.Size = new System.Drawing.Size(128, 17);
             labelSectorInfo.TabIndex = 15;
             labelSectorInfo.Text = "000x000";
-            labelSectorInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            labelSectorInfo.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelNavMeshRendererCanvas
             // 
-            panelNavMeshRendererCanvas.BackColor = System.Drawing.Color.FromArgb(64, 64, 64);
-            panelNavMeshRendererCanvas.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            panelNavMeshRendererCanvas.Dock = System.Windows.Forms.DockStyle.Fill;
+            panelNavMeshRendererCanvas.BackColor = new SkiaSharp.SKColor(64, 64, 64);
+            panelNavMeshRendererCanvas.Dock = DockStyle.Fill;
             panelNavMeshRendererCanvas.Location = new System.Drawing.Point(3, 3);
             panelNavMeshRendererCanvas.Name = "panelNavMeshRendererCanvas";
             panelNavMeshRendererCanvas.Size = new System.Drawing.Size(352, 427);
@@ -273,7 +269,7 @@ namespace RSBot.Map.Views
             panel1.Controls.Add(checkEnableCollisions);
             panel1.Controls.Add(label3);
             panel1.Controls.Add(checkBoxAutoSelectUniques);
-            panel1.Dock = System.Windows.Forms.DockStyle.Right;
+            panel1.Dock = DockStyle.Right;
             panel1.Location = new System.Drawing.Point(366, 0);
             panel1.Name = "panel1";
             panel1.Size = new System.Drawing.Size(384, 501);
@@ -281,10 +277,10 @@ namespace RSBot.Map.Views
             // 
             // panel2
             // 
-            panel2.BackColor = System.Drawing.Color.Transparent;
+            panel2.BackColor = SKColors.Transparent;
             panel2.Controls.Add(btnNvmResetToPlayer);
             panel2.Controls.Add(labelSectorInfo);
-            panel2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            panel2.Dock = DockStyle.Bottom;
             panel2.Location = new System.Drawing.Point(3, 430);
             panel2.Name = "panel2";
             panel2.Size = new System.Drawing.Size(352, 36);
@@ -294,7 +290,7 @@ namespace RSBot.Map.Views
             // 
             panel3.Controls.Add(comboViewType);
             panel3.Controls.Add(label4);
-            panel3.Dock = System.Windows.Forms.DockStyle.Top;
+            panel3.Dock = DockStyle.Top;
             panel3.Location = new System.Drawing.Point(0, 0);
             panel3.Name = "panel3";
             panel3.Size = new System.Drawing.Size(384, 49);
@@ -302,13 +298,12 @@ namespace RSBot.Map.Views
             // 
             // Main
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            
             Controls.Add(tabControl1);
             Controls.Add(panel1);
             Name = "Main";
             Size = new System.Drawing.Size(750, 501);
-            Load += Main_Load;
+            ParentChanged += Main_Load;
             tabControl1.ResumeLayout(false);
             tabNavMeshViewer.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -320,26 +315,26 @@ namespace RSBot.Map.Views
         }
 
         #endregion
-        private SDUI.Controls.ListView lvMonster;
-        private System.Windows.Forms.ColumnHeader colName;
-        private System.Windows.Forms.ColumnHeader colType;
-        private System.Windows.Forms.ColumnHeader colLevel;
-        private SDUI.Controls.Label label4;
-        private SDUI.Controls.ComboBox comboViewType;
-        private System.Windows.Forms.ColumnHeader colPosition;
-        private System.Windows.Forms.Timer trmInterval;
-        private SDUI.Controls.CheckBox checkBoxAutoSelectUniques;
-        private SDUI.Controls.Label label3;
-        private System.Windows.Forms.Timer timerUniqueChecker;
-        private SDUI.Controls.CheckBox checkEnableCollisions;
-        private SDUI.Controls.TabControl tabControl1;
-        private System.Windows.Forms.TabPage mapCanvas;
-        private System.Windows.Forms.TabPage tabNavMeshViewer;
-        private System.Windows.Forms.Panel panelNavMeshRendererCanvas;
-        private SDUI.Controls.Label labelSectorInfo;
-        private SDUI.Controls.Button btnNvmResetToPlayer;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel3;
+        private SDUI.ListView lvMonster;
+        private ColumnHeader colName;
+        private ColumnHeader colType;
+        private ColumnHeader colLevel;
+        private SDUI.Label label4;
+        private SDUI.ComboBox comboViewType;
+        private ColumnHeader colPosition;
+        private Timer trmInterval;
+        private SDUI.CheckBox checkBoxAutoSelectUniques;
+        private SDUI.Label label3;
+        private Timer timerUniqueChecker;
+        private SDUI.CheckBox checkEnableCollisions;
+        private SDUI.TabControl tabControl1;
+        private TabPage mapCanvas;
+        private TabPage tabNavMeshViewer;
+        private Panel panelNavMeshRendererCanvas;
+        private SDUI.Label labelSectorInfo;
+        private SDUI.Button btnNvmResetToPlayer;
+        private Panel panel1;
+        private Panel panel2;
+        private Panel panel3;
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core.Components;
 using RSBot.General.Components;
 using RSBot.General.Models;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.General.Views;
 
-public partial class AccountsWindow : UIWindowBase
+public partial class AccountsWindow : Form
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="AccountsWindow" /> class.
@@ -42,13 +42,9 @@ public partial class AccountsWindow : UIWindowBase
     private void Accounts_Load(object sender, EventArgs e)
     {
         ClearTextboxes();
-        listAccounts.BeginUpdate();
-
         listAccounts.Items.Clear();
         foreach (var account in Accounts.SavedAccounts)
             listAccounts.Items.Add(account);
-
-        listAccounts.EndUpdate();
     }
 
     /// <summary>
@@ -123,7 +119,7 @@ public partial class AccountsWindow : UIWindowBase
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void linkLabelPwShowHide_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkLabelPwShowHide_LinkClicked(object sender, EventArgs e)
     {
         if (txtPassword.UseSystemPasswordChar)
         {
@@ -142,7 +138,7 @@ public partial class AccountsWindow : UIWindowBase
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void linkLabelSecondaryPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    private void linkLabelSecondaryPassword_LinkClicked(object sender, EventArgs e)
     {
         if (textBoxSecondaryPassword.UseSystemPasswordChar)
         {
@@ -174,7 +170,7 @@ public partial class AccountsWindow : UIWindowBase
             var title = LanguageManager.GetLang("MsgBoxAlreadyRegisteredTitle");
             var content = LanguageManager.GetLang("MsgBoxAlreadyRegisteredContent");
 
-            MessageBox.Show(content, title, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            MessageBox.Show(content, title, MessageBoxButtons.OK);
             return;
         }
 
@@ -191,7 +187,8 @@ public partial class AccountsWindow : UIWindowBase
 
         Accounts.SavedAccounts.Add(account);
 
-        listAccounts.SelectedIndex = listAccounts.Items.Add(account);
+        listAccounts.SelectedIndex = listAccounts.Items.Count;
+        listAccounts.Items.Add(account);
     }
 
     /// <summary>

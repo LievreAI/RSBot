@@ -6,22 +6,22 @@ using RSBot.Core.Event;
 using RSBot.Core.Plugins;
 using RSBot.Views.Dialog;
 using SDUI;
-using SDUI.Controls;
-using SDUI.Helpers;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
+
 
 namespace RSBot.Views;
 
-public partial class Main : UIWindow
+public partial class Main : Form
 {
-    public static readonly Color LightThemeColor = Color.FromArgb(255, 255, 255);
-    public static readonly Color DarkThemeColor = Color.FromArgb(16, 16, 16);
+    public static readonly SKColor LightThemeColor = new SKColor(255, 255, 255);
+    public static readonly SKColor DarkThemeColor = new SKColor(16, 16, 16);
 
     #region Members
 
@@ -29,7 +29,7 @@ public partial class Main : UIWindow
     ///     Bot player name [_cached]
     /// </summary>
     private string _playerName;
-    private readonly Dictionary<string, UIWindow> _pluginWindows = new(8);
+    private readonly Dictionary<string, WindowBase> _pluginWindows = new(8);
 
     #endregion Members
 
@@ -41,7 +41,7 @@ public partial class Main : UIWindow
     public Main()
     {
         InitializeComponent();
-        CheckForIllegalCrossThreadCalls = false;
+        
         SystemEvents.UserPreferenceChanged += SystemEvents_UserPreferenceChanged;
         RegisterEvents();
 
@@ -73,17 +73,17 @@ public partial class Main : UIWindow
     /// <param name="e">The event args</param>
     private void SystemEvents_UserPreferenceChanged(object sender, UserPreferenceChangedEventArgs e)
     {
-        if (BackColor.IsDark() == WindowsHelper.IsDark())
-            return;
+        //if (BackColor.IsDark() == WindowsHelper.IsDark())
+          //  return;
 
         var detectDarkLight = GlobalConfig.Get("RSBot.Theme.Auto", true);
         if (!detectDarkLight)
             return;
 
-        if (WindowsHelper.IsDark())
-            SetThemeColor(DarkThemeColor);
-        else
-            SetThemeColor(LightThemeColor);
+        //if (WindowsHelper.IsDark())
+          //  SetThemeColor(DarkThemeColor);
+        //else
+          //  SetThemeColor(LightThemeColor);
     }
 
     /// <summary>
@@ -93,7 +93,7 @@ public partial class Main : UIWindow
     private void SetThemeColor(Color color)
     {
         GlobalConfig.Set("SDUI.Color", color.ToArgb());
-        ColorScheme.BackColor = color;
+        //ColorScheme.BackColor = color;
         RefreshTheme();
     }
 
@@ -102,9 +102,9 @@ public partial class Main : UIWindow
     /// </summary>
     public void RefreshTheme(bool save = true)
     {
-        BackColor = ColorScheme.BackColor;
-        stripStatus.BackColor = BackColor.IsDark() ? ColorScheme.BorderColor : Color.FromArgb(33, 150, 243);
-        stripStatus.ForeColor = ColorScheme.ForeColor;
+        //BackColor = ColorScheme.BackColor;
+        //stripStatus.BackColor = BackColor.IsDark() ? ColorScheme.BorderColor : Color.FromArgb(33, 150, 243);
+        //stripStatus.ForeColor = ColorScheme.ForeColor;
 
         if (save)
             GlobalConfig.Save();
@@ -147,12 +147,12 @@ public partial class Main : UIWindow
         if (WindowState == FormWindowState.Minimized)
             WindowState = FormWindowState.Normal;
 
-        TopMost = true;
+        //TopMost = true;
 
         BringToFront();
-        Activate();
+        //Activate();
 
-        TopMost = false;
+        //TopMost = false;
     }
 
     /// <summary>
@@ -175,12 +175,16 @@ public partial class Main : UIWindow
 
         newBotbase.Value.Translate();
 
+        var tabpage = new TabPage();
+        tabpage.Text = LanguageManager.GetLangBySpecificKey(newBotbase.Value.Name, "TabText", newBotbase.Value.TabText);
+        
         var control = newBotbase.Value.View;
         control.Name = newBotbase.Value.Name;
-        control.Text = LanguageManager.GetLangBySpecificKey(newBotbase.Value.Name, "TabText", newBotbase.Value.TabText);
         control.Enabled = Game.Ready;
-        windowPageControl.Controls.Add(control);
-        windowPageControl.Controls.SetChildIndex(control, 1);
+        control.Dock = DockStyle.Fill;
+        tabpage.Controls.Add(control);
+
+        windowPageControl.TabPages.Insert(1, tabpage);
 
         Kernel.Bot?.SetBotbase(newBotbase.Value);
         GlobalConfig.Set("RSBot.BotName", newBotbase.Value.Name);
@@ -188,17 +192,19 @@ public partial class Main : UIWindow
         if (Game.Player != null)
             EventManager.FireEvent("OnLoadCharacter");
 
-        foreach (ToolStripMenuItem item in botsToolStripMenuItem.DropDown.Items)
+        foreach (MenuItem item in botsMenuItem.Items)
             item.Checked = newBotbase.Value.Name == item.Name;
+        
+        TabPage oldBotBase = null;
 
-        if (!string.IsNullOrWhiteSpace(oldBotbaseName) && windowPageControl.Controls.ContainsKey(oldBotbaseName))
-            windowPageControl.Controls.RemoveByKey(oldBotbaseName);
+        if (!string.IsNullOrWhiteSpace(oldBotbaseName) && (oldBotBase = windowPageControl.TabPages.FirstOrDefault(p => p.Name == oldBotbaseName)) != null)
+            windowPageControl.TabPages.Remove(oldBotBase);
     }
 
     /// <summary>
     ///     Loads the extensions.
     /// </summary>
-    private void LoadExtensions()
+    private async void LoadExtensions()
     {
         foreach (var plugin in Kernel.PluginManager.Extensions.Values)
             plugin.Initialize();
@@ -211,28 +217,38 @@ public partial class Main : UIWindow
         {
             extension.Value.Translate();
 
+            var tabpage = new TabPage();
+            tabpage.Text = LanguageManager.GetLangBySpecificKey(extension.Value.InternalName, "DisplayName",
+                extension.Value.DisplayName);
+            
             var control = extension.Value.View;
             control.Name = extension.Value.InternalName;
-            control.Text = LanguageManager.GetLangBySpecificKey(extension.Value.InternalName, "DisplayName",
-                extension.Value.DisplayName);
             control.Enabled = !extension.Value.RequireIngame;
             control.Dock = DockStyle.Fill;
+            tabpage.Controls.Add(control);
 
-            windowPageControl.Controls.Add(control);
+            try
+            {
+                windowPageControl.TabPages.Add(tabpage);
+            }
+            catch (Exception e)
+            {
+                await MessageBox.Show(this, "ERROR", e.ToString());
+            }    
         }
 
         foreach (var extension in extensions.Where(extension => !extension.Value.DisplayAsTab))
         {
             var menuItemText = LanguageManager.GetLangBySpecificKey(extension.Value.InternalName, "DisplayName",
                 extension.Value.DisplayName);
-            var menuItem = new ToolStripMenuItem(menuItemText)
+            var menuItem = new MenuItem(menuItemText)
             {
                 Enabled = !extension.Value.RequireIngame
             };
             menuItem.Click += PluginMenuItem_Click;
             menuItem.Tag = extension.Value;
 
-            menuPlugins.DropDownItems.Add(menuItem);
+            menuPlugins.Items.Add(menuItem);
         }
     }
 
@@ -274,20 +290,16 @@ public partial class Main : UIWindow
     /// <exception cref="System.NotImplementedException"></exception>
     private void PluginMenuItem_Click(object sender, EventArgs e)
     {
-        var menuItem = (ToolStripMenuItem)sender;
+        var menuItem = (MenuItem)sender;
         var plugin = (IPlugin)menuItem.Tag;
 
-        if (!_pluginWindows.TryGetValue(plugin.InternalName, out var pluginWindow) || pluginWindow.IsDisposed)
+        if (!_pluginWindows.TryGetValue(plugin.InternalName, out var pluginWindow))
         {
-            pluginWindow = new UIWindow
+            pluginWindow = new Form
             {
                 Text = plugin.DisplayName,
                 Name = plugin.InternalName,
-                MaximizeBox = false,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                Icon = Icon,
                 StartPosition = FormStartPosition.CenterParent,
-                ShowTitle = true
             };
 
             var content = plugin.View;
@@ -295,7 +307,8 @@ public partial class Main : UIWindow
 
             plugin.Translate();
 
-            pluginWindow.Size = new Size(content.Size.Width + 16, content.Size.Height + 32);
+            pluginWindow.Width = content.Size.Width + 16;
+            pluginWindow.Height = content.Size.Height + 32;
             pluginWindow.Controls.Add(content);
 
             _pluginWindows[plugin.InternalName] = pluginWindow;
@@ -370,17 +383,17 @@ public partial class Main : UIWindow
 
         foreach (var item in LanguageManager.GetLanguages())
         {
-            var dropdown = new ToolStripMenuItem(item.Value);
+            var dropdown = new MenuItem(item.Value);
             dropdown.Click += LanguageDropdown_Click;
             dropdown.Tag = item.Key;
-            languageToolStripMenuItem.DropDownItems.Add(dropdown);
+            languageMenuItem.Items.Add(dropdown);
 
             if (Kernel.Language == dropdown.Text)
                 dropdown.Checked = true;
         }
 
         ConfigureSidebar();
-        BackColor = ColorScheme.BackColor;
+        //BackColor = ColorScheme.BackColor;
         menuCurrentProfile.Text = "Profile: " + ProfileManager.SelectedProfile;
 
         EventManager.FireEvent("OnInitialized");
@@ -394,20 +407,20 @@ public partial class Main : UIWindow
     /// <exception cref="System.NotImplementedException"></exception>
     private void LanguageDropdown_Click(object sender, EventArgs e)
     {
-        var dropdown = sender as ToolStripMenuItem;
+        var dropdown = sender as MenuItem;
         if (dropdown.Checked)
             return;
 
         Kernel.Language = dropdown.Tag.ToString();
 
-        foreach (ToolStripMenuItem item in languageToolStripMenuItem.DropDownItems)
+        foreach (MenuItem item in languageMenuItem.Items)
             item.Checked = false;
 
         foreach (var plugin in Kernel.PluginManager.Extensions)
         {
             plugin.Value.Translate();
 
-            var tabpage = windowPageControl.Controls[plugin.Key];
+            var tabpage = windowPageControl.TabPages.FirstOrDefault(p => p.Name == plugin.Key);
             if (tabpage == null)
                 continue;
 
@@ -418,10 +431,10 @@ public partial class Main : UIWindow
         {
             botbase.Value.Translate();
 
-            if (!windowPageControl.Controls.ContainsKey(botbase.Key))
+            var tabpage = windowPageControl.TabPages.FirstOrDefault(p => p.Name == botbase.Key);
+            if (tabpage == null)
                 continue;
 
-            var tabpage = windowPageControl.Controls[botbase.Key];
             tabpage.Text = LanguageManager.GetLangBySpecificKey(botbase.Key, "DisplayName", tabpage.Text);
         }
 
@@ -475,8 +488,8 @@ public partial class Main : UIWindow
     ///     Handles the FormClosing event of the Main control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
-    /// <param name="e">The <see cref="FormClosingEventArgs" /> instance containing the event data.</param>
-    private void Main_FormClosing(object sender, FormClosingEventArgs e)
+    /// <param name="e">The <see cref="SDUI.CancelEventArgs" /> instance containing the event data.</param>
+    private async void Main_FormClosing(object sender, System.ComponentModel.CancelEventArgs e)
     {
         if (Kernel.Proxy == null || !Kernel.Proxy.ClientConnected || !GlobalConfig.Get("RSBot.showExitDialog", true))
         {
@@ -487,7 +500,7 @@ public partial class Main : UIWindow
         }
 
         var exitDialog = new ExitDialog();
-        if (exitDialog.ShowDialog(this) != DialogResult.Yes)
+        if (await exitDialog.ShowDialog(this) != DialogResult.Yes)
         {
             e.Cancel = true;
             return;
@@ -522,7 +535,7 @@ public partial class Main : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void menuItemExit_Click(object sender, EventArgs e)
+    private async void menuItemExit_Click(object sender, EventArgs e)
     {
         if (Kernel.Proxy == null || !Kernel.Proxy.ClientConnected || !GlobalConfig.Get("RSBot.showExitDialog", true))
         {
@@ -533,7 +546,7 @@ public partial class Main : UIWindow
         }
 
         var exitDialog = new ExitDialog();
-        if (exitDialog.ShowDialog(this) != DialogResult.Yes)
+        if (await exitDialog.ShowDialog(this) != DialogResult.Yes)
             return;
 
         GlobalConfig.Save();
@@ -556,9 +569,6 @@ public partial class Main : UIWindow
         if (!GlobalConfig.Get<bool>("RSBot.General.TrayWhenMinimize"))
             return;
 
-        notifyIcon.Visible = true;
-        notifyIcon.ShowBalloonTip(1000);
-
         Hide();
     }
 
@@ -569,57 +579,57 @@ public partial class Main : UIWindow
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private void menuItemThis_Click(object sender, EventArgs e)
     {
-        new AboutDialog().ShowDialog();
+        new AboutDialog().ShowDialog(this);
     }
 
     /// <summary>
-    ///     Handles the Click event of the networkConfigToolStripMenuItem control.
+    ///     Handles the Click event of the networkConfigMenuItem control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void networkConfigToolStripMenuItem_Click(object sender, EventArgs e)
+    private void networkConfigMenuItem_Click(object sender, EventArgs e)
     {
         using var configDialog = new ConfigDialog();
-        configDialog.ShowDialog();
+        configDialog.ShowDialog(this);
     }
 
     /// <summary>
-    ///     Handles the Click event of the darkToolStripMenuItem control.
+    ///     Handles the Click event of the darkMenuItem control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void darkToolStripMenuItem_Click(object sender, EventArgs e)
+    private void darkMenuItem_Click(object sender, EventArgs e)
     {
         GlobalConfig.Set("RSBot.Theme.Auto", false);
-        SetThemeColor(DarkThemeColor);
+        //SetThemeColor(DarkThemeColor);
     }
 
     /// <summary>
-    ///     Handles the Click event of the lightToolStripMenuItem control.
+    ///     Handles the Click event of the lightMenuItem control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void lightToolStripMenuItem_Click(object sender, EventArgs e)
+    private void lightMenuItem_Click(object sender, EventArgs e)
     {
         GlobalConfig.Set("RSBot.Theme.Auto", false);
-        SetThemeColor(LightThemeColor);
+        //SetThemeColor(LightThemeColor);
     }
 
     /// <summary>
-    ///     Handles the Click event of the autoToolStripMenuItem control.
+    ///     Handles the Click event of the autoMenuItem control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void autoToolStripMenuItem_Click(object sender, EventArgs e)
+    private void autoMenuItem_Click(object sender, EventArgs e)
     {
-        if (WindowsHelper.IsModern)
+        /*if (WindowsHelper.IsModern)
         {
             GlobalConfig.Set("RSBot.Theme.Auto", true);
             SystemEvents_UserPreferenceChanged(null,
                 new UserPreferenceChangedEventArgs(UserPreferenceCategory.Color));
 
             return;
-        }
+        }*/
 
         MessageBox.Show(
             "Unfortunately, it does not support this mode because your operating system is outdated!",
@@ -630,13 +640,13 @@ public partial class Main : UIWindow
     }
 
     /// <summary>
-    ///     Handles the Click event of the coloredToolStripMenuItem control.
+    ///     Handles the Click event of the coloredMenuItem control.
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void coloredToolStripMenuItem_Click(object sender, EventArgs e)
+    private void coloredMenuItem_Click(object sender, EventArgs e)
     {
-        var colorDialog = new ColorDialog
+        /*var colorDialog = new ColorDialog
         {
             CustomColors = GlobalConfig.GetArray<int>("SDUI.CustomColors")
         };
@@ -645,7 +655,7 @@ public partial class Main : UIWindow
         {
             GlobalConfig.SetArray("SDUI.CustomColors", colorDialog.CustomColors);
             SetThemeColor(colorDialog.Color);
-        }
+        }*/
     }
 
     /// <summary>
@@ -653,12 +663,11 @@ public partial class Main : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void menuSelectProfile_Click(object sender, EventArgs e)
+    private async void menuSelectProfile_Click(object sender, EventArgs e)
     {
         var dialog = new ProfileSelectionDialog();
         dialog.StartPosition = FormStartPosition.CenterParent;
-        dialog.ShowInTaskbar = false;
-        if (dialog.ShowDialog() != DialogResult.OK)
+        if (await dialog.ShowDialog(this) != DialogResult.OK)
             return;
 
         if (dialog.SelectedProfile == ProfileManager.SelectedProfile)
@@ -670,8 +679,8 @@ public partial class Main : UIWindow
         var tempNewConfig = new Config(ProfileManager.GetProfileFile(dialog.SelectedProfile));
 
         if (oldSroPath != tempNewConfig.Get("RSBot.SilkroadDirectory", ""))
-            if (MessageBox.Show("This profile references to a different client, do you want to restart the bot?",
-                    "Restart bot?", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            if (await MessageBox.Show("This profile references to a different client, do you want to restart the bot?",
+                    "Restart bot?", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 Application.Restart();
 
         ProfileManager.SetSelectedProfile(dialog.SelectedProfile);
@@ -695,7 +704,7 @@ public partial class Main : UIWindow
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void buttonConfig_Click(object sender, EventArgs e)
+    private async void buttonConfig_Click(object sender, EventArgs e)
     {
         const string title = "IP Bind";
 
@@ -705,13 +714,13 @@ public partial class Main : UIWindow
             "Use your custom interface ip for connect to game.\nEnter your interface Ip:\t(default: 0.0.0.0)";
 
         var dialog = new InputDialog(title, title, message, defaultValue: currentBind);
-        if (dialog.ShowDialog() != DialogResult.OK)
+        if (await dialog.ShowDialog(this) != DialogResult.OK)
             return;
 
         if (!IPAddress.TryParse(dialog.Value.ToString(), out var ipAddress))
         {
             const string errorMessage = "The IP address is incorrect or cannot be verified.You can try like '0.0.0.0'.";
-            MessageBox.Show(errorMessage);
+            await MessageBox.Show(this, "", errorMessage);
 
             return;
         }
@@ -742,30 +751,30 @@ public partial class Main : UIWindow
     /// <summary>
     ///     Called when [load botbases].
     /// </summary>
-    private void OnLoadBotbases()
+    private async void OnLoadBotbases()
     {
         if (Kernel.BotbaseManager.Bots == null || Kernel.BotbaseManager.Bots.Count == 0)
         {
             var title = LanguageManager.GetLang("NoBotbaseDetected");
             var message = LanguageManager.GetLang("NoBotbaseDetectedDesc");
             var messageResult =
-                MessageBox.Show(message, title, MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
+                await MessageBox.Show(this, message, title, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error);
 
-            if (messageResult == DialogResult.Retry)
+            if (messageResult == DialogResult.Yes)
                 Kernel.BotbaseManager.LoadAssemblies();
-            else if (messageResult == DialogResult.Abort)
+            else if (messageResult == DialogResult.No)
                 Environment.Exit(-1);
         }
 
         foreach (var bot in Kernel.BotbaseManager.Bots)
         {
-            var item = new ToolStripMenuItem
+            var item = new MenuItem
             {
                 Name = bot.Value.Name,
                 Text = bot.Value.DisplayName
             };
             item.Click += Item_Click;
-            botsToolStripMenuItem.DropDown.Items.Add(item);
+            botsMenuItem.Items.Add(item);
         }
 
         SelectBotbase(GlobalConfig.Get("RSBot.BotName", "RSBot.Default"));
@@ -779,7 +788,7 @@ public partial class Main : UIWindow
     /// <exception cref="System.NotImplementedException"></exception>
     private void Item_Click(object? sender, EventArgs e)
     {
-        var item = sender as ToolStripMenuItem;
+        var item = sender as MenuItem;
         SelectBotbase(item.Name);
     }
 
@@ -788,7 +797,7 @@ public partial class Main : UIWindow
     /// </summary>
     private void OnAgentServerDisconnected()
     {
-        foreach (Control control in windowPageControl.Controls)
+        foreach (Control control in windowPageControl.TabPages)
         {
             if (!control.Controls.ContainsKey("overlay"))
                 continue;
@@ -801,7 +810,6 @@ public partial class Main : UIWindow
         if (!Text.EndsWith(disconnectedText))
         {
             Text = $@"RSBot - {_playerName} - {disconnectedText}";
-            notifyIcon.Text = Text;
         }
     }
 
@@ -846,19 +854,18 @@ public partial class Main : UIWindow
     /// </summary>
     private void OnLoadCharacter()
     {
-        foreach (Control control in windowPageControl.Controls)
+        foreach (Control control in windowPageControl.TabPages)
         {
             control.Enabled = true;
 
             control.Controls["overlay"]?.Hide();
         }
 
-        foreach (ToolStripItem item in menuPlugins.DropDownItems)
+        foreach (MenuItem item in menuPlugins.Items)
             item.Enabled = true;
 
         _playerName = Game.Player.Name;
         Text = $@"RSBot - {_playerName}";
-        notifyIcon.Text = Text;
 
         if (Game.Clientless)
             Text += " [Clientless]";

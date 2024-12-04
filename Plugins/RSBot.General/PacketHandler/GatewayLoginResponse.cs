@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Network;
 using RSBot.General.Components;
@@ -74,7 +74,7 @@ internal class GatewayLoginResponse : IPacketHandler
 
                 Task.Factory.StartNew(() =>
                 {
-                    SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
+                    //SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
 
                     View.PendingWindow.Start(count, timestamp);
                     if (!GlobalConfig.Get<bool>("RSBot.General.AutoHidePendingWindow"))

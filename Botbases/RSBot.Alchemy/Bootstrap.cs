@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Subscriber;
 using RSBot.Core;
@@ -22,7 +22,7 @@ public class Bootstrap : IBotbase
 
     public Area Area => new();
 
-    public Control View => Globals.View;
+    public SDUI.Control View => Globals.View;
 
     public void Start()
     {

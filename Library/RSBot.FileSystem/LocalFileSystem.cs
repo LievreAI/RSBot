@@ -29,9 +29,9 @@ public class LocalFileSystem : IFileSystem
     public string BasePath { get; }
 
     /// <summary>
-    ///     Gets the path separator for the local file system.
+    ///     Gets the path Splitter for the local file system.
     /// </summary>
-    public char PathSeparator => Path.DirectorySeparatorChar;
+    public char PathSplitter => Path.DirectorySeparatorChar;
 
     public bool FileExists(string path)
     {
@@ -161,14 +161,14 @@ public class LocalFileSystem : IFileSystem
 
     private string GetAbsolutePath(string path)
     {
-        if (!path.StartsWith(PathSeparator))
-            path = PathSeparator + path;
+        if (!path.StartsWith(PathSplitter))
+            path = PathSplitter + path;
 
-        if (path.Contains('/') && PathSeparator != '/')
-            path = path.Replace('/', PathSeparator);
+        if (path.Contains('/') && PathSplitter != '/')
+            path = path.Replace('/', PathSplitter);
 
-        if (path.Contains('\\') && PathSeparator != '\\')
-            path = path.Replace('\\', PathSeparator);
+        if (path.Contains('\\') && PathSplitter != '\\')
+            path = path.Replace('\\', PathSplitter);
 
         return BasePath + path;
     }

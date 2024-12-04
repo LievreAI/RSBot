@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
-    <UseWindowsForms>true</UseWindowsForms>
+    
     <ImplicitUsings>disable</ImplicitUsings>
 	<OutputPath>.\..\..\Build\Data\Plugins</OutputPath>
 	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -14,9 +14,12 @@
 	<OutputType>Library</OutputType>
   </PropertyGroup>
 
+	<ItemGroup>
+		<PackageReference Include="System.Resources.Extensions" Version="9.0.0" />
+	</ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj" />
-    <ProjectReference Include="..\..\SDUI\SDUI\SDUI.csproj" />
+    <ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
   </ItemGroup>
 
 </Project>

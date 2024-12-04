@@ -1,31 +1,33 @@
-﻿using RSBot.Core.Extensions;
+﻿using HarfBuzzSharp;
+using RSBot.Core.Extensions;
 using RSBot.NavMeshApi;
 using RSBot.NavMeshApi.Dungeon;
 using RSBot.NavMeshApi.Mathematics;
 using RSBot.NavMeshApi.Object;
 using RSBot.NavMeshApi.Terrain;
-using SDUI.Controls;
+using SDUI;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Numerics;
-using System.Windows.Forms;
+using System.Reflection.Emit;
+
 
 namespace RSBot.Map.Renderer;
 
-public partial class NavMeshRenderer : DoubleBufferedControl
+public partial class NavMeshRenderer : Panel
 {
     private bool _isDragging;
-    private Point _dragPosition;
+    private SKPoint _dragPosition;
 
     private NavMeshTransform _transform;
     private NavMeshTransform _mouseTransform;
     private NavMeshRaycastHit? _hit = null;
 
-    private readonly Font _font;
-    private readonly Font _smallFont;
+    private readonly SKFont _font;
+    private readonly SKFont _smallFont;
 
     private float _zoom = 1.0f;
 
@@ -53,8 +55,8 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         if (this.DesignMode)
             return;
 
-        _font = new Font("Arial", 64f);
-        _smallFont = new Font("Arial", 32f);
+        _font = new(SKTypeface.FromFamilyName("Arial", 64, 32, SKFontStyleSlant.Upright));
+        _smallFont = new(SKTypeface.FromFamilyName("Arial", 32, 16, SKFontStyleSlant.Upright));
         _transform = new NavMeshTransform(Vector3.Zero);
         _mouseTransform = new NavMeshTransform(Vector3.Zero);
     }
@@ -72,7 +74,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
 
     protected override void OnPaintBackground(PaintEventArgs e)
     {
-        e.Graphics.Clear(SDUI.ColorScheme.BackColor);
+        e.Canvas.Clear(SKColors.Black);
     }
 
     protected override void OnPaint(PaintEventArgs e)
@@ -82,13 +84,14 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         if (_transform?.Region == 0u)
             return;
 
-        var g = e.Graphics;
+        var g = e.Canvas;
 
-        var matrix = new Matrix();
-
-        matrix.Scale(this.Width / 1920.0f * _zoom, this.Height / 1920.0f * _zoom);
-        matrix.Translate(960.0f - _transform.Offset.X, 960 - _transform.Offset.Z);
-        g.MultiplyTransform(matrix);
+        var matrix = new SKMatrix();
+        matrix.ScaleX = this.Width / 1920.0f * _zoom;
+        matrix.ScaleY = this.Height / 1920.0f * _zoom;
+        matrix.TransX = 960.0f - _transform.Offset.X;
+        matrix.TransY = 960 - _transform.Offset.Z;
+        g.SetMatrix(matrix);
 
         var set = new HashSet<int>();
 
@@ -120,67 +123,73 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         var localMouseOffset = RID.Transform(_mouseTransform.Offset, _transform.Region, _mouseTransform.Region);
         if (_raycastVisualizer)
         {
-            g.DrawLine(Pens.White, _transform.Offset.X, _transform.Offset.Z, localMouseOffset.X, localMouseOffset.Z);
+            g.DrawLine(_transform.Offset.X, _transform.Offset.Z, localMouseOffset.X, localMouseOffset.Z, SKColors.White);
             if (_hit != null)
             {
                 var localHitOffset = RID.Transform(_hit.Position, _transform.Region, _hit.Region);
-                g.DrawLine(Pens.Red, _transform.Offset.X, _transform.Offset.Z, localHitOffset.X, localHitOffset.Z);
+                g.DrawLine(_transform.Offset.X, _transform.Offset.Z, localHitOffset.X, localHitOffset.Z, SKColors.Red);
             }
         }
 
         matrix.Invert();
-        g.MultiplyTransform(matrix);
+       
+        g.ResetMatrix();
 
-        var textBrush = new SolidBrush(SDUI.ColorScheme.ForeColor);
+        g.DrawText($"Player: {_transform}", Rectangle.Empty, this, SDUI.ContentAlignment.TopLeft);
+        g.DrawText($"Cursor: {_mouseTransform}", new Rectangle(new Point(0, 12), Size.Empty), this, SDUI.ContentAlignment.TopLeft);
 
-        g.DrawString($"Player: {_transform}", DefaultFont, textBrush, 0, 0);
-        g.DrawString($"Cursor: {_mouseTransform}", DefaultFont, textBrush, 0, 12);
+
         if (_hit != null)
-            g.DrawString($"Hit: {_hit}", DefaultFont, Brushes.Red, 0, 24);
+            g.DrawText($"Hit: {_hit}", new Rectangle(new Point(0, 12), Size.Empty), this, SDUI.ContentAlignment.TopLeft, selectionColor: SKColors.Red);
     }
 
-    private void DrawNavMeshDungeon(HashSet<int> set, Graphics g, NavMeshDungeon dungeon)
+    private void DrawNavMeshDungeon(HashSet<int> set, SKCanvas g, NavMeshDungeon dungeon)
     {
         if (_transform.Instance is not NavMeshInstBlock currentBlock)
             return;
 
         foreach (var block in dungeon.Blocks.Where(b => b.FloorIndex == currentBlock.FloorIndex))
         {
-            var blockMatrix = new Matrix();
-            blockMatrix.RotateAt(block.Yaw * (180.0f / MathF.PI), block.LocalPosition.ToPointF());
-            blockMatrix.Translate(block.LocalPosition.X, block.LocalPosition.Z);
-
-            g.MultiplyTransform(blockMatrix);
+            var blockMatrix = new SKMatrix();
+            blockMatrix = SKMatrix.CreateRotation(block.Yaw * (180.0f / MathF.PI), block.LocalPosition.X, block.LocalPosition.Z);
+            blockMatrix.TransX = block.LocalPosition.X;
+            blockMatrix.TransY = block.LocalPosition.Z;
+            g.SetMatrix(blockMatrix);
 
             this.DrawNavMeshObj(g, block.ID, block.NavMeshObj);
-
+            g.ResetMatrix();
             blockMatrix.Invert();
-            g.MultiplyTransform(blockMatrix);
+
+            g.SetMatrix(blockMatrix);
 
             set.Add(block.ID);
 
             foreach (var obj in block.ObjectList)
-                g.DrawCircle(Pens.Red, obj.Circle);
+                g.DrawCircle(obj.Circle.Position.X, obj.Circle.Position.Y, obj.Circle.Radius, new SKPaint() { Color = SKColors.Red });
         }
     }
 
-    private void DrawTerrain(HashSet<int> set, Graphics g, NavMeshTerrain terrain)
+    private void DrawTerrain(HashSet<int> set, SKCanvas g, NavMeshTerrain terrain)
     {
         var dx = (terrain.Region.X - _transform.Region.X) * RID.Width;
         var dz = (terrain.Region.Z - _transform.Region.Z) * RID.Length;
 
-        var matrix = new Matrix();
-        matrix.Translate(dx, dz);
-
-        g.MultiplyTransform(matrix);
+        var matrix = SKMatrix.CreateTranslation(dx, dz);
+        g.SetMatrix(matrix);
 
         if (_drawRegionBorder)
-            g.DrawRectangle(Pens.Magenta, 0, 0, 1920 - 1, 1920 - 1);
+            g.DrawRectangle(0, 0, 1920 - 1, 1920 - 1, SKColors.Magenta);
+
+        using var skPaint = new SKPaint()
+        {
+            Color = SKColors.White,
+        };
 
         if (_drawTerrainCellID)
         {
+
             foreach (var cell in terrain.Cells)
-                g.DrawString($"{cell}", _smallFont, Brushes.White, cell.RectangleF.Center.ToPointF());
+                g.DrawText($"{cell}", cell.RectangleF.Center.X, cell.RectangleF.Center.Y, _smallFont, skPaint);
         }
 
         if (_drawTerrainGlobalEdges)
@@ -191,7 +200,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                 g.DrawLine(pen, edge.Line);
 
                 if (_drawTerrainGlobalEdgeID)
-                    g.DrawString($"{edge}", _smallFont, Brushes.White, edge.Line.Center.ToPointF());
+                    g.DrawText($"{edge}", edge.Line.Center.X, edge.Line.Center.Y, _smallFont, skPaint);
             }
         }
 
@@ -203,7 +212,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                 g.DrawLine(pen, edge.Line);
 
                 if (_drawTerrainInternalEdgeID)
-                    g.DrawString($"{edge}", _smallFont, Brushes.White, edge.Line.Center.ToPointF());
+                    g.DrawText($"{edge}", edge.Line.Center.X, edge.Line.Center.Y, _smallFont, skPaint);
             }
         }
 
@@ -212,35 +221,37 @@ public partial class NavMeshRenderer : DoubleBufferedControl
             if (set.Contains(obj.WorldUID))
                 continue;
 
-            var objMatrix = new Matrix();
-            objMatrix.RotateAt(obj.Yaw * (180.0f / MathF.PI), obj.LocalPosition.ToPointF());
-            objMatrix.Translate(obj.LocalPosition.X, obj.LocalPosition.Z);
-
-            g.MultiplyTransform(objMatrix);
+            var objMatrix = SKMatrix.CreateRotation(obj.Yaw * (180.0f / MathF.PI), obj.LocalPosition.X, obj.LocalPosition.Z);
+            g.SetMatrix(objMatrix);
 
             this.DrawNavMeshObj(g, obj.WorldUID, obj.NavMeshObj);
+            g.ResetMatrix();
 
             objMatrix.Invert();
-            g.MultiplyTransform(objMatrix);
+            g.SetMatrix(objMatrix);
 
             set.Add(obj.WorldUID);
         }
 
         if (_drawRegionId)
-            g.DrawString($"{terrain.Region}", _font, Brushes.White, 0, 0);
+            g.DrawText($"{terrain.Region}", 0,0, _smallFont, skPaint);
 
         matrix.Invert();
-        g.MultiplyTransform(matrix);
+        g.SetMatrix(matrix);
     }
 
-    private void DrawNavMeshObj(Graphics g, int id, NavMeshObj obj)
+    private void DrawNavMeshObj(SKCanvas g, int id, NavMeshObj obj)
     {
+        using var skPaint = new SKPaint()
+        {
+            Color = SKColors.White,
+        };
+
         if (_drawObjectGround)
         {
-            var brush = new SolidBrush(id.ToColor());
             foreach (var cell in obj.Cells)
             {
-                g.FillTriangleF(brush, cell.Triangle);
+                g.FillTriangleF(id.ToColor(), cell.Triangle);
 
                 if (_drawObjectCellID)
                 {
@@ -249,7 +260,9 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                         label = $"{cell}";
                     else
                         label = $"{cell} [{obj.Events[cell.EventZone.Index]}, {cell.EventZone.Flag}]";
-                    g.DrawString(label, _smallFont, Brushes.White, cell.Triangle.Center.ToPointF());
+
+
+                    g.DrawText(label, cell.Triangle.Center.X, cell.Triangle.Center.Y, _smallFont, skPaint);
                 }
             }
         }
@@ -267,7 +280,8 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                         label = $"{edge}";
                     else
                         label = $"{edge} [{obj.Events[edge.EventZone.Index]}, {edge.EventZone.Flag}]";
-                    g.DrawString(label, _smallFont, Brushes.White, edge.Line.Center.ToPointF());
+
+                    g.DrawText(label, edge.Line.Center.X, edge.Line.Center.Y, _smallFont, skPaint);
                 }
 
             }
@@ -287,7 +301,8 @@ public partial class NavMeshRenderer : DoubleBufferedControl
                         label = $"{edge}";
                     else
                         label = $"{edge} [{obj.Events[edge.EventZone.Index]}, {edge.EventZone.Flag}]";
-                    g.DrawString(label, _smallFont, Brushes.White, edge.Line.Center.ToPointF());
+
+                    g.DrawText(label, edge.Line.Center.X, edge.Line.Center.Y, _smallFont, skPaint);
                 }
             }
         }
@@ -300,7 +315,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         if (_raycastVisualizer)
             return;
 
-        _zoom += e.Delta * 0.001f;
+        _zoom += e.Delta.X * 0.001f;
 
         if (_zoom < 0.5)
             _zoom = 0.5f;
@@ -319,7 +334,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         {
             var dx = _dragPosition.X - e.X;
             var dy = _dragPosition.Y - e.Y;
-            _dragPosition = e.Location;
+            _dragPosition = new SKPoint(e.Location.X, e.Location.Y);
 
             _transform.Offset += new Vector3(dx * (RID.Width / this.Width), 0, dy * (RID.Length / this.Height));
             _transform.Normalize();
@@ -357,7 +372,7 @@ public partial class NavMeshRenderer : DoubleBufferedControl
 
         if (e.Button == MouseButtons.Middle)
         {
-            _dragPosition = e.Location;
+            _dragPosition = new SKPoint(e.Location.X, e.Location.Y);
             _isDragging = true;
         }
     }
@@ -382,81 +397,81 @@ public partial class NavMeshRenderer : DoubleBufferedControl
         }
     }
 
-    private void regionIDToolStripMenuItem_CheckedChange(object sender, EventArgs e)
+    private void regionIDMenuItem_CheckedChange(object sender, EventArgs e)
     {
-        _drawRegionId = regionIDToolStripMenuItem.Checked;
+        _drawRegionId = regionIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void regionBorderToolStripMenuItem_CheckedChange(object sender, EventArgs e)
+    private void regionBorderMenuItem_CheckedChange(object sender, EventArgs e)
     {
-        _drawRegionBorder = regionBorderToolStripMenuItem.Checked;
+        _drawRegionBorder = regionBorderMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void globalEdgesToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+    private void globalEdgesMenuItem_CheckedChanged(object sender, EventArgs e)
     {
-        _drawTerrainGlobalEdges = terrainGlobalEdgesToolStripMenuItem.Checked;
+        _drawTerrainGlobalEdges = terrainGlobalEdgesMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void internalEdgesToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+    private void internalEdgesMenuItem_CheckedChanged(object sender, EventArgs e)
     {
-        _drawTerrainInternalEdges = terrainInternalEdgesToolStripMenuItem.Checked;
+        _drawTerrainInternalEdges = terrainInternalEdgesMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void globalEdgesToolStripMenuItem1_CheckedChanged(object sender, EventArgs e)
+    private void globalEdgesMenuItem1_CheckedChanged(object sender, EventArgs e)
     {
-        _drawObjectGlobalEdges = objectGlobalEdgesToolStripMenuItem1.Checked;
+        _drawObjectGlobalEdges = objectGlobalEdgesMenuItem1.Checked;
         this.Invalidate();
     }
 
-    private void internalEdgesToolStripMenuItem1_CheckedChanged(object sender, EventArgs e)
+    private void internalEdgesMenuItem1_CheckedChanged(object sender, EventArgs e)
     {
-        _drawObjectInternalEdges = objectInternalEdgesToolStripMenuItem1.Checked;
+        _drawObjectInternalEdges = objectInternalEdgesMenuItem1.Checked;
         this.Invalidate();
     }
 
-    private void groundToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
+    private void groundMenuItem_CheckedChanged(object sender, EventArgs e)
     {
-        _drawObjectGround = objectGroundToolStripMenuItem.Checked;
+        _drawObjectGround = objectGroundMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void terrainCellIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void terrainCellIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawTerrainCellID = terrainCellIDToolStripMenuItem.Checked;
+        _drawTerrainCellID = terrainCellIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void terrainGlobalEdgeIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void terrainGlobalEdgeIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawTerrainGlobalEdgeID = terrainGlobalEdgeIDToolStripMenuItem.Checked;
+        _drawTerrainGlobalEdgeID = terrainGlobalEdgeIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void terrainInternalEdgeIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void terrainInternalEdgeIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawTerrainInternalEdgeID = terrainInternalEdgeIDToolStripMenuItem.Checked;
+        _drawTerrainInternalEdgeID = terrainInternalEdgeIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void objectCellIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void objectCellIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawObjectCellID = objectCellIDToolStripMenuItem.Checked;
+        _drawObjectCellID = objectCellIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void objectGlobalEdgeIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void objectGlobalEdgeIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawObjectGlobalEdgeID = objectGlobalEdgeIDToolStripMenuItem.Checked;
+        _drawObjectGlobalEdgeID = objectGlobalEdgeIDMenuItem.Checked;
         this.Invalidate();
     }
 
-    private void objectInternalEdgeIDToolStripMenuItem_Click(object sender, EventArgs e)
+    private void objectInternalEdgeIDMenuItem_Click(object sender, EventArgs e)
     {
-        _drawObjectInternalEdgeID = objectInternalEdgeIDToolStripMenuItem.Checked;
+        _drawObjectInternalEdgeID = objectInternalEdgeIDMenuItem.Checked;
         this.Invalidate();
     }
 

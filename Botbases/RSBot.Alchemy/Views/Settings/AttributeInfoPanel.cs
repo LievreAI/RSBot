@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Alchemy.Views.Settings;
 
 [ToolboxItem(false)]
-public partial class AttributeInfoPanel : DoubleBufferedControl
+public partial class AttributeInfoPanel : Panel
 {
     public delegate void OnChangedEventHandler(bool @checked, int maxValue);
 
@@ -37,8 +37,6 @@ public partial class AttributeInfoPanel : DoubleBufferedControl
     public AttributeInfoPanel(ItemAttributeGroup group, IEnumerable<InventoryItem>? stones, InventoryItem item,
         int maxValue = 22)
     {
-        CheckForIllegalCrossThreadCalls = false;
-
         InitializeComponent();
 
         AttributeGroup = group;
@@ -68,8 +66,8 @@ public partial class AttributeInfoPanel : DoubleBufferedControl
         checkSelected.CheckedChanged += CheckSelected_CheckedChanged;
         comboMaxValue.SelectedIndexChanged += ComboMaxValue_SelectedIndexChanged;
 
-        if (Stones.Any())
-            tipStone.SetToolTip(checkSelected, $"{Stones.First().Record.GetRealName()}x{totalAmount}");
+        //if (Stones.Any())
+          //  tipStone.SetToolTip(checkSelected, $"{Stones.First().Record.GetRealName()}x{totalAmount}");
 
         if (GetMaxValue() <= _currentAttribute.GetPercentage(_currentAttributeSlot))
             lblFinished.Show();

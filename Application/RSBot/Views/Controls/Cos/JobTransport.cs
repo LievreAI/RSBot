@@ -34,8 +34,8 @@ public partial class JobTransport : CosControlBase
         MiniCosControl.Level.Text = "Lv." + record.ReqLevel1;
 
         var icon = Game.Player.JobTransport.Record?.GetIcon();
-        if (icon != null)
-            MiniCosControl.Icon.BackgroundImage = icon;
+        //if (icon != null)
+        //    MiniCosControl.Icon.BackgroundImage = icon;
     }
 
     /// <summary>

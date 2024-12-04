@@ -1,10 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
@@ -12,14 +6,19 @@ using RSBot.Core.Network;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Inventory;
 using SDUI;
-using SDUI.Controls;
-using Button = SDUI.Controls.Button;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
+using Button = SDUI.Button;
 using ListViewExtensions = RSBot.Core.Extensions.ListViewExtensions;
 
 namespace RSBot.Inventory.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     <inheritdoc />
@@ -39,12 +38,6 @@ public partial class Main : DoubleBufferedControl
         _lock = new object();
         InitializeComponent();
         SubscribeEvents();
-
-        listViewMain.SmallImageList = ListViewExtensions.StaticItemsImageList;
-
-        var backColor = ColorScheme.BorderColor.Determine().Alpha(85);
-        buttonInventory.ForeColor = backColor.Determine();
-        buttonInventory.Color = backColor;
     }
 
     /// <summary>
@@ -69,8 +62,8 @@ public partial class Main : DoubleBufferedControl
     /// <param name="slot"></param>
     private void OnUpdateInventoryItem(byte slot)
     {
-        var key = slot.ToString();
-        if (!listViewMain.Items.ContainsKey(key))
+        var key = slot;
+        if (!((key >= 0) && (key < listViewMain.Items.Count)))
             return;
 
         lock (_lock)
@@ -85,11 +78,11 @@ public partial class Main : DoubleBufferedControl
             if (inventoryItem.OptLevel > 0)
                 name += " (+" + inventoryItem.OptLevel + ")";
 
-            listViewItem.SubItems[0].Text = name;
-            listViewItem.SubItems[1].Text = inventoryItem.Amount.ToString();
+            listViewItem.SubItems[0] = name;
+            listViewItem.SubItems[1] = inventoryItem.Amount.ToString();
 
             if (inventoryItem.Record.IsEquip)
-                listViewItem.SubItems[2].Text = inventoryItem.Record.GetRarityName();
+                listViewItem.SubItems[2] = inventoryItem.Record.GetRarityName();
 
             listViewItem.LoadItemImageAsync(inventoryItem.Record);
         }
@@ -108,7 +101,6 @@ public partial class Main : DoubleBufferedControl
 
         lock (_lock)
         {
-            listViewMain.BeginUpdate();
             listViewMain.Items.Clear();
 
             switch (_selectedIndex)
@@ -119,8 +111,6 @@ public partial class Main : DoubleBufferedControl
                         AddItem(item);
 
                     lblFreeSlots.Text = Game.Player.Inventory.FreeSlots + "/" + Game.Player.Inventory.Capacity;
-                    pbInventoryStatus.Value = Game.Player.Inventory.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Inventory.Capacity;
                     break;
 
                 case 1:
@@ -131,9 +121,6 @@ public partial class Main : DoubleBufferedControl
 
                     lblFreeSlots.Text = items.Count + " / 13";
 
-                    pbInventoryStatus.Value = items.Count;
-                    pbInventoryStatus.Maximum = 13;
-
                     break;
 
                 case 2:
@@ -143,16 +130,12 @@ public partial class Main : DoubleBufferedControl
 
                     lblFreeSlots.Text = "0";
 
-                    pbInventoryStatus.Value = Game.Player.Avatars.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Avatars.Capacity;
-
                     break;
 
                 case 3:
 
                     if (!Game.Player.HasActiveAbilityPet)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -162,16 +145,12 @@ public partial class Main : DoubleBufferedControl
                     lblFreeSlots.Text = Game.Player.AbilityPet.Inventory.FreeSlots + "/" +
                                         Game.Player.AbilityPet.Inventory.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.AbilityPet.Inventory.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.AbilityPet.Inventory.Capacity;
-
                     break;
 
                 case 4:
 
                     if (Game.Player.Storage == null)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -180,16 +159,12 @@ public partial class Main : DoubleBufferedControl
 
                     lblFreeSlots.Text = Game.Player.Storage.FreeSlots + "/" + Game.Player.Storage.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.Storage.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Storage.Capacity;
-
                     break;
 
                 case 5:
 
                     if (Game.Player.GuildStorage == null)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -198,16 +173,12 @@ public partial class Main : DoubleBufferedControl
 
                     lblFreeSlots.Text = Game.Player.GuildStorage.FreeSlots + "/" + Game.Player.GuildStorage.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.GuildStorage.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.GuildStorage.Capacity;
-
                     break;
 
                 case 6:
 
                     if (Game.Player.JobTransport == null)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -217,8 +188,6 @@ public partial class Main : DoubleBufferedControl
                     lblFreeSlots.Text = Game.Player.JobTransport.Inventory.FreeSlots + "/" +
                                         Game.Player.JobTransport.Inventory.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.JobTransport.Inventory.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.JobTransport.Inventory.Capacity;
 
                     break;
 
@@ -226,7 +195,6 @@ public partial class Main : DoubleBufferedControl
 
                     if (Game.Player.Job2SpecialtyBag == null)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -236,8 +204,6 @@ public partial class Main : DoubleBufferedControl
                     lblFreeSlots.Text = Game.Player.Job2SpecialtyBag.FreeSlots + "/" +
                                         Game.Player.Job2SpecialtyBag.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.Job2SpecialtyBag.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Job2SpecialtyBag.Capacity;
 
                     break;
 
@@ -245,7 +211,6 @@ public partial class Main : DoubleBufferedControl
 
                     if (Game.Player.Job2 == null)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -254,16 +219,12 @@ public partial class Main : DoubleBufferedControl
 
                     lblFreeSlots.Text = Game.Player.Job2.FreeSlots + "/" + Game.Player.Job2.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.Job2.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Job2.Capacity;
-
                     break;
 
                 case 9:
 
                     if (!Game.Player.HasActiveFellowPet)
                     {
-                        listViewMain.EndUpdate();
                         return;
                     }
 
@@ -273,13 +234,10 @@ public partial class Main : DoubleBufferedControl
                     lblFreeSlots.Text = Game.Player.Fellow.Inventory.FreeSlots + "/" +
                                         Game.Player.Fellow.Inventory.Capacity;
 
-                    pbInventoryStatus.Value = Game.Player.Fellow.Inventory.FreeSlots;
-                    pbInventoryStatus.Maximum = Game.Player.Fellow.Inventory.Capacity;
 
                     break;
             }
 
-            listViewMain.EndUpdate();
         }
     }
 
@@ -296,7 +254,10 @@ public partial class Main : DoubleBufferedControl
         if (item.OptLevel > 0)
             name += " (+" + item.OptLevel + ")";
 
-        var lvItem = listViewMain.Items.Add(item.Slot.ToString(), name, 0);
+        var lvItem = new ListViewItem();
+        lvItem.Text = name;
+
+        listViewMain.Items.Add(lvItem);
         lvItem.Tag = item;
         lvItem.SubItems.Add(item.Amount.ToString());
 
@@ -308,8 +269,8 @@ public partial class Main : DoubleBufferedControl
             var useItemsAtTrainingPlace =
                 PlayerConfig.GetArray<string>("RSBot.Inventory.ItemsAtTrainplace");
 
-            if (useItemsAtTrainingPlace.Contains(item.Record.CodeName))
-                lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
+            //if (useItemsAtTrainingPlace.Contains(item.Record.CodeName))
+            //    lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
         }
 
         lvItem.LoadItemImageAsync(item.Record);
@@ -379,14 +340,14 @@ public partial class Main : DoubleBufferedControl
             if (control.TabIndex > 9)
                 continue;
 
-            control.Color = Color.Transparent;
+            //control.Color = Color.Transparent;
 
-            if (control == button)
-            {
-                var backColor = ColorScheme.BorderColor.Determine().Alpha(85);
-                control.ForeColor = backColor.Determine();
-                control.Color = backColor;
-            }
+            //if (control == button)
+            //{
+            //    var backColor = ColorScheme.BorderColor.Determine().Alpha(85);
+            //    control.ForeColor = backColor.Determine();
+            //    control.Color = backColor;
+            //}
 
             control.Invalidate();
         }
@@ -394,7 +355,7 @@ public partial class Main : DoubleBufferedControl
         UpdateInventoryList();
     }
 
-    private void dropToolStripMenuItem_Click(object sender, EventArgs e)
+    private void dropMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
             return;
@@ -408,7 +369,7 @@ public partial class Main : DoubleBufferedControl
         inventoryItem?.Drop(cos, Game.Player.AbilityPet.UniqueId);
     }
 
-    private void contextMenuStrip_Opening(object sender, CancelEventArgs e)
+    private void ContextMenu_Opening(object sender, CancelEventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
         {
@@ -422,12 +383,12 @@ public partial class Main : DoubleBufferedControl
 
         if (_selectedIndex != 0)
         {
-            useToolStripMenuItem.Visible = false;
-            moveToLastDeathPositionToolStripMenuItem.Visible = false;
-            moveToLastRecallPositionToolStripMenuItem.Visible = false;
-            moveToPetToolStripMenuItem.Visible = false;
-            moveToPlayerToolStripMenuItem.Visible = _selectedIndex == 3;
-            selectMapLocationToolStripMenuItem.Visible = false;
+            useMenuItem.Visible = false;
+            moveToLastDeathPositionMenuItem.Visible = false;
+            moveToLastRecallPositionMenuItem.Visible = false;
+            moveToPetMenuItem.Visible = false;
+            moveToPlayerMenuItem.Visible = _selectedIndex == 3;
+            selectMapLocationMenuItem.Visible = false;
             return;
         }
 
@@ -439,52 +400,52 @@ public partial class Main : DoubleBufferedControl
             useItemAtTrainingPlaceMenuItem.Enabled = true;
 
             var purposiveItems = PlayerConfig.GetArray<string>("RSBot.Inventory.AutoUseAccordingToPurpose");
-            autoUseAccordingToPurposeToolStripMenuItem.Checked = purposiveItems.Contains(inventoryItem.Record.CodeName);
-            autoUseAccordingToPurposeToolStripMenuItem.Enabled = true;
+            autoUseAccordingToPurposeMenuItem.Checked = purposiveItems.Contains(inventoryItem.Record.CodeName);
+            autoUseAccordingToPurposeMenuItem.Enabled = true;
         }
         else
         {
             useItemAtTrainingPlaceMenuItem.Checked = false;
             useItemAtTrainingPlaceMenuItem.Enabled = false;
 
-            autoUseAccordingToPurposeToolStripMenuItem.Checked = false;
-            autoUseAccordingToPurposeToolStripMenuItem.Enabled = false;
+            autoUseAccordingToPurposeMenuItem.Checked = false;
+            autoUseAccordingToPurposeMenuItem.Enabled = false;
         }
 
         var isReverseScroll = inventoryItem.Equals(new TypeIdFilter(3, 3, 3, 3));
-        useToolStripMenuItem.Visible = !isReverseScroll;
-        useToolStripMenuItem.Enabled = inventoryItem.Record.CanUse != ObjectUseType.No;
-        moveToLastDeathPositionToolStripMenuItem.Visible = isReverseScroll;
-        moveToLastRecallPositionToolStripMenuItem.Visible = isReverseScroll;
-        selectMapLocationToolStripMenuItem.Visible = isReverseScroll;
-        dropToolStripMenuItem.Visible = inventoryItem.Record.CanDrop != ObjectDropType.No;
+        useMenuItem.Visible = !isReverseScroll;
+        useMenuItem.Enabled = inventoryItem.Record.CanUse != ObjectUseType.No;
+        moveToLastDeathPositionMenuItem.Visible = isReverseScroll;
+        moveToLastRecallPositionMenuItem.Visible = isReverseScroll;
+        selectMapLocationMenuItem.Visible = isReverseScroll;
+        dropMenuItem.Visible = inventoryItem.Record.CanDrop != ObjectDropType.No;
 
-        moveToPetToolStripMenuItem.Visible = Game.Player.AbilityPet != null && _selectedIndex != 3;
-        moveToPlayerToolStripMenuItem.Visible = _selectedIndex == 3;
+        moveToPetMenuItem.Visible = Game.Player.AbilityPet != null && _selectedIndex != 3;
+        moveToPlayerMenuItem.Visible = _selectedIndex == 3;
 
         if (isReverseScroll)
         {
-            var tagItem = selectMapLocationToolStripMenuItem.Tag as InventoryItem;
+            var tagItem = selectMapLocationMenuItem.Tag as InventoryItem;
             if (tagItem != inventoryItem)
             {
-                selectMapLocationToolStripMenuItem.Tag = inventoryItem;
-                selectMapLocationToolStripMenuItem.DropDownItems.Clear();
+                selectMapLocationMenuItem.Tag = inventoryItem;
+                selectMapLocationMenuItem.Items.Clear();
 
                 foreach (var item in Game.ReferenceManager.OptionalTeleports)
                 {
                     var mapName = Game.ReferenceManager.GetTranslation(item.Value.Region.ToString());
 
-                    var menuItem = new ToolStripMenuItem { Text = mapName };
+                    var menuItem = new MenuItem { Text = mapName };
 
                     menuItem.Click += (itemSender, itemEvent) => { inventoryItem.UseTo(7, item.Value.ID); };
 
-                    selectMapLocationToolStripMenuItem.DropDownItems.Add(menuItem);
+                    selectMapLocationMenuItem.Items.Add(menuItem);
                 }
             }
         }
     }
 
-    private void moveToLastRecallPositionToolStripMenuItem_Click(object sender, EventArgs e)
+    private void moveToLastRecallPositionMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
             return;
@@ -497,7 +458,7 @@ public partial class Main : DoubleBufferedControl
         inventoryItem.UseTo(2);
     }
 
-    private void moveToLastDeathPositionToolStripMenuItem_Click(object sender, EventArgs e)
+    private void moveToLastDeathPositionMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
             return;
@@ -510,7 +471,7 @@ public partial class Main : DoubleBufferedControl
         inventoryItem.UseTo(3);
     }
 
-    private void moveToPetToolStripMenuItem_Click(object sender, EventArgs e)
+    private void moveToPetMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
             return;
@@ -535,7 +496,7 @@ public partial class Main : DoubleBufferedControl
         PacketManager.SendPacket(packet, PacketDestination.Server);
     }
 
-    private void moveToPlayerToolStripMenuItem_Click(object sender, EventArgs e)
+    private void moveToPlayerMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedIndices.Count != 1)
             return;
@@ -585,12 +546,10 @@ public partial class Main : DoubleBufferedControl
 
         if (useSelectedItem)
         {
-            lvItem.Font = Font;
             itemsToUse.Remove(selectedItem.Record.CodeName);
         }
         else
         {
-            lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
             itemsToUse.Add(selectedItem.Record.CodeName);
         }
 
@@ -598,7 +557,7 @@ public partial class Main : DoubleBufferedControl
         PlayerConfig.SetArray("RSBot.Inventory.ItemsAtTrainplace", itemsToUse);
     }
 
-    private void autoUseAccordingToPurposeToolStripMenuItem_Click(object sender, EventArgs e)
+    private void autoUseAccordingToPurposeMenuItem_Click(object sender, EventArgs e)
     {
         if (listViewMain.SelectedItems.Count == 0)
             return;
@@ -614,12 +573,10 @@ public partial class Main : DoubleBufferedControl
 
         if (useSelectedItem)
         {
-            lvItem.Font = Font;
             itemsToUse.Remove(selectedItem.Record.CodeName);
         }
         else
         {
-            lvItem.Font = new Font(lvItem.Font, FontStyle.Bold);
             itemsToUse.Add(selectedItem.Record.CodeName);
         }
 

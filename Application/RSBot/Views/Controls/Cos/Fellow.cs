@@ -109,8 +109,8 @@ public partial class Fellow : CosControlBase
         OnFellowLevelUp();
 
         var icon = Game.Player.Fellow.Record?.GetIcon();
-        if (icon != null)
-            MiniCosControl.Icon.BackgroundImage = icon;
+        //if (icon != null)
+        //    MiniCosControl.Icon.BackgroundImage = icon;
     }
 
     public override void Reset()

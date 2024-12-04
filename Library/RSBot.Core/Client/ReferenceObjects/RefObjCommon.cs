@@ -1,7 +1,6 @@
-﻿using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using RSBot.Core.Extensions;
+﻿using RSBot.Core.Extensions;
+using SkiaSharp;
+using System.Diagnostics;
 
 namespace RSBot.Core.Client.ReferenceObjects;
 
@@ -110,15 +109,15 @@ public abstract class RefObjCommon : IReference<uint>
     ///     Gets the icon.
     /// </summary>
     /// <returns></returns>
-    public Image GetIcon()
+    public SKBitmap GetIcon()
     {
-        Image bitmap = null;
+        SKBitmap bitmap = null;
+
         try
         {
             var path = $"icon\\{AssocFileIcon}";
-
             if (!Game.MediaPk2.TryGetFile(path, out var file))
-                file = Game.MediaPk2.GetFile("icon\\icon_default.ddj");
+                bitmap = Game.MediaPk2.GetFile("icon\\icon_default.ddj").ToImage();
 
             bitmap = file.ToImage();
         }
@@ -127,8 +126,7 @@ public abstract class RefObjCommon : IReference<uint>
         }
         finally
         {
-            if (bitmap == null)
-                bitmap = new Bitmap(24, 24);
+            bitmap ??= new SKBitmap(24, 24);
         }
 
         return bitmap;

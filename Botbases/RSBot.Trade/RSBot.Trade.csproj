@@ -3,7 +3,7 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Nullable>disable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
+		
 		<ImplicitUsings>disable</ImplicitUsings>
 		<OutputPath>.\..\..\Build\Data\Bots</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -18,9 +18,7 @@
 		<ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj">
 			<Private>False</Private>
 		</ProjectReference>
-		<ProjectReference Include="..\..\SDUI\SDUI\SDUI.csproj">
-			<Private></Private>
-		</ProjectReference>
+		<ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
 	</ItemGroup>
 
 </Project>

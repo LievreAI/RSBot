@@ -32,7 +32,7 @@
             // 
             // Transport
             // 
-            Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Margin = new SDUI.Padding(4, 3, 4, 3);
             MaximumSize = new System.Drawing.Size(242, 70);
             MinimumSize = new System.Drawing.Size(242, 70);
             Name = "Transport";

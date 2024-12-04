@@ -17,9 +17,9 @@ public interface IFileSystem : IDisposable
     public string BasePath { get; }
 
     /// <summary>
-    ///     Gets the path separator character of this file system.
+    ///     Gets the path Splitter character of this file system.
     /// </summary>
-    public char PathSeparator { get; }
+    public char PathSplitter { get; }
 
     #endregion
 

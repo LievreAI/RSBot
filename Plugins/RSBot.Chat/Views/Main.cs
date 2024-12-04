@@ -1,19 +1,18 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Chat.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
         InitializeComponent();
 
         SubscribeEvents();
@@ -55,47 +54,47 @@ public partial class Main : DoubleBufferedControl
         switch (type)
         {
             case ChatType.Academy:
-                txtAcademy.Write(message);
+                txtAcademy.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.All:
-                txtAll.Write(message);
+                txtAll.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.AllGM:
-                txtAll.Write(message);
+                txtAll.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Global:
-                txtGlobal.Write(message);
+                txtGlobal.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Guild:
-                txtGuild.Write(message);
+                txtGuild.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Notice:
-                txtGlobal.Write(message);
+                txtGlobal.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Npc:
-                txtAll.Write(message);
+                txtAll.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Party:
-                txtParty.Write(message);
+                txtParty.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Private:
-                txtPrivate.Write(message);
+                txtPrivate.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Union:
-                txtUnion.Write(message);
+                txtUnion.Text += message + Environment.NewLine;
                 break;
 
             case ChatType.Stall:
-                txtStall.Write(message);
+                txtStall.Text += message + Environment.NewLine;
                 break;
         }
     }
@@ -113,10 +112,10 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="e">The <see cref="PreviewKeyDownEventArgs" /> instance containing the event data.</param>
-    private void MessagePreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+    private void MessagePreviewKeyDown(object sender, KeyEventArgs e)
     {
         if (e.KeyCode != Keys.Enter) return;
         SendChatMessage((Control)sender);
-        ((Control)sender).ResetText();
+        ((Control)sender).Text = string.Empty;
     }
 }

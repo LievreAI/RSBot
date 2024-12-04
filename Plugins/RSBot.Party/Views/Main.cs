@@ -1,26 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RSBot.Core;
+﻿using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects.Party;
 using RSBot.Core.Objects.Skill;
 using SDUI;
-using SDUI.Controls;
-using Button = SDUI.Controls.Button;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Button = SDUI.Button;
 using ListViewExtensions = RSBot.Core.Extensions.ListViewExtensions;
 
 namespace RSBot.Party.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     /// <summary>
     ///     <inheritdoc />
@@ -49,7 +47,7 @@ public partial class Main : DoubleBufferedControl
 
         _selectedBuffingGroup = new ListViewItem();
         _buffings = new List<BuffingPartyMember>();
-        CheckForIllegalCrossThreadCalls = false;
+        
         cbPartySearchPurpose.SelectedIndex = 0;
 
         SubscribeEvents();
@@ -262,8 +260,6 @@ public partial class Main : DoubleBufferedControl
 
             foreach (var item in listViewItems)
                 lvPartyMatching.Items.Add(item);
-
-            lvPartyMatching.EndUpdate();
         });
     }
 
@@ -356,7 +352,6 @@ public partial class Main : DoubleBufferedControl
         if (Game.Player == null)
             return;
 
-        listPartyBuffSkills.BeginUpdate();
         listPartyBuffSkills.Items.Clear();
         listPartyBuffSkills.Groups.Clear();
 
@@ -408,8 +403,6 @@ public partial class Main : DoubleBufferedControl
 
             item.LoadSkillImageAsync();
         }
-
-        listPartyBuffSkills.EndUpdate();
     }
 
     /// <summary>
@@ -417,14 +410,12 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     public void OnPartyData()
     {
-        listParty.BeginUpdate();
         try
         {
             listParty.Items.Clear();
 
             if (Game.Party.Members == null)
             {
-                listParty.EndUpdate();
                 OnPartyDismiss();
                 return;
             }
@@ -452,21 +443,19 @@ public partial class Main : DoubleBufferedControl
         catch
         {
         }
-
-        listParty.EndUpdate();
     }
 
     private void OnChangePartyEntry()
     {
         Log.NotifyLang("FormedPartyChanged", Bundle.Container.PartyMatching.Id);
 
-        if (tabMain.SelectedTab == tpPartyMatching)
+        if (tabMain.SelectedTabPage == tpPartyMatching)
             RequestPartyList();
     }
 
     private void OnDeletePartyEntry()
     {
-        if (tabMain.SelectedTab == tpPartyMatching &&
+        if (tabMain.SelectedTabPage == tpPartyMatching &&
             lvPartyMatching.Items.Count > 0 &&
             lvPartyMatching.Items[0].Name == Bundle.Container.PartyMatching.Id.ToString())
             lvPartyMatching.Items.Remove(lvPartyMatching.Items[0]);
@@ -499,7 +488,7 @@ public partial class Main : DoubleBufferedControl
         checkCurrentAutoShareItems.Checked = Game.Party.Settings.ItemAutoShare;
         _applySettings = true;
 
-        if (tabMain.SelectedTab == tpPartyMatching)
+        if (tabMain.SelectedTabPage == tpPartyMatching)
             RequestPartyList();
     }
 
@@ -513,7 +502,7 @@ public partial class Main : DoubleBufferedControl
     {
         Log.NotifyLang("UserLeftParty", member.Name);
 
-        listParty.Items.RemoveByKey(member.Name);
+        listParty.Items.Remove(member.Name);
     }
 
     private void OnPartyMemberBanned(PartyMember member)
@@ -521,7 +510,7 @@ public partial class Main : DoubleBufferedControl
         Log.NotifyLang("UserBannedParty", member.Name);
 
         if (member.Name != Game.Player.Name)
-            listParty.Items.RemoveByKey(member.Name);
+            listParty.Items.Remove(member.Name);
         else
             OnPartyDismiss();
     }
@@ -532,7 +521,7 @@ public partial class Main : DoubleBufferedControl
     /// <param name="member">The member.</param>
     private void OnPartyMemberUpdate(PartyMember member)
     {
-        if (!listParty.Items.ContainsKey(member.Name))
+        if (!listParty.Items.Contains(member.Name))
             return;
 
         var lvItem = listParty.Items[member.Name];
@@ -712,7 +701,7 @@ public partial class Main : DoubleBufferedControl
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
     private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (tabMain.SelectedTab == tpPartyMatching)
+        if (tabMain.SelectedTabPage == tpPartyMatching)
             RequestPartyList();
     }
 
@@ -730,7 +719,7 @@ public partial class Main : DoubleBufferedControl
                 ? LanguageManager.GetLang("FormingParty")
                 : LanguageManager.GetLang("ChangeEntry");
 
-        if (View.PartyWindow.ShowDialog() == DialogResult.OK)
+        if (View.PartyWindow.ShowDialog(this.FindForm()).Result == DialogResult.OK)
         {
             if (senderName == nameof(btnPartyMatchForm))
                 Bundle.Container.PartyMatching.Create();

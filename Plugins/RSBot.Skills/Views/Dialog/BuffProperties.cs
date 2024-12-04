@@ -3,11 +3,12 @@ using System.Drawing;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Skill;
-using SDUI.Controls;
+using SDUI;
+using SkiaSharp;
 
 namespace RSBot.Skills.Views;
 
-public partial class BuffProperties : UIWindowBase
+public partial class BuffProperties : Form
 {
     public BuffProperties(SkillInfo skillInfo)
     {
@@ -233,6 +234,6 @@ public partial class BuffProperties : UIWindowBase
 
         [Category("RefObjCommon")] public string AssocFileIcon { get; } //Icon
 
-        [Category("RefObjCommon")] public Image Icon { get; }
+        [Category("RefObjCommon")] public SKBitmap Icon { get; }
     }
 }

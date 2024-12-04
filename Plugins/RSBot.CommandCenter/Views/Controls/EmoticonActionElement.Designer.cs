@@ -1,4 +1,6 @@
-﻿namespace RSBot.CommandCenter.Views.Controls
+﻿using SDUI;
+
+namespace RSBot.CommandCenter.Views.Controls
 {
     partial class EmoticonActionElement
     {
@@ -28,10 +30,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            picIcon = new System.Windows.Forms.PictureBox();
-            comboAction = new SDUI.Controls.ComboBox();
-            lblName = new SDUI.Controls.Label();
-            separator1 = new SDUI.Controls.Separator();
+            picIcon = new PictureBox();
+            comboAction = new SDUI.ComboBox();
+            lblName = new SDUI.Label();
+            Splitter1 = new SDUI.Splitter();
             ((System.ComponentModel.ISupportInitialize)picIcon).BeginInit();
             SuspendLayout();
             // 
@@ -45,12 +47,8 @@
             // 
             // comboAction
             // 
-            comboAction.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            comboAction.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            comboAction.FormattingEnabled = true;
             comboAction.Location = new System.Drawing.Point(58, 19);
             comboAction.Name = "comboAction";
-            comboAction.Radius = 5;
             comboAction.ShadowDepth = 4F;
             comboAction.Size = new System.Drawing.Size(188, 24);
             comboAction.TabIndex = 1;
@@ -58,31 +56,26 @@
             // 
             // lblName
             // 
-            lblName.ApplyGradient = false;
             lblName.AutoSize = true;
-            lblName.ForeColor = System.Drawing.Color.FromArgb(0, 0, 0);
-            lblName.Gradient = (new System.Drawing.Color[] { System.Drawing.Color.Gray, System.Drawing.Color.Black });
+            lblName.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             lblName.Location = new System.Drawing.Point(58, 3);
             lblName.Name = "lblName";
             lblName.Size = new System.Drawing.Size(53, 15);
             lblName.TabIndex = 2;
             lblName.Text = "<name>";
             // 
-            // separator1
+            // Splitter1
             // 
-            separator1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            separator1.IsVertical = false;
-            separator1.Location = new System.Drawing.Point(0, 43);
-            separator1.Name = "separator1";
-            separator1.Size = new System.Drawing.Size(277, 10);
-            separator1.TabIndex = 3;
-            separator1.Text = "separator1";
+            Splitter1.Dock = DockStyle.Bottom;
+            Splitter1.Location = new System.Drawing.Point(0, 43);
+            Splitter1.Name = "Splitter1";
+            Splitter1.Size = new System.Drawing.Size(277, 10);
+            Splitter1.TabIndex = 3;
+            Splitter1.Text = "Splitter1";
             // 
             // EmoticonActionElement
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            Controls.Add(separator1);
+            Controls.Add(Splitter1);
             Controls.Add(lblName);
             Controls.Add(comboAction);
             Controls.Add(picIcon);
@@ -95,9 +88,9 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox picIcon;
-        private SDUI.Controls.ComboBox comboAction;
-        private SDUI.Controls.Label lblName;
-        private SDUI.Controls.Separator separator1;
+        private SDUI.PictureBox picIcon;
+        private SDUI.ComboBox comboAction;
+        private SDUI.Label lblName;
+        private SDUI.Splitter Splitter1;
     }
 }

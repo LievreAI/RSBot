@@ -1,16 +1,16 @@
 ﻿using System.ComponentModel;
-using System.Windows.Forms;
+
 using RSBot.General.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.ServerInfo.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         InitializeComponent();
 
         UpdateServerInfo();

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using RSBot.Core;
 using RSBot.Core.Extensions;
+using SkiaSharp;
 
 namespace RSBot.CommandCenter.Components;
 
@@ -51,10 +52,10 @@ internal enum EmoticonType : byte
 
 internal record EmoticonItem(string Name, string Label, string Icon, EmoticonType Type)
 {
-    public Image GetIconImage()
+    public SKBitmap GetIconImage()
     {
         if (!Game.MediaPk2.TryGetFile(Icon, out var iconFile))
-            return new Bitmap(32, 32);
+            return new SKBitmap(32, 32);
 
         return iconFile.ToImage();
     }

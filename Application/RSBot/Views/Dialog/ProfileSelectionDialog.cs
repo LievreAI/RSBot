@@ -1,13 +1,14 @@
 ﻿using RSBot.Core.Components;
 using SDUI;
-using SDUI.Controls;
+using SDUI;
 using System;
 using System.IO;
-using System.Windows.Forms;
+using System.Threading.Tasks;
+
 
 namespace RSBot.Views.Dialog;
 
-public partial class ProfileSelectionDialog : UIWindowBase
+public partial class ProfileSelectionDialog : Form
 {
     public ProfileSelectionDialog()
     {
@@ -15,7 +16,6 @@ public partial class ProfileSelectionDialog : UIWindowBase
 
         LoadProfiles();
         checkSaveSelection.Checked = !ProfileManager.ShowProfileDialog;
-        BackColor = ColorScheme.BackColor;
     }
 
     /// <summary>
@@ -38,17 +38,17 @@ public partial class ProfileSelectionDialog : UIWindowBase
         comboProfiles.SelectedItem = ProfileManager.SelectedProfile;
     }
 
-    private string CreateNewProfile()
+    private async Task<string> CreateNewProfile()
     {
         var inputDialog = new InputDialog("New profile", "New profile", "Please enter a profile name");
-        if (inputDialog.ShowDialog() != DialogResult.OK)
+        if (await inputDialog.ShowDialog(this) != DialogResult.OK)
             return string.Empty;
 
         var profile = (string)inputDialog.Value;
 
         if (profile.LastIndexOfAny(Path.GetInvalidFileNameChars(), 0) != -1)
         {
-            MessageBox.Show("The profile name contains invalid characters!", "Invalid name", MessageBoxButtons.OK,
+            await MessageBox.Show(this, "The profile name contains invalid characters!", "Invalid name", MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
 
             return string.Empty;
@@ -56,7 +56,7 @@ public partial class ProfileSelectionDialog : UIWindowBase
 
         if (ProfileManager.ProfileExists(profile))
         {
-            MessageBox.Show($"The profile name '{profile}' already exists!", "Invalid name", MessageBoxButtons.OK,
+            await MessageBox.Show($"The profile name '{profile}' already exists!", "Invalid name", MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
 
             return string.Empty;
@@ -84,7 +84,7 @@ public partial class ProfileSelectionDialog : UIWindowBase
         ProfileManager.ShowProfileDialog = !checkSaveSelection.Checked;
     }
 
-    private void buttonDeleteProfile_Click(object sender, EventArgs e)
+    private async void buttonDeleteProfile_Click(object sender, EventArgs e)
     {
         if (comboProfiles.SelectedIndex == 0) //Default
         {
@@ -102,9 +102,9 @@ public partial class ProfileSelectionDialog : UIWindowBase
             return;
         }
 
-        if (MessageBox.Show(
+        if (await MessageBox.Show(
                 $"Do you want to delete the profile {comboProfiles.SelectedItem} from the list?\nThis will not delete the user data.",
-                "Delete profile?", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                "Delete profile?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             return;
 
         ProfileManager.Remove((string)comboProfiles.SelectedItem);
@@ -112,9 +112,9 @@ public partial class ProfileSelectionDialog : UIWindowBase
         LoadProfiles();
     }
 
-    private void buttonCreateProfile_Click(object sender, EventArgs e)
+    private async void buttonCreateProfile_Click(object sender, EventArgs e)
     {
-        SelectedProfile = CreateNewProfile();
+        SelectedProfile = await CreateNewProfile();
 
         LoadProfiles();
     }

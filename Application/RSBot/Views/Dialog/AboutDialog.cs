@@ -1,9 +1,9 @@
 ﻿using System;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Views;
 
-internal partial class AboutDialog : UIWindowBase
+internal partial class AboutDialog : Form
 {
     public AboutDialog()
     {

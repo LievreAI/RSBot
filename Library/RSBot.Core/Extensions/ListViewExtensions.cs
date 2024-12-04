@@ -1,9 +1,10 @@
-﻿using System.Drawing;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using RSBot.Core.Client.ReferenceObjects;
+﻿using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Skill;
+using SDUI;
+using SkiaSharp;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RSBot.Core.Extensions;
 
@@ -12,29 +13,21 @@ public static class ListViewExtensions
     /// <summary>
     ///     The cached image list for skills
     /// </summary>
-    public static ImageList StaticImageList;
+    public static Dictionary<string, SKBitmap> StaticImageList;
 
     /// <summary>
     ///     The cached image list for items
     /// </summary>
-    public static ImageList StaticItemsImageList;
+    public static Dictionary<string, SKBitmap> StaticItemsImageList;
 
     /// <summary>
     ///     <inheritdoc />
     /// </summary>
     static ListViewExtensions()
     {
-        StaticImageList = new ImageList
-        {
-            ColorDepth = ColorDepth.Depth32Bit,
-            ImageSize = new Size(24, 24)
-        };
+        StaticImageList = new();
 
-        StaticItemsImageList = new ImageList
-        {
-            ColorDepth = ColorDepth.Depth32Bit,
-            ImageSize = new Size(24, 24)
-        };
+        StaticItemsImageList = new();
     }
 
     /// <summary>
@@ -54,20 +47,20 @@ public static class ListViewExtensions
                 if (listViewItem.Tag is SkillInfo skill)
                 {
                     var imageKey = "skill:" + skill.Id;
-                    if (!StaticImageList.Images.ContainsKey(imageKey))
-                        StaticImageList.Images.Add(imageKey, skill.Record.GetIcon());
+                    if (!StaticImageList.ContainsKey(imageKey))
+                        StaticImageList.Add(imageKey, skill.Record.GetIcon());
 
                     //Renders the image
-                    listViewItem.ImageKey = imageKey;
+                    listViewItem.Image = StaticImageList[imageKey];
                 }
 
                 if (listViewItem.Tag is ItemPerk perk)
                 {
                     var imageKey = "perk:" + perk.ItemId;
-                    if (!StaticImageList.Images.ContainsKey(imageKey))
-                        StaticImageList.Images.Add(imageKey, perk.Item?.GetIcon() ?? new Bitmap(0, 0));
+                    if (!StaticImageList.ContainsKey(imageKey))
+                        StaticImageList.Add(imageKey, perk.Item?.GetIcon() ?? new SKBitmap(0, 0));
 
-                    listViewItem.ImageKey = imageKey;
+                    listViewItem.Image = StaticImageList[imageKey];
                 }
             }
             catch
@@ -87,11 +80,11 @@ public static class ListViewExtensions
         lock (_lock)
         {
             //No need to reload the image from the PK2
-            if (!StaticItemsImageList.Images.ContainsKey(item.CodeName))
-                StaticItemsImageList.Images.Add(item.CodeName, item.GetIcon());
+            if (!StaticItemsImageList.ContainsKey(item.CodeName))
+                StaticItemsImageList.Add(item.CodeName, item.GetIcon());
 
             //Renders the image
-            listViewItem.ImageKey = item.CodeName;
+            listViewItem.Image = StaticItemsImageList[item.CodeName];
         }
 
         return Task.CompletedTask;
@@ -135,11 +128,7 @@ public static class ListViewExtensions
     /// </summary>
     public static async void LoadSkillImagesAsync(this ListView listView)
     {
-        listView.BeginUpdate();
-
         foreach (ListViewItem item in listView.Items)
             await item.LoadSkillImage();
-
-        listView.EndUpdate();
     }
 }

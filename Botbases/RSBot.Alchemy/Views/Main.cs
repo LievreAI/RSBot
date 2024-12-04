@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Client.ReferenceObjects;
 using RSBot.Alchemy.Views.Settings;
@@ -10,12 +10,12 @@ using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Alchemy.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     #region Constructor
 
@@ -24,18 +24,13 @@ public partial class Main : DoubleBufferedControl
     /// </summary>
     public Main()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
 
         InitializeComponent();
-        SetStyle(
-            ControlStyles.UserPaint |
-            ControlStyles.AllPaintingInWmPaint |
-            ControlStyles.OptimizedDoubleBuffer,
-            true);
 
         EventManager.SubscribeEvent("OnLoadCharacter", () =>
         {
-            if (IsDisposed || Disposing)
+            if (Disposing)
                 return;
 
             ReloadItemList();
@@ -120,7 +115,7 @@ public partial class Main : DoubleBufferedControl
 
     private void OnAlchemy(AlchemyType type)
     {
-        if (IsDisposed || Disposing)
+        if (Disposing)
             return;
 
         ReloadItemList();
@@ -221,7 +216,7 @@ public partial class Main : DoubleBufferedControl
         lvLog.Items.Add(item);
 
         //Scroll to bottom of the list
-        lvLog.Items[lvLog.Items.Count - 1].EnsureVisible();
+       // lvLog.Items[lvLog.Items.Count - 1].EnsureVisible();
 
         Log.Notify($"[Alchemy] [{itemName}]: {message}");
     }
@@ -237,7 +232,7 @@ public partial class Main : DoubleBufferedControl
     /// <param name="e"></param>
     private void linkRefreshItemList_Click(object sender, EventArgs e)
     {
-        Invoke(ReloadItemList);
+        ReloadItemList();
     }
 
     /// <summary>
@@ -255,8 +250,8 @@ public partial class Main : DoubleBufferedControl
 
         if (SelectedItem == null) return;
 
-        Invoke(() => PopulateAttributes(SelectedItem));
-        Invoke(() => PopulateMagicOptions(SelectedItem));
+        PopulateAttributes(SelectedItem);
+        PopulateMagicOptions(SelectedItem);
 
         lblDegree.Text = SelectedItem.Record.Degree.ToString();
         lblOptLevel.Text = $"+{SelectedItem.OptLevel}";

@@ -3,11 +3,11 @@ using System.ComponentModel;
 using System.Drawing;
 using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Skills.Views;
 
-public partial class SkillProperties : UIWindowBase
+public partial class SkillProperties : Form
 {
     #region Constructor
 
@@ -22,14 +22,10 @@ public partial class SkillProperties : UIWindowBase
         try
         {
             var iconImage = Skill.GetIcon();
-            var iconBitmap = new Bitmap(iconImage);
-            var iconHandle = iconBitmap.GetHicon();
-
-            Icon = Icon.FromHandle(iconHandle);
+            this.Image = iconImage;
         }
         catch
         {
-            ShowIcon = false;
         }
 
         propItem.SelectedObject = new SkillDebugInformation(Skill);

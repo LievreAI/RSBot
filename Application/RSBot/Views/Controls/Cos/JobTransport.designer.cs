@@ -32,8 +32,6 @@
             // 
             // JobTransport
             // 
-            AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             MaximumSize = new System.Drawing.Size(242, 70);
             MinimumSize = new System.Drawing.Size(242, 70);
             Name = "JobTransport";

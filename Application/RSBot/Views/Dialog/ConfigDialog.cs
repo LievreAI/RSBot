@@ -1,13 +1,14 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Text;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Views;
 
-public partial class ConfigDialog : UIWindowBase
+public partial class ConfigDialog : Form
 {
     public ConfigDialog()
     {
@@ -46,7 +47,7 @@ public partial class ConfigDialog : UIWindowBase
         }
     }
 
-    private void ConfigDialog_FormClosing(object sender, FormClosingEventArgs e)
+    private void ConfigDialog_FormClosing(object sender, CancelEventArgs e)
     {
         if (DialogResult == DialogResult.Retry)
             e.Cancel = true;

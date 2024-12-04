@@ -1,19 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Event;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Quest.Views.Sidebar;
 
-public partial class QuestSidebarElement : DoubleBufferedControl
+public partial class QuestSidebarElement : Panel
 {
     private List<uint> TrackedQuests = new(4);
 
     public QuestSidebarElement()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
 
         InitializeComponent();
         SubscribeEvents();
@@ -52,22 +53,22 @@ public partial class QuestSidebarElement : DoubleBufferedControl
 
         PlayerConfig.SetArray("RSBot.QuestLog.TrackedQuests", TrackedQuests);
 
-        pQuests.BeginInvoke(() => { pQuests.Controls.Add(questItem); });
+        pQuests.Controls.Add(questItem);
 
-        Refresh();
+        Invalidate();
     }
 
     public void RemoveQuest(uint questId)
     {
         TrackedQuests = PlayerConfig.GetArray<uint>("RSBot.QuestLog.TrackedQuests").ToList();
 
-        pQuests.BeginInvoke(() => { pQuests.Controls.RemoveByKey(questId.ToString()); });
+        pQuests.Controls.RemoveByKey(questId.ToString());
 
         TrackedQuests.Remove(questId);
 
         PlayerConfig.SetArray("RSBot.QuestLog.TrackedQuests", TrackedQuests);
 
-        Refresh();
+        Invalidate();
     }
 
     public void RefreshQuests()
@@ -102,7 +103,7 @@ public partial class QuestSidebarElement : DoubleBufferedControl
                     continue;
                 }
 
-                questItem!.Refresh();
+                questItem!.Invalidate();
             }
 
             foreach (var item in toRemove)
@@ -112,7 +113,7 @@ public partial class QuestSidebarElement : DoubleBufferedControl
                 AddQuest(item);
         }
 
-        Refresh();
+        Invalidate();
     }
 
     private bool TryGetQuestItem(uint questId, out QuestItem? questItem)
@@ -136,10 +137,9 @@ public partial class QuestSidebarElement : DoubleBufferedControl
         return TryGetQuestItem(questId, out _);
     }
 
-    public override void Refresh()
+    protected override void OnInvalidated(EventArgs<Rectangle> e)
     {
-        base.Refresh();
-
+        base.OnInvalidated(e);
         Visible = TrackedQuests.Count > 0;
     }
 }

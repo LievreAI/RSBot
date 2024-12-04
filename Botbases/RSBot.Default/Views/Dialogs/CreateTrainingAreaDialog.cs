@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows.Forms;
-using RSBot.Core;
-using SDUI.Controls;
+﻿using RSBot.Core;
+using SDUI;
+using System;
+using System.ComponentModel;
 
 namespace RSBot.Default.Views.Dialogs;
 
-public partial class CreateTrainingAreaDialog : UIWindowBase
+public partial class CreateTrainingAreaDialog : Form
 {
     public CreateTrainingAreaDialog()
     {
@@ -18,7 +18,7 @@ public partial class CreateTrainingAreaDialog : UIWindowBase
             DialogResult = DialogResult.Retry;
     }
 
-    private void CreateTrainingAreaDialog_FormClosing(object sender, FormClosingEventArgs e)
+    private void CreateTrainingAreaDialog_FormClosing(object sender, CancelEventArgs e)
     {
         if (DialogResult == DialogResult.Retry)
             e.Cancel = true;

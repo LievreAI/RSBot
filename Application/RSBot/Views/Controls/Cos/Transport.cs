@@ -13,7 +13,7 @@ public partial class Transport : CosControlBase
     public Transport()
     {
         InitializeComponent();
-        CheckForIllegalCrossThreadCalls = false;
+        
 
         SubscribeEvents();
         MiniCosControl.Satiety.Visible = false;
@@ -38,8 +38,8 @@ public partial class Transport : CosControlBase
         MiniCosControl.Level.Text = "Lv." + record.ReqLevel1;
 
         var icon = Game.Player.Transport.Record?.GetIcon();
-        if (icon != null)
-            MiniCosControl.Icon.BackgroundImage = icon;
+        //if (icon != null)
+        //    MiniCosControl.Icon.BackgroundImage = icon;
     }
 
     /// <summary>

@@ -1,13 +1,14 @@
-﻿using SDUI.Controls;
+﻿using SDUI;
+using SkiaSharp;
 using System;
 using System.ComponentModel;
 using System.Drawing;
-using System.Windows.Forms;
+
 
 namespace RSBot.Views.Controls;
 
 [ToolboxItem(false)]
-public partial class MiniCosControl : DoubleBufferedControl
+public partial class MiniCosControl : Panel
 {
     private bool _selected;
 
@@ -22,11 +23,11 @@ public partial class MiniCosControl : DoubleBufferedControl
         set
         {
             _selected = value;
-            panel.BorderColor = value ? Color.Yellow : Color.Transparent;
+            panel.BorderColor = value ? SKColors.Yellow : SKColors.Transparent;
         }
     }
 
-    private void OnClick_Redirector(object sender, EventArgs e)
+    private void OnClick_Redirector(object sender, MouseEventArgs e)
     {
         OnClick(e);
     }

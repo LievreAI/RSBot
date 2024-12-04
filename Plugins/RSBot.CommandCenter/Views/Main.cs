@@ -1,17 +1,15 @@
-﻿using System;
-using System.ComponentModel;
-using System.Windows.Forms;
-using RSBot.CommandCenter.Components;
+﻿using RSBot.CommandCenter.Components;
 using RSBot.CommandCenter.Views.Controls;
 using RSBot.Core;
 using RSBot.Core.Components;
 using SDUI;
-using SDUI.Controls;
+using System;
+using System.ComponentModel;
 
 namespace RSBot.CommandCenter.Views;
 
 [ToolboxItem(false)]
-public partial class Main : DoubleBufferedControl
+public partial class Main : Panel
 {
     public Main()
     {
@@ -25,9 +23,6 @@ public partial class Main : DoubleBufferedControl
 
         panelActions.Hide();
         panelActions.Controls.Clear();
-
-        lblChatCommandDescriptions.BackColor = ColorScheme.BackColor;
-        lblChatCommandDescriptions.ForeColor = ColorScheme.ForeColor;
 
         PopulateEmoticonActions();
         PopulateChatCommandPage();
@@ -59,11 +54,11 @@ public partial class Main : DoubleBufferedControl
         }
     }
 
-    private void btnResetToDefaults_Click(object sender, EventArgs e)
+    private async void btnResetToDefaults_Click(object sender, EventArgs e)
     {
-        if (MessageBox.Show(@"Do you really want to reset all settings to default?", @"Reset",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Warning) != DialogResult.OK)
+        if (await MessageBox.Show(@"Do you really want to reset all settings to default?", @"Reset",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
             return;
 
         foreach (var emoticon in Emoticons.Items)

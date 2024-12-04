@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Bundle.Magic;
 using RSBot.Alchemy.Client.ReferenceObjects;
@@ -13,12 +13,12 @@ using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Item;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Alchemy.Views.Settings;
 
 [ToolboxItem(false)]
-public partial class MagicOptionsSettingsView : DoubleBufferedControl
+public partial class MagicOptionsSettingsView : Panel
 {
     #region Members
 
@@ -33,7 +33,7 @@ public partial class MagicOptionsSettingsView : DoubleBufferedControl
     /// </summary>
     public MagicOptionsSettingsView()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
 
         InitializeComponent();
 
@@ -112,14 +112,12 @@ public partial class MagicOptionsSettingsView : DoubleBufferedControl
 
         try
         {
-            lvMagicOptions.BeginUpdate();
             lvMagicOptions.Items.Clear();
             _reloadConfig = false;
 
             var selectedItem = Globals.View.SelectedItem;
             if (selectedItem == null)
             {
-                lvMagicOptions.EndUpdate();
                 return;
             }
 
@@ -194,12 +192,9 @@ public partial class MagicOptionsSettingsView : DoubleBufferedControl
                 else
                     item.Checked = false;
 
-                item.Font = new Font(Font, FontStyle.Bold);
-
                 lvMagicOptions.Items.Add(item);
             }
 
-            lvMagicOptions.EndUpdate();
             _reloadConfig = true;
 
             ReloadConfig();

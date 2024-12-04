@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Views.Controls;
 
-public partial class Character : DoubleBufferedControl
+public partial class Character : Panel
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Character" /> class.

@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Bundle.Attribute;
 using RSBot.Alchemy.Helper;
 using RSBot.Core;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Alchemy.Views.Settings;
 
 [ToolboxItem(false)]
-public partial class AttributesSettingsView : DoubleBufferedControl
+public partial class AttributesSettingsView : Panel
 {
     private List<AttributeInfoPanel> _attributePanels;
 
@@ -22,7 +22,7 @@ public partial class AttributesSettingsView : DoubleBufferedControl
     {
         InitializeComponent();
 
-        CheckForIllegalCrossThreadCalls = false;
+        
 
         EventManager.SubscribeEvent("OnEnterGame", SubscribeMainFormEvents);
     }

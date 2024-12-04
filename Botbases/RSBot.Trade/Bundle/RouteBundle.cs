@@ -3,14 +3,14 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
 using RSBot.Core.Objects.Spawn;
 using RSBot.Trade.Components;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Trade.Bundle;
 
@@ -125,7 +125,7 @@ internal class RouteBundle
     /// <summary>
     ///     Ticks the route bundle
     /// </summary>
-    public void Tick()
+    public async void Tick()
     {
         //Wait for player to revive
         if (Game.Player.State.LifeState == LifeState.Dead)
@@ -199,7 +199,7 @@ internal class RouteBundle
             CurrentRouteFile = GetNextRouteFile();
             if (CurrentRouteFile == null)
             {
-                CurrentRouteFile = ShowRouteDialog();
+                CurrentRouteFile = await ShowRouteDialog();
                 restartNearby = true;
             }
 
@@ -296,16 +296,14 @@ internal class RouteBundle
     ///     Shows the route picker dialog and waits for user input.
     /// </summary>
     /// <returns></returns>
-    private string ShowRouteDialog()
+    private async Task<string> ShowRouteDialog()
     {
         _blockedByRouteDialog = true;
 
         var inputDialog = new InputDialog("Select route", "Select route",
             "Select the route to start from at the current location.", InputDialog.InputType.Combobox)
         {
-            TopLevel = true,
             StartPosition = FormStartPosition.CenterScreen,
-            ShowInTaskbar = true
         };
 
         if (TradeConfig.RouteScriptList.Count < TradeConfig.SelectedRouteListIndex)
@@ -319,7 +317,7 @@ internal class RouteBundle
                      .Select(Path.GetFileNameWithoutExtension))
             inputDialog.Selector.Items.Add(fileName);
 
-        if (inputDialog.ShowDialog(Application.OpenForms[0]) != DialogResult.OK)
+        if (await inputDialog.ShowDialog(Application.OpenForms[0]) != DialogResult.OK)
         {
             Log.Error("[Trade] No route found!");
 

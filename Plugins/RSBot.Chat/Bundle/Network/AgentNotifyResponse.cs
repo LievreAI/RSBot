@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+﻿
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Network;
@@ -42,7 +42,7 @@ internal class AgentNotifyResponse : IPacketHandler
                 if (!Game.ReferenceManager.CharacterData.TryGetValue(refObjId, out var obj))
                     return;
 
-                View.Instance.UniqueText.Write(LanguageManager.GetLang("UniqueAppeared", obj.GetRealName()));
+                View.Instance.UniqueText.Text += (LanguageManager.GetLang("UniqueAppeared", obj.GetRealName()));
 
                 break;
 
@@ -58,11 +58,11 @@ internal class AgentNotifyResponse : IPacketHandler
                 // If name equals "???" then "[%s] has disappeared." is displayed.
                 if (characterName == "???")
                 {
-                    View.Instance.UniqueText.Write($"{obj.GetRealName()} has disappeared.");
+                    View.Instance.UniqueText.Text += ($"{obj.GetRealName()} has disappeared.");
                     return;
                 }
 
-                View.Instance.UniqueText.Write(
+                View.Instance.UniqueText.Text += (
                     LanguageManager.GetLang("UniqueKilled", characterName, obj.GetRealName()));
 
                 break;

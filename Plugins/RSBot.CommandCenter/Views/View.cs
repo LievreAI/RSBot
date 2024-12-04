@@ -8,7 +8,7 @@ internal static class View
     {
         get
         {
-            if (_main == null || _main.IsDisposed)
+            if (_main == null)
                 _main = new Main();
 
             return _main;

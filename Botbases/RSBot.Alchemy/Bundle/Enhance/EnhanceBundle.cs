@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
+
 using RSBot.Alchemy.Bot;
 using RSBot.Alchemy.Extension;
 using RSBot.Alchemy.Helper;
@@ -10,6 +10,7 @@ using RSBot.Core.Client.ReferenceObjects;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Objects;
+using SDUI;
 
 namespace RSBot.Alchemy.Bundle.Enhance;
 
@@ -78,7 +79,7 @@ internal class EnhanceBundle : IAlchemyBundle
     ///     Runs a new tick of this manager
     /// </summary>
     /// <param name="engineConfig"></param>
-    public void Run<T>(T engineConfig)
+    public async void Run<T>(T engineConfig)
     {
         if (engineConfig is not EnhanceBundleConfig config)
             return;
@@ -122,7 +123,7 @@ internal class EnhanceBundle : IAlchemyBundle
             Log.Warn("[Alchemy] No lucky powder left, stopping alchemy now!");
 
             Kernel.Bot.Stop();
-            MessageBox.Show("No more lucky powder left in the inventory.", "Lucky powder", MessageBoxButtons.OK,
+            await MessageBox.Show("No more lucky powder left in the inventory.", "Lucky powder", MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             return;
         }

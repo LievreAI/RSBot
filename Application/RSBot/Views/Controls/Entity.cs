@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Windows.Forms;
+
 using RSBot.Core;
 using RSBot.Core.Components;
 using RSBot.Core.Event;
 using RSBot.Core.Extensions;
 using RSBot.Core.Objects.Spawn;
-using SDUI.Controls;
+using SDUI;
 
 namespace RSBot.Views.Controls;
 
-public partial class Entity : DoubleBufferedControl
+public partial class Entity : Panel
 {
     public Entity()
     {
-        CheckForIllegalCrossThreadCalls = false;
+        
         InitializeComponent();
         SubscribeEvents();
     }
