@@ -604,6 +604,9 @@ public partial class Main : Panel
 
     private void tabMinimap_Paint(object sender, PaintEventArgs e)
     {
+        if (!Game.Ready)
+            return;
+
         RedrawMap();
         DrawObjects(e.Canvas);
 

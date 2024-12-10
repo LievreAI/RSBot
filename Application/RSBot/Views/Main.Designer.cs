@@ -34,8 +34,7 @@ namespace RSBot.Views
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            stripStatus = new Menu();
+            stripStatus = new ToolBar();
             lblIngameStatus = new MenuItem();
             menuCurrentProfile = new MenuItem();
             cosController = new Controls.Cos.CosController();
@@ -397,7 +396,7 @@ namespace RSBot.Views
         }
 
         #endregion
-        private Menu stripStatus;
+        private ToolBar stripStatus;
         private SDUI.Panel bottomPanel;
         private SDUI.Panel pSidebar;
         private MenuItem lblIngameStatus;

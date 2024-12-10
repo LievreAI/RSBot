@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PendingWindow));
             labelServerName = new SDUI.Label();
             labelNumberOfPeopleWaiting = new SDUI.Label();
             label1 = new SDUI.Label();

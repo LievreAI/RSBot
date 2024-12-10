@@ -29,7 +29,6 @@ namespace RSBot.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutDialog));
             pictureBox1 = new PictureBox();
             buttonOk = new SDUI.Button();
             richTextBox = new RichTextBox();
@@ -67,7 +66,6 @@ namespace RSBot.Views
             richTextBox.Name = "richTextBox";
             richTextBox.Size = new System.Drawing.Size(401, 281);
             richTextBox.TabIndex = 2;
-            richTextBox.Text = resources.GetString("richTextBox.Text");
             // 
             // labelName
             // 

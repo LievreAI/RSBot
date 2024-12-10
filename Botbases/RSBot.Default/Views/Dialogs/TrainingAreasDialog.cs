@@ -18,11 +18,11 @@ public partial class TrainingAreasDialog : Form
         InitializeComponent();
     }
 
-    private void buttonAccept_Click(object sender, EventArgs e)
+    private async void buttonAccept_Click(object sender, EventArgs e)
     {
         if (listView.SelectedIndices.Count <= 0)
         {
-            MessageBox.Show("Please select a training area!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            await MessageBox.Show("Please select a training area!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             DialogResult = DialogResult.Retry;
             return;
         }

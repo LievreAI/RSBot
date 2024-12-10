@@ -194,11 +194,11 @@ public partial class SplashScreen : Form
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.ComponentModel.DoWorkEventArgs" /> instance containing the event data.</param>
-    private void referenceDataLoader_DoWork(object sender, DoWorkEventArgs e)
+    private async void referenceDataLoader_DoWork(object sender, DoWorkEventArgs e)
     {
         if (!Game.InitializeArchiveFiles())
         {
-            MessageBox.Show(@"Failed to load game data. Boot process canceled!", @"Initialize Application - Error",
+            await MessageBox.Show(@"Failed to load game data. Boot process canceled!", @"Initialize Application - Error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
             return;
         }

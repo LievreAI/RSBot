@@ -27,14 +27,14 @@ public partial class QuestSidebarElement : Panel
         EventManager.SubscribeEvent("OnLoadCharacter", RefreshQuests);
     }
 
-    public void AddQuest(uint questId)
+    public async void AddQuest(uint questId)
     {
         if (HasQuest(questId))
             return;
 
         if (TrackedQuests.Count >= 4 && !TrackedQuests.Contains(questId))
         {
-            MessageBox.Show("You can only track a maximum of 4 quests at a time", "Track quest",
+            await MessageBox.Show("You can only track a maximum of 4 quests at a time", "Track quest",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             return;

@@ -328,16 +328,16 @@ public partial class Main : Panel
         txtWalkscript.Text = PlayerConfig.Get<string>("RSBot.Walkback.File");
     }
 
-    private void buttonSelectTrainingArea_Click(object sender, EventArgs e)
+    private async void buttonSelectTrainingArea_Click(object sender, EventArgs e)
     {
         var trainingArea = new TrainingAreasDialog();
-        if (trainingArea.ShowDialog(this.FindForm()).Result == DialogResult.OK)
+        if (await trainingArea.ShowDialog(this) == DialogResult.OK)
             EventManager.FireEvent("OnSetTrainingArea");
     }
 
-    private void linkAttackWeakerMobsHelp_LinkClicked(object sender, EventArgs e)
+    private async void linkAttackWeakerMobsHelp_LinkClicked(object sender, EventArgs e)
     {
-        MessageBox.Show(
+        await MessageBox.Show(
             "If the player is under attack by a monster that is set to be avoided the bot will counter attack weaker mobs that are currently attacking the player first before targeting the avoided monster again. The bot will only kill weaker monsters that are attacking the player and won't start to pull new mobs to the battle.",
             "Attack weaker mobs first", MessageBoxButtons.OK, MessageBoxIcon.Question);
     }

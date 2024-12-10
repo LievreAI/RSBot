@@ -31,7 +31,6 @@ namespace RSBot.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SplashScreen));
             pictureBox = new PictureBox();
             referenceDataLoader = new System.ComponentModel.BackgroundWorker();
             logoLabel = new SDUI.Label();

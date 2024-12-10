@@ -28,7 +28,7 @@ public class GatewayPatchResponse : IPacketHandler
     ///     Handles the packet.
     /// </summary>
     /// <param name="packet">The packet.</param>
-    public void Invoke(Packet packet)
+    public async void Invoke(Packet packet)
     {
         if (packet.ReadByte() == 0x01)
         {
@@ -58,7 +58,7 @@ public class GatewayPatchResponse : IPacketHandler
 
                     title = LanguageManager.GetLang("PatchMsgBoxTitle2");
                     message = LanguageManager.GetLang("PatchMsgBoxContent2");
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                     break;
 
@@ -67,7 +67,7 @@ public class GatewayPatchResponse : IPacketHandler
                     title = LanguageManager.GetLang("PatchMsgBoxTitle1");
                     message = LanguageManager.GetLang("PatchMsgBoxContent1");
 
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
 
                 default:
@@ -75,7 +75,7 @@ public class GatewayPatchResponse : IPacketHandler
                     title = LanguageManager.GetLang("PatchMsgBoxTitle");
                     message = LanguageManager.GetLang("PatchMsgBoxContent");
 
-                    MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    await MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }

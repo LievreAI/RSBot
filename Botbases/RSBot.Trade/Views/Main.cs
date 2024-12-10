@@ -193,7 +193,7 @@ public partial class Main : Panel
         //ToDO: Refactor the config handling completely to JSON so it's possible to have whitespaces and such in names -> Or create a key value pair 
         if (userInput.Contains(' '))
         {
-            MessageBox.Show("The name can not have a whitespace character", "Invalid character",
+            await MessageBox.Show("The name can not have a whitespace character", "Invalid character",
                 MessageBoxButtons.OK);
 
             return;
@@ -202,7 +202,7 @@ public partial class Main : Panel
         userInput = userInput.Trim();
         if (TradeConfig.RouteScriptList.Contains(userInput))
         {
-            MessageBox.Show("The name can not have a whitespace character", "Invalid character",
+            await MessageBox.Show("The name can not have a whitespace character", "Invalid character",
                 MessageBoxButtons.OK);
 
             return;
@@ -322,12 +322,12 @@ public partial class Main : Panel
         ShowScriptRecorder();
     }
 
-    private void ShowScriptRecorder()
+    private async void ShowScriptRecorder()
     {
         if (!ScriptManager.Running)
             EventManager.FireEvent("OnShowScriptRecorder", 2000, true);
         else
-            MessageBox.Show("Can not record a new script while a script is running! Stop the bot and try again.",
+            await MessageBox.Show("Can not record a new script while a script is running! Stop the bot and try again.",
                 "Script manager busy",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
     }

@@ -453,7 +453,7 @@ public partial class Main : Panel
         if (items.Count == 0)
         {
             listFilter.Visible = true;
-            MessageBox.Show(this, LanguageManager.GetLang("NoResultsFound"), "Warning");
+            await MessageBox.Show(this, LanguageManager.GetLang("NoResultsFound"), "Warning");
             return;
         }
 

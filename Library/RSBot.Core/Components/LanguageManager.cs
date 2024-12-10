@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 
 namespace RSBot.Core.Components;
@@ -270,12 +271,12 @@ public class LanguageManager
         }
     }
 
-    public static Dictionary<string, string> GetLanguages()
+    public static async Task<Dictionary<string, string>> GetLanguages()
     {
         var filePath = Path.Combine(_path, "langs.rsl");
         if (!File.Exists(filePath))
         {
-            MessageBox.Show("", $"Language list file is missing! \n {filePath}");
+            await MessageBox.Show("", $"Language list file is missing! \n {filePath}");
             Environment.Exit(0);
         }
 

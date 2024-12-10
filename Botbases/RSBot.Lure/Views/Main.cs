@@ -157,12 +157,12 @@ public partial class Main : Panel
         LureConfig.SelectedScriptPath = fileBrowser.FileName;
     }
 
-    private void linkRecord_LinkClicked(object sender, EventArgs e)
+    private async void linkRecord_LinkClicked(object sender, EventArgs e)
     {
         if (!ScriptManager.Running)
             EventManager.FireEvent("OnShowScriptRecorder", ScriptRecorderOwnerId, true);
         else
-            MessageBox.Show("Can not record a new script while a script is running! Stop the bot and try again.",
+            await MessageBox.Show("Can not record a new script while a script is running! Stop the bot and try again.",
                 "Script manager busy",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
     }

@@ -109,7 +109,7 @@ public class Proxy
         IsConnectedToAgentserver = false;
         IsConnectedToGatewayserver = true;
 
-        Server.Connect(_gatewayIp, _gatewayPort).RunSynchronously();
+        Server.Connect(_gatewayIp, _gatewayPort);
     }
 
     /// <summary>

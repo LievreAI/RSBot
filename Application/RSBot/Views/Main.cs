@@ -9,7 +9,6 @@ using SDUI;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
@@ -46,6 +45,11 @@ public partial class Main : Form
         RegisterEvents();
 
         Text = "RSBot";
+
+        menuStrip.Dock = DockStyle.Left;
+        menuStrip.SendToBack();
+        menuStrip.Dock = DockStyle.Fill;
+        TitleBar.Controls.AddImplicitControl(menuStrip);
     }
 
     #endregion Constructor
@@ -377,11 +381,11 @@ public partial class Main : Form
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void Main_Load(object sender, EventArgs e)
+    private async void Main_Load(object sender, EventArgs e)
     {
         menuSidebar.Checked = GlobalConfig.Get("RSBot.ShowSidebar", true);
 
-        foreach (var item in LanguageManager.GetLanguages())
+        foreach (var item in await LanguageManager.GetLanguages())
         {
             var dropdown = new MenuItem(item.Value);
             dropdown.Click += LanguageDropdown_Click;
@@ -577,9 +581,9 @@ public partial class Main : Form
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void menuItemThis_Click(object sender, EventArgs e)
+    private async void menuItemThis_Click(object sender, EventArgs e)
     {
-        new AboutDialog().ShowDialog(this);
+        await new AboutDialog().ShowDialog(this);
     }
 
     /// <summary>
@@ -587,10 +591,10 @@ public partial class Main : Form
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void networkConfigMenuItem_Click(object sender, EventArgs e)
+    private async void networkConfigMenuItem_Click(object sender, EventArgs e)
     {
         using var configDialog = new ConfigDialog();
-        configDialog.ShowDialog(this);
+        await configDialog.ShowDialog(this);
     }
 
     /// <summary>
@@ -620,7 +624,7 @@ public partial class Main : Form
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-    private void autoMenuItem_Click(object sender, EventArgs e)
+    private async void autoMenuItem_Click(object sender, EventArgs e)
     {
         /*if (WindowsHelper.IsModern)
         {
@@ -631,7 +635,7 @@ public partial class Main : Form
             return;
         }*/
 
-        MessageBox.Show(
+        await MessageBox.Show(
             "Unfortunately, it does not support this mode because your operating system is outdated!",
             "Warning",
             MessageBoxButtons.OK,

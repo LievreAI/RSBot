@@ -351,7 +351,7 @@ public partial class NavMeshRenderer : Panel
         this.Invalidate();
     }
 
-    protected override void OnMouseDown(MouseEventArgs e)
+    protected async override void OnMouseDown(MouseEventArgs e)
     {
         base.OnMouseDown(e);
 
@@ -363,7 +363,7 @@ public partial class NavMeshRenderer : Panel
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                await MessageBox.Show(this, ex.ToString(), "Exception", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 

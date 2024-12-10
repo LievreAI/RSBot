@@ -88,7 +88,7 @@ public partial class ProfileSelectionDialog : Form
     {
         if (comboProfiles.SelectedIndex == 0) //Default
         {
-            MessageBox.Show("You can not delete the default profile!", "Default profile",
+            await MessageBox.Show("You can not delete the default profile!", "Default profile",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return;
@@ -96,7 +96,7 @@ public partial class ProfileSelectionDialog : Form
 
         if (ProfileManager.SelectedProfile == (string)comboProfiles.SelectedItem) //Active profile?
         {
-            MessageBox.Show("You can not delete the active profile!", "Profile active",
+            await MessageBox.Show("You can not delete the active profile!", "Profile active",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return;

@@ -41,11 +41,11 @@ public class TradeBotbase : IBotbase
     /// <summary>
     ///     Starts this instance.
     /// </summary>
-    public void Start()
+    public async void Start()
     {
         if (!AssertPlayerIsTrader())
         {
-            MessageBox.Show("The active character is not a trader! Make sure that you have the trader job and suite.",
+            await MessageBox.Show("The active character is not a trader! Make sure that you have the trader job and suite.",
                 "Not a trader", MessageBoxButtons.OK, MessageBoxIcon.Error);
             Kernel.Bot.Stop();
 

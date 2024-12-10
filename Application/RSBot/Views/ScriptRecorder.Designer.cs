@@ -31,7 +31,6 @@ namespace RSBot.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptRecorder));
             panel1 = new SDUI.Panel();
             btnStartStop = new SDUI.Button();
             btnSave = new SDUI.Button();
