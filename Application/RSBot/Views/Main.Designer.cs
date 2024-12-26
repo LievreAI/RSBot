@@ -60,7 +60,7 @@ namespace RSBot.Views
             menuPlugins = new MenuItem();
             aboutMenuItem = new MenuItem();
             thisMenuItem = new MenuItem();
-            menuStrip = new SDUI.Menu();
+            menuStrip = new SDUI.ContextMenu();
             botsMenuItem = new MenuItem();
             languageMenuItem = new MenuItem();
             themeMenuItem = new MenuItem();
@@ -377,6 +377,7 @@ namespace RSBot.Views
             Controls.Add(pSidebar);
             Controls.Add(bottomPanel);
             Controls.Add(stripStatus);
+            Padding = new Padding(0, 41, 0, 0);
             Location = new System.Drawing.Point(0, 0);
             Name = "Main";
             StartPosition = FormStartPosition.CenterScreen;
@@ -417,7 +418,7 @@ namespace RSBot.Views
         private MenuItem menuPlugins;
         private MenuItem aboutMenuItem;
         private MenuItem thisMenuItem;
-        private SDUI.Menu menuStrip;
+        private SDUI.ContextMenu menuStrip;
         private MenuItem themeMenuItem;
         private MenuItem darkMenuItem;
         private MenuItem lightMenuItem;

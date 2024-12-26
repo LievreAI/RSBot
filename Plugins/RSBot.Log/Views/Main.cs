@@ -58,7 +58,7 @@ public partial class Main : Panel
         if (level == LogLevel.Warning && !checkWarning.Checked)
             return;
 
-        txtLog.Text += ($"<{level}> \t{message}", true, Kernel.Debug, logFile);
+        txtLog.Text += $"<{level}> \t{message}" + Environment.NewLine;
     }
 
     /// <summary>

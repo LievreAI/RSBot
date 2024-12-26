@@ -189,15 +189,12 @@ internal partial class Main : Panel
         btnStartClient.Enabled = false;
         Game.Start();
 
-        await Task.Run(async () =>
+        var startedResult = await ClientManager.Start();
+        if (!startedResult)
         {
-            var startedResult = await ClientManager.Start();
-            if (!startedResult)
-            {
-                OnExitClient();
-                Log.WarnLang("ClientStartingError");
-            }
-        });
+            OnExitClient();
+            Log.WarnLang("ClientStartingError");
+        }
     }
 
     /// <summary>

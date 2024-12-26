@@ -131,7 +131,7 @@ public class Server
                 }
                 else
                 {
-                    await _socket.ConnectAsync(new IPEndPoint(IPAddress.Parse(ip), port));
+                    _socket.Connect(ip, port);
                 }
             }
             catch (AggregateException s)

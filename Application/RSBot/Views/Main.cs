@@ -6,6 +6,7 @@ using RSBot.Core.Event;
 using RSBot.Core.Plugins;
 using RSBot.Views.Dialog;
 using SDUI;
+using SDUI.Controls;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -46,10 +47,8 @@ public partial class Main : Form
 
         Text = "RSBot";
 
-        menuStrip.Dock = DockStyle.Left;
-        menuStrip.SendToBack();
-        menuStrip.Dock = DockStyle.Fill;
-        TitleBar.Controls.AddImplicitControl(menuStrip);
+        TitleBar.WindowPageControl = windowPageControl;
+        TitleBar.ExtendMenu = menuStrip;
     }
 
     #endregion Constructor
@@ -605,6 +604,7 @@ public partial class Main : Form
     private void darkMenuItem_Click(object sender, EventArgs e)
     {
         GlobalConfig.Set("RSBot.Theme.Auto", false);
+        Theme.SetBuiltInTheme(BuiltInTheme.Dark);
         //SetThemeColor(DarkThemeColor);
     }
 
@@ -616,6 +616,7 @@ public partial class Main : Form
     private void lightMenuItem_Click(object sender, EventArgs e)
     {
         GlobalConfig.Set("RSBot.Theme.Auto", false);
+        Theme.SetBuiltInTheme(BuiltInTheme.Default);
         //SetThemeColor(LightThemeColor);
     }
 
@@ -626,6 +627,7 @@ public partial class Main : Form
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
     private async void autoMenuItem_Click(object sender, EventArgs e)
     {
+        Theme.SetBuiltInTheme(BuiltInTheme.Light);
         /*if (WindowsHelper.IsModern)
         {
             GlobalConfig.Set("RSBot.Theme.Auto", true);
@@ -636,8 +638,8 @@ public partial class Main : Form
         }*/
 
         await MessageBox.Show(
-            "Unfortunately, it does not support this mode because your operating system is outdated!",
             "Warning",
+            "Unfortunately, it does not support this mode because your operating system is outdated!",
             MessageBoxButtons.OK,
             MessageBoxIcon.Warning
         );
