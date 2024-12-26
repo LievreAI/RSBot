@@ -26,6 +26,6 @@
 		<ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj">
 		  <Private>True</Private>
 		</ProjectReference>
-		<ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
+		<ProjectReference Include="..\..\SDUI.Kit\src\SDUI\SDUI.csproj" />
 	</ItemGroup>
 </Project>

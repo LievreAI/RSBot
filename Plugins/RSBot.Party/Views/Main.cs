@@ -42,9 +42,6 @@ public partial class Main : Panel
     {
         InitializeComponent();
 
-        selectedMemberBuffs.SmallImageList = ListViewExtensions.StaticImageList;
-        listPartyBuffSkills.SmallImageList = ListViewExtensions.StaticImageList;
-
         _selectedBuffingGroup = new ListViewItem();
         _buffings = new List<BuffingPartyMember>();
         
@@ -83,13 +80,12 @@ public partial class Main : Panel
     /// <param name="member"></param>
     public void AddNewPartyMember(PartyMember member)
     {
-        var viewItem = listParty.Items.Add(member.Name, member.Name, 0);
-        viewItem.UseItemStyleForSubItems = false;
+        var viewItem = listParty.Items.Add(member.Name);
         viewItem.Tag = member;
 
         viewItem.SubItems.Add(member.Level.ToString());
         if (string.IsNullOrWhiteSpace(member.Guild))
-            viewItem.SubItems.Add(_noGuildText).ForeColor = Color.DarkGray;
+            viewItem.SubItems.Add(_noGuildText);
         else
             viewItem.SubItems.Add(member.Guild);
 
@@ -191,12 +187,12 @@ public partial class Main : Panel
         {
             var members = _buffings.FindAll(p => p.Group == itemGroup.Text);
 
-            itemGroup.SubItems[1].Text = members.Count.ToString();
+            itemGroup.SubItems[1] = members.Count.ToString();
 
             if (itemGroup.Text == _selectedBuffingGroup.Text)
                 foreach (var member in members)
                 {
-                    var item = listViewPartyMembers.Items.Add(member.Name, member.Name, 0);
+                    var item = listViewPartyMembers.Items.Add(member.Name);
                     if (item.Index == 0)
                         item.Selected = true;
                 }
@@ -212,7 +208,6 @@ public partial class Main : Panel
     {
         Task.Run(() =>
         {
-            lvPartyMatching.BeginUpdate();
             lvPartyMatching.Items.Clear();
 
             var listViewItems = new List<ListViewItem>();
@@ -245,10 +240,6 @@ public partial class Main : Panel
                     party.Leader == Game.Player.JobInformation.Name ||
                     Game.Party?.Leader?.Name == party.Leader)
                 {
-                    listItem.Font = new Font(Font, FontStyle.Bold);
-
-                    listItem.BackColor = ControlPaint.Light(ColorScheme.BackColor, .15f);
-                    listItem.Font = new Font(Font, FontStyle.Bold);
 
                     listViewItems.Insert(0, listItem);
 
@@ -314,7 +305,7 @@ public partial class Main : Panel
         var groups = LoadBuffingGroups();
         if (groups.Length == 0)
         {
-            var item = listViewGroups.Items.Add("Default", "Default", 0);
+            var item = listViewGroups.Items.Add("Default");
             item.SubItems.Add("0");
             item.Selected = true;
             _selectedBuffingGroup = item;
@@ -325,7 +316,7 @@ public partial class Main : Panel
         {
             foreach (var group in groups)
             {
-                var item = listViewGroups.Items.Add(group, group, 0);
+                var item = listViewGroups.Items.Add(group);
                 item.SubItems.Add("0");
 
                 if (group == selectedGroup)
@@ -385,15 +376,14 @@ public partial class Main : Panel
             var item = new ListViewItem($"{skill.Record.GetRealName()}");
             item.Tag = skill;
 
-            var subItem = item.SubItems.Add(limit != 0 ? $"{limit - count}" : "No limit");
-            item.UseItemStyleForSubItems = false;
+            item.SubItems.Add(limit != 0 ? $"{limit - count}" : "No limit");
 
-            if (limit == 0)
-                subItem.ForeColor = Color.DarkGreen;
-            else
-                subItem.ForeColor = Color.DarkRed;
+            //if (limit == 0)
+            //    subItem.ForeColor = Color.DarkGreen;
+            //else
+            //    subItem.ForeColor = Color.DarkRed;
 
-            subItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+            //subItem.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
 
             foreach (var group in listPartyBuffSkills.Groups.Cast<ListViewGroup>()
                          .Where(group => Convert.ToInt32(group.Tag) == skill.Record.ReqCommon_Mastery1))
@@ -527,16 +517,14 @@ public partial class Main : Panel
         var lvItem = listParty.Items[member.Name];
 
         lvItem.Text = member.Name;
-        lvItem.SubItems[1].Text = member.Level.ToString();
+        lvItem.SubItems[1] = member.Level.ToString();
         if (string.IsNullOrWhiteSpace(member.Guild))
         {
-            lvItem.SubItems[2].Text = _noGuildText;
-            lvItem.SubItems[2].ForeColor = Color.DarkGray;
+            lvItem.SubItems[2] = _noGuildText;
         }
         else
         {
-            lvItem.SubItems[2].Text = member.Guild;
-            lvItem.SubItems[2].ResetStyle();
+            lvItem.SubItems[2]  = member.Guild;
         }
 
         var mastery1 = Game.ReferenceManager.GetRefSkillMastery(member.MasteryId1);
@@ -549,8 +537,8 @@ public partial class Main : Panel
         if (mastery2 != null)
             masteryInfo += $", {mastery2.Name}";
 
-        lvItem.SubItems[3].Text = masteryInfo;
-        lvItem.SubItems[4].Text = location;
+        lvItem.SubItems[3] = masteryInfo;
+        lvItem.SubItems[4] = location;
     }
 
     /// <summary>
@@ -610,14 +598,14 @@ public partial class Main : Panel
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void btnAddToAutoParty_Click(object sender, EventArgs e)
+    private async void btnAddToAutoParty_Click(object sender, EventArgs e)
     {
         var dialog = new InputDialog(
             "Input",
             LanguageManager.GetLang("CharName"),
             LanguageManager.GetLang("EnterCharNameForPartyList"));
 
-        if (dialog.ShowDialog(this) != DialogResult.OK)
+        if (await dialog.ShowDialog(this) != DialogResult.OK)
             return;
 
         listAutoParty.Items.Add(dialog.Value.ToString());
@@ -699,7 +687,7 @@ public partial class Main : Panel
     /// </summary>
     /// <param name="sender">The source of the event.</param>
     /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-    private void tabMain_SelectedIndexChanged(object sender, EventArgs e)
+    private void tabMain_SelectedIndexChanged(object sender, int e)
     {
         if (tabMain.SelectedTabPage == tpPartyMatching)
             RequestPartyList();
@@ -754,19 +742,19 @@ public partial class Main : Panel
         var selectedPurpose = cbPartySearchPurpose.SelectedItem.ToString();
 
         if (selectedPurpose != "All")
-            lvItems.RemoveAll(p => p.SubItems[4].Text != selectedPurpose);
+            lvItems.RemoveAll(p => p.SubItems[4] != selectedPurpose);
 
         if (!string.IsNullOrWhiteSpace(tbPartySearchName.Text))
             //No case sensitivity
             lvItems.RemoveAll(p =>
-                !p.SubItems[2].Text.ToLowerInvariant().Contains(tbPartySearchName.Text.ToLowerInvariant()));
+                !p.SubItems[2].ToLowerInvariant().Contains(tbPartySearchName.Text.ToLowerInvariant()));
 
         if (nudPartySearchMin.Value > 1 || nudPartySearchMax.Value < 140)
         {
-            lvItems.RemoveAll(p => p.SubItems[6].Text != nudPartySearchMin.Value + "~" + nudPartySearchMax.Value);
+            lvItems.RemoveAll(p => p.SubItems[6] != nudPartySearchMin.Value + "~" + nudPartySearchMax.Value);
 
             if (selectedPurpose != "All")
-                lvItems.RemoveAll(p => p.SubItems[4].Text != selectedPurpose);
+                lvItems.RemoveAll(p => p.SubItems[4] != selectedPurpose);
         }
 
         if (lvItems?.Count() > 0 && lvItems?.Count() != lvPartyMatching.Items.Count)
@@ -852,8 +840,8 @@ public partial class Main : Panel
             selectedMemberBuffs.Items.Add(buffItem);
 
             var subItem = viewItem.SubItems[1];
-            if (int.TryParse(subItem.Text, out var limit))
-                subItem.Text = (limit - 1).ToString();
+            if (int.TryParse(subItem, out var limit))
+                subItem = (limit - 1).ToString();
         }
 
         SaveBuffingPartyMembers();
@@ -880,21 +868,20 @@ public partial class Main : Panel
                 continue;
 
             buffingMember.Buffs.Remove(skill.Id);
-            viewItem.Remove();
 
             var mainItem = listPartyBuffSkills.Items.Cast<ListViewItem>().FirstOrDefault(p => p.Tag == skill);
             if (mainItem == null)
                 continue;
 
             var subItem = mainItem.SubItems[1];
-            if (int.TryParse(subItem.Text, out var limit))
-                subItem.Text = (limit + 1).ToString();
+            if (int.TryParse(subItem, out var limit))
+                subItem = (limit + 1).ToString();
         }
 
         SaveBuffingPartyMembers();
     }
 
-    private void menuItemAddToBuffing_Click(object sender, EventArgs e)
+    private async void menuItemAddToBuffing_Click(object sender, EventArgs e)
     {
         if (listParty.SelectedItems.Count == 0)
             return;
@@ -918,13 +905,13 @@ public partial class Main : Panel
 
         dialog.Selector.SelectedIndex = 0;
 
-        if (dialog.ShowDialog(this) == DialogResult.OK)
+        if (await dialog.ShowDialog(this) == DialogResult.OK)
         {
             var dialogValue = dialog.Value.ToString();
 
             if (_buffings.Any(p => p.Group == dialogValue && p.Name == partyMember.Name))
             {
-                MessageBox.Show(LanguageManager.GetLang("MsgBoxGroupAlreadyIn", partyMember.Name));
+                await MessageBox.Show(this, "", LanguageManager.GetLang("MsgBoxGroupAlreadyIn", partyMember.Name));
                 return;
             }
 
@@ -939,7 +926,7 @@ public partial class Main : Panel
 
             SaveBuffingPartyMembers();
 
-            MessageBox.Show(LanguageManager.GetLang("SuccessAddedBuffing"));
+            await MessageBox.Show(this, "", LanguageManager.GetLang("SuccessAddedBuffing"));
         }
     }
 
@@ -948,16 +935,16 @@ public partial class Main : Panel
         LoadPartyBuffSkills();
     }
 
-    private void buttonAddGroup_Click(object sender, EventArgs e)
+    private async void buttonAddGroup_Click(object sender, EventArgs e)
     {
         var title = LanguageManager.GetLang("CreateNewGroup");
         var desc = LanguageManager.GetLang("CreateNewGroupDesc");
 
         var dialog = new InputDialog(title, title, desc);
-        if (dialog.ShowDialog(this) == DialogResult.OK)
+        if (await dialog.ShowDialog(this) == DialogResult.OK)
         {
             var value = dialog.Value.ToString();
-            var item = listViewGroups.Items.Add(value, value, 0);
+            var item = listViewGroups.Items.Add(value);
             item.SubItems.Add("0");
             item.Selected = true;
 
@@ -965,7 +952,7 @@ public partial class Main : Panel
         }
     }
 
-    private void buttonRemoveGroup_Click(object sender, EventArgs e)
+    private async void buttonRemoveGroup_Click(object sender, EventArgs e)
     {
         if (listViewGroups.SelectedItems.Count == 0)
             return;
@@ -976,18 +963,14 @@ public partial class Main : Panel
         var count = _buffings.Count(p => p.Group == group);
         if (count == 0)
         {
-            selectedItem.Remove();
-
             SaveBuffingGroups();
 
             return;
         }
 
-        if (MessageBox.Show(this, LanguageManager.GetLang("GroupDeleteWarn", count),
-                "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        if (await MessageBox.Show(this, "Warning", LanguageManager.GetLang("GroupDeleteWarn", count),
+                MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
-            if (group != "Default")
-                selectedItem.Remove();
 
             var affected = _buffings.RemoveAll(p => p.Group == group) > 0;
 
@@ -999,13 +982,13 @@ public partial class Main : Panel
         }
     }
 
-    private void buttonRemoveCharFromBuffing_Click(object sender, EventArgs e)
+    private async void buttonRemoveCharFromBuffing_Click(object sender, EventArgs e)
     {
         if (listViewPartyMembers.SelectedItems.Count == 0)
             return;
 
-        if (MessageBox.Show(this, LanguageManager.GetLang("GroupCharDeleteWarn"),
-                "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+        if (await MessageBox.Show(this, "Warning", LanguageManager.GetLang("GroupCharDeleteWarn"),
+                 MessageBoxButtons.YesNo) == DialogResult.Yes)
         {
             var selectedItem = listViewPartyMembers.SelectedItems[0];
             var name = selectedItem.Text;
@@ -1013,7 +996,6 @@ public partial class Main : Panel
             var affected = _buffings.RemoveAll(p => p.Name == name);
             if (affected > 0)
             {
-                selectedItem.Remove();
                 RefreshGroupMembers();
                 SaveBuffingPartyMembers();
                 LoadPartyBuffSkills();
@@ -1021,14 +1003,14 @@ public partial class Main : Panel
         }
     }
 
-    private void buttonCommandPlayerAdd_Click(object sender, EventArgs e)
+    private async void buttonCommandPlayerAdd_Click(object sender, EventArgs e)
     {
         var diag = new InputDialog(
             "Input",
             LanguageManager.GetLang("CharName"),
             LanguageManager.GetLang("EnterCharNameForCommandList"));
 
-        if (diag.ShowDialog(this) != DialogResult.OK)
+        if (await diag.ShowDialog(this) != DialogResult.OK)
             return;
 
         listCommandPlayers.Items.Add(diag.Value.ToString());
@@ -1053,7 +1035,6 @@ public partial class Main : Panel
         textBoxJoinByTitle.Text = PlayerConfig.Get("RSBot.Party.AutoJoin.Title", string.Empty);
         topPartyPanel.Height = 162;
 
-        buttonAutoJoinConfig.Color = ColorScheme.BackColor;
     }
 
     private void buttonConfirmJoinConfig_Click(object sender, EventArgs e)
@@ -1069,7 +1050,6 @@ public partial class Main : Panel
 
         Bundle.Container.Refresh();
 
-        buttonAutoJoinConfig.Color = Color.Transparent;
         topPartyPanel.Height = 47;
     }
 

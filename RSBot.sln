@@ -58,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSBot.FileSystem", "Library
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RSBot.NavMeshApi", "Library\RSBot.NavMeshApi\RSBot.NavMeshApi.csproj", "{E4DC5C65-9956-4696-9B89-043B20029EAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDUI", "SDUI\src\SDUI\SDUI.csproj", "{8F7D2A2A-B422-3805-1752-CD4AB01627BB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SDUI", "SDUI.Kit\src\SDUI\SDUI.csproj", "{8F7D2A2A-B422-3805-1752-CD4AB01627BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

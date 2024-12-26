@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0-windows</TargetFramework>
+		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		
 		<ImplicitUsings>disable</ImplicitUsings>
@@ -16,7 +16,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Library\RSBot.Core\RSBot.Core.csproj" />
-		<ProjectReference Include="..\..\SDUI\src\SDUI\SDUI.csproj" />
+		<ProjectReference Include="..\..\SDUI.Kit\src\SDUI\SDUI.csproj" />
 		<ProjectReference Include="..\RSBot.General\RSBot.General.csproj" />
 	</ItemGroup>
 

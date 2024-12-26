@@ -1,4 +1,7 @@
-﻿namespace RSBot.Party.Views
+﻿using SDUI;
+using SkiaSharp;
+
+namespace RSBot.Party.Views
 {
     partial class Main
     {
@@ -179,16 +182,15 @@
             // 
             // tabMain
             // 
-            tabMain.Controls.Add(tabCurrentParty);
-            tabMain.Controls.Add(tpAutoParty);
-            tabMain.Controls.Add(tpPartyMatching);
-            tabMain.Controls.Add(tpPartyBuffing);
+            tabMain.TabPages.Add(tabCurrentParty);
+            tabMain.TabPages.Add(tpAutoParty);
+            tabMain.TabPages.Add(tpPartyMatching);
+            tabMain.TabPages.Add(tpPartyBuffing);
             tabMain.Dock = DockStyle.Fill;
-            tabMain.ItemSize = new System.Drawing.Size(80, 24);
             tabMain.Location = new System.Drawing.Point(0, 0);
             tabMain.Name = "tabMain";
             tabMain.Radius = new Padding(4);
-            tabMain.SelectedIndex = 0;
+
             tabMain.Size = new System.Drawing.Size(754, 467);
             tabMain.TabIndex = 0;
             tabMain.SelectedIndexChanged += tabMain_SelectedIndexChanged;
@@ -210,7 +212,6 @@
             // listParty
             // 
             listParty.BackColor = SKColors.White;
-            listParty.BorderStyle = BorderStyle.None;
             listParty.Columns.AddRange(new ColumnHeader[] { colMemberName, colLevel, colGuild, colMasteries, colLocation });
             listParty.ContextMenu = contextParty;
             listParty.Dock = DockStyle.Fill;
@@ -218,7 +219,6 @@
             listParty.FullRowSelect = true;
             listParty.HeaderStyle = ColumnHeaderStyle.Nonclickable;
             listParty.Location = new System.Drawing.Point(3, 93);
-            listParty.MultiSelect = false;
             listParty.Name = "listParty";
             listParty.Size = new System.Drawing.Size(740, 307);
             listParty.TabIndex = 0;
@@ -259,7 +259,6 @@
             // 
             menuBanish.Enabled = false;
             menuBanish.Name = "menuBanish";
-            menuBanish.Size = new System.Drawing.Size(152, 22);
             menuBanish.Text = "Banish";
             menuBanish.Click += menuBanish_Click;
             // 
@@ -267,21 +266,18 @@
             // 
             menuLeave.Enabled = false;
             menuLeave.Name = "menuLeave";
-            menuLeave.Size = new System.Drawing.Size(152, 22);
             menuLeave.Text = "Leave";
             menuLeave.Click += btnLeaveParty_Click;
             // 
             // menuItemAddToBuffing
             // 
             menuItemAddToBuffing.Name = "menuItemAddToBuffing";
-            menuItemAddToBuffing.Size = new System.Drawing.Size(152, 22);
             menuItemAddToBuffing.Text = "Add to buffing";
             menuItemAddToBuffing.Click += menuItemAddToBuffing_Click;
             // 
             // Splitter3
             // 
             Splitter3.Dock = DockStyle.Top;
-            Splitter3.IsVertical = false;
             Splitter3.Location = new System.Drawing.Point(3, 83);
             Splitter3.Name = "Splitter3";
             Splitter3.Size = new System.Drawing.Size(740, 10);
@@ -300,7 +296,6 @@
             panel1.Location = new System.Drawing.Point(3, 400);
             panel1.Name = "panel1";
             panel1.Padding = new Padding(6);
-            panel1.Radius = 0;
             panel1.ShadowDepth = 4F;
             panel1.Size = new System.Drawing.Size(740, 32);
             panel1.TabIndex = 8;
@@ -358,7 +353,6 @@
             grpPartySettings.Location = new System.Drawing.Point(3, 3);
             grpPartySettings.Name = "grpPartySettings";
             grpPartySettings.Padding = new Padding(3, 10, 3, 3);
-            grpPartySettings.Radius = 10;
             grpPartySettings.ShadowDepth = 4;
             grpPartySettings.Size = new System.Drawing.Size(740, 80);
             grpPartySettings.TabIndex = 7;
@@ -448,7 +442,6 @@
             groupBox2.Location = new System.Drawing.Point(234, 93);
             groupBox2.Name = "groupBox2";
             groupBox2.Padding = new Padding(3, 10, 3, 3);
-            groupBox2.Radius = 10;
             groupBox2.ShadowDepth = 4;
             groupBox2.Size = new System.Drawing.Size(509, 339);
             groupBox2.TabIndex = 11;
@@ -473,7 +466,6 @@
             // 
             // Splitter10
             // 
-            Splitter10.IsVertical = true;
             Splitter10.Location = new System.Drawing.Point(265, 31);
             Splitter10.Name = "Splitter10";
             Splitter10.Size = new System.Drawing.Size(10, 130);
@@ -495,7 +487,6 @@
             // 
             // Splitter2
             // 
-            Splitter2.IsVertical = false;
             Splitter2.Location = new System.Drawing.Point(20, 214);
             Splitter2.Name = "Splitter2";
             Splitter2.Size = new System.Drawing.Size(464, 11);
@@ -504,7 +495,6 @@
             // 
             // Splitter1
             // 
-            Splitter1.IsVertical = false;
             Splitter1.Location = new System.Drawing.Point(20, 167);
             Splitter1.Name = "Splitter1";
             Splitter1.Size = new System.Drawing.Size(464, 11);
@@ -517,11 +507,8 @@
             textBoxLeaveIfMasterNotName.MaxLength = 32767;
             textBoxLeaveIfMasterNotName.MultiLine = false;
             textBoxLeaveIfMasterNotName.Name = "textBoxLeaveIfMasterNotName";
-            textBoxLeaveIfMasterNotName.PassFocusShow = false;
-            textBoxLeaveIfMasterNotName.Radius = 2;
             textBoxLeaveIfMasterNotName.Size = new System.Drawing.Size(85, 21);
             textBoxLeaveIfMasterNotName.TabIndex = 14;
-            textBoxLeaveIfMasterNotName.TextAlignment = HorizontalAlignment.Left;
             textBoxLeaveIfMasterNotName.UseSystemPasswordChar = false;
             // 
             // checkBoxListenCommandsOnlyList
@@ -684,7 +671,6 @@
             // Splitter6
             // 
             Splitter6.Dock = DockStyle.Left;
-            Splitter6.IsVertical = true;
             Splitter6.Location = new System.Drawing.Point(224, 93);
             Splitter6.Name = "Splitter6";
             Splitter6.Size = new System.Drawing.Size(10, 339);
@@ -711,7 +697,6 @@
             groupBox7.Location = new System.Drawing.Point(0, 189);
             groupBox7.Name = "groupBox7";
             groupBox7.Padding = new Padding(1, 8, 1, 1);
-            groupBox7.Radius = 10;
             groupBox7.ShadowDepth = 4;
             groupBox7.Size = new System.Drawing.Size(221, 150);
             groupBox7.TabIndex = 13;
@@ -721,14 +706,12 @@
             // listCommandPlayers
             // 
             listCommandPlayers.BackColor = SKColors.White;
-            listCommandPlayers.BorderStyle = BorderStyle.None;
             listCommandPlayers.Columns.AddRange(new ColumnHeader[] { columnHeader3 });
             listCommandPlayers.Dock = DockStyle.Fill;
             listCommandPlayers.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             listCommandPlayers.FullRowSelect = true;
             listCommandPlayers.HeaderStyle = ColumnHeaderStyle.None;
             listCommandPlayers.Location = new System.Drawing.Point(1, 24);
-            listCommandPlayers.MultiSelect = false;
             listCommandPlayers.Name = "listCommandPlayers";
             listCommandPlayers.Size = new System.Drawing.Size(219, 92);
             listCommandPlayers.TabIndex = 18;
@@ -749,7 +732,6 @@
             panel4.Dock = DockStyle.Bottom;
             panel4.Location = new System.Drawing.Point(1, 116);
             panel4.Name = "panel4";
-            panel4.Radius = 1;
             panel4.ShadowDepth = 4F;
             panel4.Size = new System.Drawing.Size(219, 33);
             panel4.TabIndex = 10;
@@ -782,7 +764,6 @@
             // Splitter4
             // 
             Splitter4.Dock = DockStyle.Top;
-            Splitter4.IsVertical = false;
             Splitter4.Location = new System.Drawing.Point(0, 179);
             Splitter4.Name = "Splitter4";
             Splitter4.Size = new System.Drawing.Size(221, 10);
@@ -798,7 +779,6 @@
             groupBox3.Location = new System.Drawing.Point(0, 0);
             groupBox3.Name = "groupBox3";
             groupBox3.Padding = new Padding(1, 8, 1, 1);
-            groupBox3.Radius = 10;
             groupBox3.ShadowDepth = 4;
             groupBox3.Size = new System.Drawing.Size(221, 179);
             groupBox3.TabIndex = 12;
@@ -808,14 +788,12 @@
             // listAutoParty
             // 
             listAutoParty.BackColor = SKColors.White;
-            listAutoParty.BorderStyle = BorderStyle.None;
             listAutoParty.Columns.AddRange(new ColumnHeader[] { columnHeader2 });
             listAutoParty.Dock = DockStyle.Fill;
             listAutoParty.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             listAutoParty.FullRowSelect = true;
             listAutoParty.HeaderStyle = ColumnHeaderStyle.None;
             listAutoParty.Location = new System.Drawing.Point(1, 24);
-            listAutoParty.MultiSelect = false;
             listAutoParty.Name = "listAutoParty";
             listAutoParty.Size = new System.Drawing.Size(219, 121);
             listAutoParty.TabIndex = 17;
@@ -836,7 +814,6 @@
             panel3.Dock = DockStyle.Bottom;
             panel3.Location = new System.Drawing.Point(1, 145);
             panel3.Name = "panel3";
-            panel3.Radius = 0;
             panel3.ShadowDepth = 4F;
             panel3.Size = new System.Drawing.Size(219, 33);
             panel3.TabIndex = 17;
@@ -869,7 +846,6 @@
             // Splitter5
             // 
             Splitter5.Dock = DockStyle.Top;
-            Splitter5.IsVertical = false;
             Splitter5.Location = new System.Drawing.Point(3, 83);
             Splitter5.Name = "Splitter5";
             Splitter5.Size = new System.Drawing.Size(740, 10);
@@ -886,7 +862,6 @@
             grbAutoPartySettings.Location = new System.Drawing.Point(3, 3);
             grbAutoPartySettings.Name = "grbAutoPartySettings";
             grbAutoPartySettings.Padding = new Padding(3, 10, 3, 3);
-            grbAutoPartySettings.Radius = 10;
             grbAutoPartySettings.ShadowDepth = 4;
             grbAutoPartySettings.Size = new System.Drawing.Size(740, 80);
             grbAutoPartySettings.TabIndex = 8;
@@ -961,15 +936,12 @@
             // lvPartyMatching
             // 
             lvPartyMatching.BackColor = SKColors.White;
-            lvPartyMatching.BorderStyle = BorderStyle.None;
             lvPartyMatching.Columns.AddRange(new ColumnHeader[] { chPartyMatchNo, chPartyMatchRace, chPartyMatchName, chPartyMatchTitle, chPartyMatchPurporse, chPartyMatchMember, chPartyMatchRange });
             lvPartyMatching.Dock = DockStyle.Fill;
             lvPartyMatching.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             lvPartyMatching.FullRowSelect = true;
             lvPartyMatching.Location = new System.Drawing.Point(3, 50);
-            lvPartyMatching.MultiSelect = false;
             lvPartyMatching.Name = "lvPartyMatching";
-            lvPartyMatching.ShowItemToolTips = true;
             lvPartyMatching.Size = new System.Drawing.Size(740, 331);
             lvPartyMatching.TabIndex = 15;
             lvPartyMatching.UseCompatibleStateImageBehavior = false;
@@ -983,13 +955,11 @@
             // chPartyMatchRace
             // 
             chPartyMatchRace.Text = "Race";
-            chPartyMatchRace.TextAlign = HorizontalAlignment.Center;
             chPartyMatchRace.Width = 64;
             // 
             // chPartyMatchName
             // 
             chPartyMatchName.Text = "Name";
-            chPartyMatchName.TextAlign = HorizontalAlignment.Center;
             chPartyMatchName.Width = 100;
             // 
             // chPartyMatchTitle
@@ -1035,7 +1005,6 @@
             topPartyPanel.Dock = DockStyle.Top;
             topPartyPanel.Location = new System.Drawing.Point(3, 3);
             topPartyPanel.Name = "topPartyPanel";
-            topPartyPanel.Radius = 0;
             topPartyPanel.ShadowDepth = 4F;
             topPartyPanel.Size = new System.Drawing.Size(740, 47);
             topPartyPanel.TabIndex = 16;
@@ -1060,11 +1029,8 @@
             textBoxJoinByTitle.MaxLength = 32767;
             textBoxJoinByTitle.MultiLine = false;
             textBoxJoinByTitle.Name = "textBoxJoinByTitle";
-            textBoxJoinByTitle.PassFocusShow = false;
-            textBoxJoinByTitle.Radius = 2;
             textBoxJoinByTitle.Size = new System.Drawing.Size(202, 21);
             textBoxJoinByTitle.TabIndex = 21;
-            textBoxJoinByTitle.TextAlignment = HorizontalAlignment.Left;
             textBoxJoinByTitle.UseSystemPasswordChar = false;
             // 
             // textBoxJoinByName
@@ -1073,11 +1039,8 @@
             textBoxJoinByName.MaxLength = 32767;
             textBoxJoinByName.MultiLine = false;
             textBoxJoinByName.Name = "textBoxJoinByName";
-            textBoxJoinByName.PassFocusShow = false;
-            textBoxJoinByName.Radius = 2;
             textBoxJoinByName.Size = new System.Drawing.Size(107, 21);
             textBoxJoinByName.TabIndex = 22;
-            textBoxJoinByName.TextAlignment = HorizontalAlignment.Left;
             textBoxJoinByName.UseSystemPasswordChar = false;
             // 
             // checkBoxJoinByTitle
@@ -1112,7 +1075,6 @@
             // 
             // Splitter11
             // 
-            Splitter11.IsVertical = false;
             Splitter11.Location = new System.Drawing.Point(15, 41);
             Splitter11.Name = "Splitter11";
             Splitter11.Size = new System.Drawing.Size(707, 10);
@@ -1163,13 +1125,13 @@
             nudPartySearchMax.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             nudPartySearchMax.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             nudPartySearchMax.Location = new System.Drawing.Point(442, 11);
-            nudPartySearchMax.Maximum = new decimal(new int[] { 140, 0, 0, 0 });
+            nudPartySearchMax.Maximum = 140;
             nudPartySearchMax.Minimum = 1;
             nudPartySearchMax.MinimumSize = new System.Drawing.Size(80, 25);
             nudPartySearchMax.Name = "nudPartySearchMax";
             nudPartySearchMax.Size = new System.Drawing.Size(80, 25);
             nudPartySearchMax.TabIndex = 3;
-            nudPartySearchMax.Value = new decimal(new int[] { 140, 0, 0, 0 });
+            nudPartySearchMax.Value = 140;
             // 
             // nudPartySearchMin
             // 
@@ -1177,7 +1139,7 @@
             nudPartySearchMin.Font = new System.Drawing.Font("Segoe UI", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             nudPartySearchMin.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             nudPartySearchMin.Location = new System.Drawing.Point(359, 11);
-            nudPartySearchMin.Maximum = new decimal(new int[] { 140, 0, 0, 0 });
+            nudPartySearchMin.Maximum = 140;
             nudPartySearchMin.Minimum = 1;
             nudPartySearchMin.MinimumSize = new System.Drawing.Size(80, 25);
             nudPartySearchMin.Name = "nudPartySearchMin";
@@ -1187,12 +1149,6 @@
             // 
             // cbPartySearchPurpose
             // 
-            cbPartySearchPurpose.DrawMode = DrawMode.OwnerDrawFixed;
-            cbPartySearchPurpose.DropDownHeight = 100;
-            cbPartySearchPurpose.DropDownStyle = ComboBoxStyle.DropDownList;
-            cbPartySearchPurpose.FormattingEnabled = true;
-            cbPartySearchPurpose.IntegralHeight = false;
-            cbPartySearchPurpose.ItemHeight = 17;
             cbPartySearchPurpose.Items.AddRange(new object[] { "All", "Hunting", "Quest", "Thief Union", "Trade Union" });
             cbPartySearchPurpose.Location = new System.Drawing.Point(208, 12);
             cbPartySearchPurpose.Name = "cbPartySearchPurpose";
@@ -1207,11 +1163,8 @@
             tbPartySearchName.MaxLength = 32767;
             tbPartySearchName.MultiLine = false;
             tbPartySearchName.Name = "tbPartySearchName";
-            tbPartySearchName.PassFocusShow = false;
-            tbPartySearchName.Radius = 2;
             tbPartySearchName.Size = new System.Drawing.Size(100, 21);
             tbPartySearchName.TabIndex = 1;
-            tbPartySearchName.TextAlignment = HorizontalAlignment.Left;
             tbPartySearchName.UseSystemPasswordChar = false;
             // 
             // label6
@@ -1284,7 +1237,6 @@
             bottomPartyPanel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             bottomPartyPanel.Location = new System.Drawing.Point(3, 381);
             bottomPartyPanel.Name = "bottomPartyPanel";
-            bottomPartyPanel.Radius = 0;
             bottomPartyPanel.ShadowDepth = 4F;
             bottomPartyPanel.Size = new System.Drawing.Size(740, 51);
             bottomPartyPanel.TabIndex = 14;
@@ -1435,7 +1387,6 @@
             groupBox4.Location = new System.Drawing.Point(283, 191);
             groupBox4.Name = "groupBox4";
             groupBox4.Padding = new Padding(2, 8, 2, 2);
-            groupBox4.Radius = 10;
             groupBox4.ShadowDepth = 4;
             groupBox4.Size = new System.Drawing.Size(214, 238);
             groupBox4.TabIndex = 11;
@@ -1488,20 +1439,17 @@
             // listViewPartyMembers
             // 
             listViewPartyMembers.BackColor = SKColors.White;
-            listViewPartyMembers.BorderStyle = BorderStyle.None;
             listViewPartyMembers.Columns.AddRange(new ColumnHeader[] { chPlayerName, chPlayerLevel });
             listViewPartyMembers.Dock = DockStyle.Top;
             listViewPartyMembers.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             listViewPartyMembers.FullRowSelect = true;
             listViewPartyMembers.HeaderStyle = ColumnHeaderStyle.None;
             listViewPartyMembers.Location = new System.Drawing.Point(2, 24);
-            listViewPartyMembers.MultiSelect = false;
             listViewPartyMembers.Name = "listViewPartyMembers";
             listViewPartyMembers.Size = new System.Drawing.Size(210, 181);
             listViewPartyMembers.TabIndex = 10;
             listViewPartyMembers.UseCompatibleStateImageBehavior = false;
             listViewPartyMembers.ViewType = ViewTypes.Details;
-            listViewPartyMembers.SelectedIndexChanged += listViewPartyMembers_SelectedIndexChanged;
             // 
             // chPlayerName
             // 
@@ -1516,7 +1464,6 @@
             // Splitter9
             // 
             Splitter9.Dock = DockStyle.Top;
-            Splitter9.IsVertical = false;
             Splitter9.Location = new System.Drawing.Point(283, 181);
             Splitter9.Name = "Splitter9";
             Splitter9.Size = new System.Drawing.Size(214, 10);
@@ -1533,7 +1480,6 @@
             groupBox6.Location = new System.Drawing.Point(283, 6);
             groupBox6.Name = "groupBox6";
             groupBox6.Padding = new Padding(2, 8, 2, 2);
-            groupBox6.Radius = 10;
             groupBox6.ShadowDepth = 4;
             groupBox6.Size = new System.Drawing.Size(214, 175);
             groupBox6.TabIndex = 14;
@@ -1571,20 +1517,17 @@
             // listViewGroups
             // 
             listViewGroups.BackColor = SKColors.White;
-            listViewGroups.BorderStyle = BorderStyle.None;
             listViewGroups.Columns.AddRange(new ColumnHeader[] { columnHeaderGroupName, columnHeaderMembersCount });
             listViewGroups.Dock = DockStyle.Top;
             listViewGroups.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
             listViewGroups.FullRowSelect = true;
             listViewGroups.HeaderStyle = ColumnHeaderStyle.None;
             listViewGroups.Location = new System.Drawing.Point(2, 24);
-            listViewGroups.MultiSelect = false;
             listViewGroups.Name = "listViewGroups";
             listViewGroups.Size = new System.Drawing.Size(210, 118);
             listViewGroups.TabIndex = 1;
             listViewGroups.UseCompatibleStateImageBehavior = false;
             listViewGroups.ViewType = ViewTypes.Details;
-            listViewGroups.SelectedIndexChanged += listViewGroups_SelectedIndexChanged;
             // 
             // columnHeaderGroupName
             // 
@@ -1598,7 +1541,6 @@
             // Splitter8
             // 
             Splitter8.Dock = DockStyle.Right;
-            Splitter8.IsVertical = true;
             Splitter8.Location = new System.Drawing.Point(497, 6);
             Splitter8.Name = "Splitter8";
             Splitter8.Size = new System.Drawing.Size(10, 423);
@@ -1613,7 +1555,6 @@
             groupBox5.Location = new System.Drawing.Point(507, 6);
             groupBox5.Name = "groupBox5";
             groupBox5.Padding = new Padding(2, 8, 2, 2);
-            groupBox5.Radius = 10;
             groupBox5.ShadowDepth = 4;
             groupBox5.Size = new System.Drawing.Size(233, 423);
             groupBox5.TabIndex = 12;
@@ -1623,7 +1564,6 @@
             // selectedMemberBuffs
             // 
             selectedMemberBuffs.BackColor = SKColors.White;
-            selectedMemberBuffs.BorderStyle = BorderStyle.None;
             selectedMemberBuffs.Columns.AddRange(new ColumnHeader[] { columnHeader1 });
             selectedMemberBuffs.Dock = DockStyle.Fill;
             selectedMemberBuffs.ForeColor = new SkiaSharp.SKColor(0, 0, 0);
@@ -1644,7 +1584,6 @@
             // Splitter7
             // 
             Splitter7.Dock = DockStyle.Left;
-            Splitter7.IsVertical = true;
             Splitter7.Location = new System.Drawing.Point(273, 6);
             Splitter7.Name = "Splitter7";
             Splitter7.Size = new System.Drawing.Size(10, 423);
@@ -1660,7 +1599,6 @@
             groupBox1.Location = new System.Drawing.Point(6, 6);
             groupBox1.Name = "groupBox1";
             groupBox1.Padding = new Padding(2, 8, 2, 2);
-            groupBox1.Radius = 10;
             groupBox1.ShadowDepth = 4;
             groupBox1.Size = new System.Drawing.Size(267, 423);
             groupBox1.TabIndex = 10;
@@ -1670,7 +1608,6 @@
             // listPartyBuffSkills
             // 
             listPartyBuffSkills.BackColor = SKColors.White;
-            listPartyBuffSkills.BorderStyle = BorderStyle.None;
             listPartyBuffSkills.Columns.AddRange(new ColumnHeader[] { columnName, columnLimit });
             listPartyBuffSkills.ContextMenu = contextPartyBuffs;
             listPartyBuffSkills.Dock = DockStyle.Fill;
@@ -1692,7 +1629,6 @@
             // columnLimit
             // 
             columnLimit.Text = "Limit";
-            columnLimit.TextAlign = HorizontalAlignment.Center;
             columnLimit.Width = 80;
             // 
             // panel5
@@ -1705,7 +1641,6 @@
             panel5.Location = new System.Drawing.Point(2, 395);
             panel5.Name = "panel5";
             panel5.Padding = new Padding(10, 0, 0, 0);
-            panel5.Radius = 1;
             panel5.ShadowDepth = 4F;
             panel5.Size = new System.Drawing.Size(263, 26);
             panel5.TabIndex = 11;
@@ -1738,7 +1673,6 @@
             // 
             menuItemRefreshBuffs.Enabled = true;
             menuItemRefreshBuffs.Name = "menuItemRefreshBuffs";
-            menuItemRefreshBuffs.Size = new System.Drawing.Size(152, 22);
             menuItemRefreshBuffs.Text = "Refresh Buffs";
             menuItemRefreshBuffs.Click += menuItemRefreshBuffs_Click;
             // 
@@ -1750,7 +1684,6 @@
             Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             Name = "Main";
             Size = new System.Drawing.Size(754, 467);
-            Load += Main_Load;
             tabMain.ResumeLayout(false);
             tabCurrentParty.ResumeLayout(false);
             contextParty.ResumeLayout(false);
