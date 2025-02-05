@@ -39,11 +39,11 @@ public partial class Ability : CosControlBase
         if (Game.Player.AbilityPet == null)
             return;
 
-        progressHP.Value = 100;
         progressHP.Maximum = 100;
+        progressHP.Value = 100;
 
-        MiniCosControl.Hp.Value = 100;
         MiniCosControl.Hp.Maximum = 100;
+        MiniCosControl.Hp.Value = 100;
 
         lblPetName.Text = Game.Player.AbilityPet.Name;
 

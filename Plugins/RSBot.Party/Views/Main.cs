@@ -187,7 +187,7 @@ public partial class Main : Panel
         {
             var members = _buffings.FindAll(p => p.Group == itemGroup.Text);
 
-            itemGroup.SubItems[1] = members.Count.ToString();
+            itemGroup.SubItems[0] = members.Count.ToString();
 
             if (itemGroup.Text == _selectedBuffingGroup.Text)
                 foreach (var member in members)

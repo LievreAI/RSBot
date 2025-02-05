@@ -49,15 +49,15 @@ public partial class Entity : Panel
 
         if (entity is SpawnedMonster monster)
         {
-            progressHP.Value = monster.Health;
             progressHP.Maximum = monster.MaxHealth;
+            progressHP.Value = monster.Health;
 
             lblType.Text = monster.Rarity.GetName();
         }
         else
         {
-            progressHP.Value = 100;
             progressHP.Maximum = 100;
+            progressHP.Value = 100;
 
             if (Game.Player.State.DialogState is { IsInDialog: true })
                 lblType.Text = "<in conversation>";
@@ -74,15 +74,15 @@ public partial class Entity : Panel
 
         if (!entity.HasHealth)
         {
-            progressHP.Value = 100;
             progressHP.Maximum = 100;
+            progressHP.Value = 100;
             return;
         }
 
         if (entity is SpawnedMonster monster)
         {
-            progressHP.Value = monster.Health;
             progressHP.Maximum = monster.MaxHealth;
+            progressHP.Value = monster.Health;
         }
     }
 
@@ -116,8 +116,8 @@ public partial class Entity : Panel
     private void Clear()
     {
         lblEntityName.Text = LanguageManager.GetLang("LabelEntityName");
-        progressHP.Value = 0;
         progressHP.Maximum = 100;
+        progressHP.Value = 0;
         lblType.Text = "";
     }
 }

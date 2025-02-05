@@ -183,10 +183,11 @@ public partial class Main : Form
         
         var control = newBotbase.Value.View;
         control.Name = newBotbase.Value.Name;
-        control.Enabled = Game.Ready;
+        
         control.Dock = DockStyle.Fill;
         tabpage.Controls.Add(control);
 
+        tabpage.Enabled = Game.Ready;
         windowPageControl.TabPages.Insert(1, tabpage);
 
         Kernel.Bot?.SetBotbase(newBotbase.Value);
@@ -226,7 +227,7 @@ public partial class Main : Form
             
             var control = extension.Value.View;
             control.Name = extension.Value.InternalName;
-            control.Enabled = !extension.Value.RequireIngame;
+            tabpage.Enabled = !extension.Value.RequireIngame;
             control.Dock = DockStyle.Fill;
             tabpage.Controls.Add(control);
 
@@ -803,7 +804,7 @@ public partial class Main : Form
     /// </summary>
     private void OnAgentServerDisconnected()
     {
-        foreach (Control control in windowPageControl.TabPages)
+        foreach (TabPage control in windowPageControl.TabPages)
         {
             if (!control.Controls.ContainsKey("overlay"))
                 continue;
@@ -860,7 +861,7 @@ public partial class Main : Form
     /// </summary>
     private void OnLoadCharacter()
     {
-        foreach (Control control in windowPageControl.TabPages)
+        foreach (TabPage control in windowPageControl.TabPages)
         {
             control.Enabled = true;
 

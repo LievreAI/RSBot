@@ -160,7 +160,8 @@ public partial class Main : Panel
             var x = GetMapX(position);
             var y = GetMapY(position);
 
-            using var img = new SKBitmap(_mapEntityImages[entityIndex].Info);
+            SKBitmap img = null;
+            _mapEntityImages[entityIndex].CopyTo(img);
 
             if (entityIndex == 0)
             {

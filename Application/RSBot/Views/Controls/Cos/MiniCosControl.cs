@@ -1,8 +1,6 @@
 ﻿using SDUI;
 using SkiaSharp;
-using System;
 using System.ComponentModel;
-using System.Drawing;
 
 
 namespace RSBot.Views.Controls;

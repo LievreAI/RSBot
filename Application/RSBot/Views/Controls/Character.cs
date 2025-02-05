@@ -81,8 +81,8 @@ public partial class Character : Panel
     /// <exception cref="System.NotImplementedException"></exception>
     private void OnExpUpdate()
     {
-        progressEXP.Value = Game.Player.Experience;
         progressEXP.Maximum = Game.ReferenceManager.GetRefLevel(Game.Player.Level).Exp_C;
+        progressEXP.Value = Game.Player.Experience;
     }
 
     /// <summary>
